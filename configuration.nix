@@ -93,13 +93,17 @@
     ];
   };
 
-  # Allow unfree packages
+  # Allow unfree packages (like Sublime Text)
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # Sublime Text needs this
+  nixpkgs.config.permittedInsecurePackages = [
+    "openssl-1.1.1u"
+  ];
+
+  # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
-    git
+    git sublime-merge sublime4
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
