@@ -97,7 +97,7 @@ in {
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
-    git sublime-merge sublime4 gparted unstable.nixd
+    git sublime-merge sublime4 gparted unstable.nixd nodejs
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
