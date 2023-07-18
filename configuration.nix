@@ -95,9 +95,8 @@ in {
     "openssl-1.1.1u"
   ];
 
-  # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
-    git sublime-merge sublime4 gparted unstable.nixd nodejs
+    git sublime-merge sublime4 gparted unstable.nixd nixpkgs-fmt nodejs
   ];
 
   fonts.fonts = with pkgs; [
