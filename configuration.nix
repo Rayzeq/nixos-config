@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 
-{
+# The unstable channel for some packages
+let
+  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+in {
   imports = [ ./hardware-configuration.nix ];
 
   # Bootloader.
@@ -94,7 +97,7 @@
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
-    git sublime-merge sublime4 gparted nixd
+    git sublime-merge sublime4 gparted unstable.nixd
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
