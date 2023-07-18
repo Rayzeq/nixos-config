@@ -101,7 +101,7 @@
 
   # List packages installed in system profile.
   environment.systemPackages = with pkgs; [
-    git sublime-merge sublime4
+    git sublime-merge sublime4 gparted
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
