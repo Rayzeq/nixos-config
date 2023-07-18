@@ -86,6 +86,7 @@ in {
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox barrier
+      (discord.override { withOpenASAR = true; })
     ];
   };
 
