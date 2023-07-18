@@ -51,6 +51,8 @@ in {
     xkbVariant = "oss";
   };
 
+  hardware.opengl.driSupport32Bit = true;
+
   # Configure console keymap
   console.keyMap = "fr";
 
