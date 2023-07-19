@@ -41,11 +41,15 @@ in {
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
+  services.xserver.excludePackages = with pkgs; [ xterm ];
+
   # Enable the KDE Plasma Desktop Environment.
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.sddm.autoNumlock = true;
-  services.xserver.desktopManager.plasma5.enable = true;
-  services.xserver.excludePackages = with pkgs; [ xterm ];
+  services.xserver.desktopManager.plasma5 = {
+    enable = true;
+    excludePackages = with pkgs.libsForQt5; [ elisa ];
+  };
 
   # Configure keymap in X11
   services.xserver = {
