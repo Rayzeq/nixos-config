@@ -10,5 +10,14 @@ in
   home-manager.users.zacharie = {
     home.stateVersion = "23.05";
 
+    programs.zsh = {
+      enable = true;
+      history.share = false;
+      shellAliases = {
+        fix = "reset; stty sane; tput rs1; echo -e \"\\033c\"; clear";
+        # safety net when using mv
+        mv = "mv -b -i";
+      };
+    };
   };
 }
