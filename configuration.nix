@@ -5,7 +5,7 @@ let
   unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [ ./hardware-configuration.nix ./zacharie.nix ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
