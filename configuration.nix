@@ -86,7 +86,7 @@ in {
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox barrier
-      (discord.override { withOpenASAR = true; })
+      (discord.override { withOpenASAR = true; withVencord = true; })
     ];
   };
 
