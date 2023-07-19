@@ -3,7 +3,8 @@
 # The unstable channel for some packages
 let
   unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-in {
+in
+{
   imports = [ ./hardware-configuration.nix ];
 
   # Bootloader.
@@ -91,7 +92,9 @@ in {
     description = "Zacharie";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-      firefox barrier vlc
+      firefox
+      barrier
+      vlc
       (discord.override { withOpenASAR = true; withVencord = true; vencord = (vencord.overrideAttrs { patches = vencord.patches ++ [ ./mudaebot.patch ]; }); })
     ];
   };
@@ -105,7 +108,13 @@ in {
   ];
 
   environment.systemPackages = with pkgs; [
-    git sublime-merge sublime4 gparted unstable.nixd nixpkgs-fmt nodejs
+    git
+    sublime-merge
+    sublime4
+    gparted
+    unstable.nixd
+    nixpkgs-fmt
+    nodejs
   ];
 
   fonts.fonts = with pkgs; [
