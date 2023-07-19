@@ -88,7 +88,7 @@ in {
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox barrier
-      (discord.override { withOpenASAR = true; withVencord = true; })
+      (discord.override { withOpenASAR = true; withVencord = true; vencord = (vencord.overrideAttrs { patches = vencord.patches ++ [ ./mudaebot.patch ]; }); })
     ];
   };
 

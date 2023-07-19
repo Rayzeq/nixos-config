@@ -1,0 +1,99 @@
+diff --git a/src/userplugins/MudaeBot/index.ts b/src/userplugins/MudaeBot/index.ts
+new file mode 100644
+index 0000000..7589ff5
+--- /dev/null
++++ b/src/userplugins/MudaeBot/index.ts
+@@ -0,0 +1,93 @@
++import { definePluginSettings } from "@api/Settings";
++import { sendMessage } from "@utils/discord";
++import { sleep } from "@utils/misc";
++import definePlugin, { OptionType } from "@utils/types";
++import { MessageStore, NavigationRouter } from "@webpack/common";
++
++const SLEEP_DETECTOR_INTERVAL = 5 * 60 * 1000;
++
++const settings = definePluginSettings({
++    guild: {
++        type: OptionType.BIGINT,
++        description: "The guild where $p will be used",
++        default: 705369950964940810n,
++    },
++    channel: {
++        type: OptionType.BIGINT,
++        description: "The channel where $p will be used",
++        default: 974325165632675911n,
++    }
++});
++
++export default definePlugin({
++    name: "MudaeBot",
++    description: "A plugin to run $p every time it can",
++    authors: [
++        {
++            id: 516718353793024000n,
++            name: "Rayzeq",
++        },
++    ],
++    settings,
++    patches: [],
++    timeleft_regex: /Remaining time before your next \$p: \*\*((?<hours>\d+)h )?(?<minutes>\d+)\*\*/,
++
++    start() {
++        this.last_time = (new Date()).getTime();
++        this.sleep_detect_id = window.setInterval(this.sleep_detector.bind(this), SLEEP_DETECTOR_INTERVAL);
++
++        window.setTimeout(this.run_p.bind(this), 0);
++    },
++
++    stop() {
++        window.clearTimeout(this.run_p_id);
++        window.clearInterval(this.sleep_detect_id);
++    },
++
++    log(...messages: any[]) {
++        console.log("%c[MudaeBot]", "color: #00ff00", ...messages);
++    },
++
++    async goto(guild: BigInt, channel: BigInt) {
++        await NavigationRouter.transitionTo(`/channels/${guild}/${channel}`);
++    },
++
++    async sleep_detector() {
++        const current_time = (new Date()).getTime();
++        if (current_time > (this.last_time + SLEEP_DETECTOR_INTERVAL * 2)) {
++            window.clearTimeout(this.run_p_id);
++            await this.run_p();
++        }
++        this.last_time = current_time;
++    },
++
++    async get_response(last_msg) {
++        const message = MessageStore.getMessages(settings.store.channel.toString()).last();
++        if (message === undefined || message === last_msg || message.author.id != 432610292342587392n || message.content.includes('❌')) {
++            await sleep(500);
++            return await this.get_response(last_msg);
++        } else {
++            return message;
++        }
++    },
++
++    async run_p() {
++        await this.goto(settings.store.guild, settings.store.channel);
++        const last_msg = MessageStore.getMessages(settings.store.channel.toString()).last();
++        sendMessage(settings.store.channel.toString(), { content: "$p" });
++
++        await sleep(2000);
++        const message = (await this.get_response(last_msg)).content;
++
++        const match = message.match(this.timeleft_regex);
++        if (match == null) { // We rolled the roulette
++            await this.run_p();
++        } else { // We must wait
++            const { hours, minutes } = match.groups;
++            this.log(`next $p in ${hours}h${minutes}min`);
++            const ms = (((parseInt(hours, 10) || 0) * 60) + parseInt(minutes, 10)) * 60 * 1000 + 10;
++            this.timeout = window.setTimeout(this.run_p.bind(this), ms);
++            this.log(`waiting ${ms}ms`);
++        }
++    }
++});
