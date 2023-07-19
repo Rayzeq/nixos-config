@@ -12,11 +12,6 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "zacharie-ThinkPad";
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant. (useless ?)
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -47,7 +42,7 @@ in
   # Enable the KDE Plasma Desktop Environment.
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.sddm.autoNumlock = true;
-  services.xserver.desktopManager.plasma5 = {
+  environment.plasma5.excludePackages = {
     enable = true;
     excludePackages = with pkgs.libsForQt5; [ elisa ];
   };
