@@ -112,6 +112,10 @@ in
     zsh-autosuggestions
     zsh-powerlevel10k
     meslo-lgs-nf
+    trashy
+    lsd
+    bat
+    ripgrep
   ];
 
   programs.zsh = {

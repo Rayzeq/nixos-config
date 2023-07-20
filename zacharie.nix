@@ -23,6 +23,9 @@ in
         fix = "reset; stty sane; tput rs1; echo -e \"\\033c\"; clear";
         # safety net when using mv
         mv = "mv -b -i";
+        ls = "lsd";
+        cat = "bat";
+        grep = "rg";
       };
 
       # Powerlevel10k configuration
