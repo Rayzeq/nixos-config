@@ -10,6 +10,12 @@ in
   home-manager.users.zacharie = {
     home.stateVersion = "23.05";
 
+    programs.git = {
+      enable = true;
+      userName = "Zacharie Dubrulle";
+      userEmail = "dubrullezacharie@gmail.com";
+    };
+
     programs.zsh = {
       enable = true;
       history.share = false;
