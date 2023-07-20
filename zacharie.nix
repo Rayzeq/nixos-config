@@ -18,6 +18,16 @@ in
         # safety net when using mv
         mv = "mv -b -i";
       };
+
+      # Powerlevel10k configuration
+      initExtraFirst = ''
+        if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+          source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+        fi
+      '';
+      initExtra = ''
+        source ~/.p10k.zsh
+      '';
     };
   };
 }
