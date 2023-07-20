@@ -35,5 +35,12 @@ in
         source ~/.p10k.zsh
       '';
     };
+
+    services.barrier.client = {
+      enable = true;
+      enableCrypto = true;
+      enableDragDrop = true;
+      server = "192.168.0.109";
+    };
   };
 }
