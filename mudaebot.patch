@@ -92,7 +92,7 @@ index 0000000..7589ff5
 +            const { hours, minutes } = match.groups;
 +            this.log(`next $p in ${hours}h${minutes}min`);
 +            const ms = (((parseInt(hours, 10) || 0) * 60) + parseInt(minutes, 10)) * 60 * 1000 + 10;
-+            this.timeout = window.setTimeout(this.run_p.bind(this), ms);
++            this.run_p_id = window.setTimeout(this.run_p.bind(this), ms);
 +            this.log(`waiting ${ms}ms`);
 +        }
 +    }
