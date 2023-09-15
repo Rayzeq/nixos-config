@@ -89,6 +89,7 @@ in
       vlc
       obsidian
       python3
+      unstable.mission-center
       (opera.override { proprietaryCodecs = true; })
       (discord.override { withOpenASAR = true; withVencord = true; vencord = (vencord.overrideAttrs { patches = vencord.patches ++ [ ./mudaebot.patch ]; }); })
     ];
