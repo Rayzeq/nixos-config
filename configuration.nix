@@ -87,6 +87,7 @@ in
     packages = with pkgs; [
       barrier
       vlc
+      obsidian
       (opera.override { proprietaryCodecs = true; })
       (discord.override { withOpenASAR = true; withVencord = true; vencord = (vencord.overrideAttrs { patches = vencord.patches ++ [ ./mudaebot.patch ]; }); })
     ];
