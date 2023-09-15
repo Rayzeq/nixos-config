@@ -88,6 +88,7 @@ in
       barrier
       vlc
       obsidian
+      python3
       (opera.override { proprietaryCodecs = true; })
       (discord.override { withOpenASAR = true; withVencord = true; vencord = (vencord.overrideAttrs { patches = vencord.patches ++ [ ./mudaebot.patch ]; }); })
     ];
