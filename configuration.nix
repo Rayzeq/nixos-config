@@ -124,8 +124,13 @@ in
       mangohud
       gamemode
       prismlauncher
+      # IUT
+      openfortivpn
+      networkmanager-fortisslvpn
+      gnome.networkmanager-fortisslvpn
     ];
   };
+  environment.etc."ppp/options".text = "ipcp-accept-remote";
 
   # Allow unfree packages (like Sublime Text)
   nixpkgs.config.allowUnfree = true;

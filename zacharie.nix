@@ -26,6 +26,7 @@ in
         ls = "lsd";
         cat = "bat";
         grep = "rg";
+        unilim = "sudo openfortivpn u-vpn.unilim.fr -u dubrulle3 -p @Zacharie36";
       };
 
       # Powerlevel10k configuration
