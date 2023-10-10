@@ -79,6 +79,34 @@ in
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      mission-center = unstable.mission-center.overrideAttrs (old: {
+        src = prev.fetchFromGitLab {
+          owner = "mission-center-devs";
+          repo = "mission-center";
+          rev = "v0.3.2";
+          hash = "sha256-KuaVivW/i+1Pw6ShpvBYbwPMUHsEJ7FR80is0DBMbXM=";
+        };
+
+        cargoDeps = prev.symlinkJoin {
+          name = "cargo-vendor-dir";
+          paths = [
+            (prev.rustPlatform.importCargoLock {
+              lockFile = ./mission-center/Cargo.lock;
+              outputHashes = {
+                "pathfinder_canvas-0.5.0" = "sha256-k2Sj69hWA0UzRfv91aG1TAygVIuOX3gmipcDbuZxxc8=";
+              };
+            })
+            (prev.rustPlatform.importCargoLock {
+              lockFile = ./mission-center/gatherer-Cargo.lock;
+            })
+          ];
+        };
+      });
+    })
+  ];
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.zacharie = {
     isNormalUser = true;
@@ -89,7 +117,7 @@ in
       vlc
       obsidian
       python3
-      unstable.mission-center
+      mission-center
       (opera.override { proprietaryCodecs = true; })
       (discord.override { withOpenASAR = true; withVencord = true; vencord = (vencord.overrideAttrs { patches = vencord.patches ++ [ ./mudaebot.patch ]; }); })
 
