@@ -124,6 +124,8 @@ in
       mangohud
       gamemode
       prismlauncher
+      # Useful
+      steam-run
       # IUT
       openfortivpn
       networkmanager-fortisslvpn
