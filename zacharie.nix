@@ -40,6 +40,9 @@ in
       '';
       initExtra = ''
         source ~/.p10k.zsh
+        bindkey '^H' backward-kill-word
+        bindkey '5~' kill-word
+        bindkey '^K' backward-kill-line
       '';
     };
 
@@ -47,7 +50,7 @@ in
       enable = true;
       enableCrypto = true;
       enableDragDrop = true;
-      server = "192.168.0.109";
+      server = "10.42.0.48";
     };
   };
 }
