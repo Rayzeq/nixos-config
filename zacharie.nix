@@ -14,6 +14,9 @@ in
       enable = true;
       userName = "Zacharie Dubrulle";
       userEmail = "dubrullezacharie@gmail.com";
+      aliases = {
+        forget = "!git rm -r --cached . && git add . && :";
+      };
     };
 
     programs.zsh = {
