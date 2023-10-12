@@ -52,5 +52,12 @@ in
       enableDragDrop = true;
       server = "10.42.0.48";
     };
+
+    xdg.configFile."sublime-text/Packages/User/LiveServer.sublime-settings".text = "
+      {
+        \"node_executable_path\": \"${pkgs.nodejs}/bin/node\",
+        \"global_node_modules_path\": \"${pkgs.nodePackages.live-server}/lib/node_modules\",
+      }
+    ";
   };
 }

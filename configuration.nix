@@ -146,6 +146,7 @@ in
     git
     sublime-merge
     sublime4
+    nodePackages.live-server
     gparted
     unstable.nixd
     nixpkgs-fmt
