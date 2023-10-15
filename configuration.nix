@@ -107,7 +107,6 @@ in
     })
   ];
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.zacharie = {
     isNormalUser = true;
     description = "Zacharie";
@@ -124,6 +123,7 @@ in
       mangohud
       gamemode
       prismlauncher
+
       # Useful
       steam-run
       # IUT
@@ -159,6 +159,7 @@ in
     lsd
     bat
     ripgrep
+    libsForQt5.kcalc
   ];
 
   programs.zsh = {
