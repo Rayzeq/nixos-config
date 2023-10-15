@@ -128,8 +128,7 @@ in
       steam-run
       # IUT
       openfortivpn
-      networkmanager-fortisslvpn
-      gnome.networkmanager-fortisslvpn
+      azuredatastudio
     ];
   };
   environment.etc."ppp/options".text = "ipcp-accept-remote";
