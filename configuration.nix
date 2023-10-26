@@ -136,9 +136,9 @@ in
   # Allow unfree packages (like Sublime Text)
   nixpkgs.config.allowUnfree = true;
 
-  # Sublime Text needs this
   nixpkgs.config.permittedInsecurePackages = [
-    "openssl-1.1.1w"
+    "openssl-1.1.1w" # Sublime Text needs this
+    "electron-24.8.6" # don't know exactly what need this, maybe discord, obsidian and azure ?
   ];
 
   environment.systemPackages = with pkgs; [
