@@ -105,6 +105,19 @@ in
         };
       });
     })
+    (final: prev: {
+      vencord = prev.vencord.overrideAttrs (old: {
+        version = "1.6.0";
+        gitHash = "ffe6bb1";
+
+        src = prev.fetchFromGitHub {
+          owner = "Vendicated";
+          repo = "Vencord";
+          rev = "v1.6.0";
+          hash = "sha256-t4+8ybPzqcCtTSukBBgvbD7HiKG4K51WPVnJg0RQbs8=";
+        };
+      });
+    })
   ];
 
   users.users.zacharie = {
