@@ -161,6 +161,8 @@ in
     libsForQt5.kcalc
   ];
 
+  programs.kdeconnect.enable = true;
+
   programs.zsh = {
     enable = true;
     autosuggestions.enable = true;
