@@ -117,6 +117,7 @@ in
       obsidian
       python3
       mission-center
+      gimp-with-plugins
       (opera.override { proprietaryCodecs = true; })
       (discord.override { withOpenASAR = true; withVencord = true; vencord = (vencord.overrideAttrs { patches = vencord.patches ++ [ ./mudaebot.patch ]; }); })
 
