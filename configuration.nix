@@ -175,6 +175,7 @@ in
     libsForQt5.kcalc
   ];
 
+  programs.gamemode.enable = true;
   programs.kdeconnect.enable = true;
 
   programs.zsh = {
