@@ -22,6 +22,7 @@ in
     programs.zsh = {
       enable = true;
       history.share = false;
+      autocd = true;
       shellAliases = {
         fix = "reset; stty sane; tput rs1; echo -e \"\\033c\"; clear";
         # safety net when using mv
@@ -30,6 +31,7 @@ in
         cat = "bat";
         grep = "rg";
         unilim = "sudo openfortivpn u-vpn.unilim.fr -u dubrulle3 -p @Zacharie36";
+        system-update = "sudo zsh -c \"nix-channel --update unstable; nixos-rebuild switch --upgrade\"";
       };
 
       # Powerlevel10k configuration
@@ -43,6 +45,8 @@ in
         bindkey '^H' backward-kill-word
         bindkey '5~' kill-word
         bindkey '^K' backward-kill-line
+
+        ZSH_AUTOSUGGEST_STRATEGY=(history completion)
       '';
     };
 
