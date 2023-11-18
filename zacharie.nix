@@ -31,7 +31,7 @@ in
         cat = "bat";
         grep = "rg";
         unilim = "sudo openfortivpn u-vpn.unilim.fr -u dubrulle3 -p @Zacharie36";
-        system-update = "sudo zsh -c \"nix-channel --update unstable; nixos-rebuild switch --upgrade\"";
+        system-update = "sudo zsh -c \"nix-channel --update unstable && nixos-rebuild switch --upgrade && nix-collect-garbage -d && nixos-rebuild boot\"";
       };
 
       # Powerlevel10k configuration
