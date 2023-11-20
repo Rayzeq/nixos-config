@@ -97,6 +97,10 @@ in
       gamemode
       prismlauncher
 
+      # Rust
+      rustup
+      clang
+
       # Useful
       steam-run
       # IUT
