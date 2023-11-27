@@ -139,6 +139,7 @@ in
     bat
     ripgrep
     libsForQt5.kcalc
+    unrar
   ];
 
   programs.gamemode.enable = true;
