@@ -140,6 +140,7 @@ in
     ripgrep
     libsForQt5.kcalc
     unrar
+    man-pages
   ];
 
   programs.gamemode.enable = true;
