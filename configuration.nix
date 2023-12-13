@@ -96,7 +96,11 @@ in
       python3
       unstable.mission-center
       gimp-with-plugins
-      (opera.override { proprietaryCodecs = true; })
+      ((opera.overrideAttrs (old: {
+        postFixup = ''
+          patchelf --add-needed ${pkgs.libGL}/lib/libGL.so.1 $out/usr/lib/x86_64-linux-gnu/opera/opera
+        '';
+      })).override { proprietaryCodecs = true; })
       (discord.override { withOpenASAR = true; withVencord = true; vencord = (vencord.overrideAttrs { patches = vencord.patches ++ [ ./mudaebot.patch ]; }); })
 
       mangohud
@@ -111,7 +115,7 @@ in
       steam-run
       # IUT
       openfortivpn
-      azuredatastudio
+      unstable.azuredatastudio
     ];
   };
   environment.etc."ppp/options".text = "ipcp-accept-remote";
@@ -167,6 +171,10 @@ in
   fonts.packages = with pkgs; [
     fira-code
   ];
+
+  # pour la sae
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "zacharie" ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
