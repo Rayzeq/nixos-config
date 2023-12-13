@@ -144,6 +144,7 @@ in
     libsForQt5.kcalc
     unrar
     man-pages
+    file
   ];
 
   programs.gamemode.enable = true;
