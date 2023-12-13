@@ -13,6 +13,9 @@ in
 
   networking.hostName = "zacharie-ThinkPad";
 
+  # Enable firmware updates
+  services.fwupd.enable = true;
+
   # Enable networking
   networking.networkmanager.enable = true;
 
