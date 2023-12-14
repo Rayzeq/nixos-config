@@ -125,7 +125,7 @@ in
 
   nixpkgs.config.permittedInsecurePackages = [
     "openssl-1.1.1w" # Sublime Text needs this
-    "electron-24.8.6" # don't know exactly what need this, maybe discord, obsidian and azure ?
+    "electron-25.9.0" # azure need this
   ];
 
   environment.systemPackages = with pkgs; [
