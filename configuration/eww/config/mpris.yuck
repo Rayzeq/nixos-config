@@ -1,0 +1,69 @@
+(defvar mpris_revealed false)
+
+(deflisten mpris_status
+  :initial ""
+  "playerctl -sF status"
+)
+
+(deflisten mpris_artist
+  :initial ""
+  "playerctl -F metadata artist"
+)
+
+(deflisten mpris_tile
+  :initial ""
+  "playerctl -F metadata title"
+)
+
+(defwidget mpris []
+  (eventbox
+    :visible {mpris_status != ""}
+    :onhover "eww update mpris_revealed=true"
+    :onhoverlost "eww update mpris_revealed=false"
+    (box
+      :class "mpris"
+      :orientation "h"
+      :space-evenly false
+      (mpris-previous)
+      (mpris-track)
+      (mpris-next)
+    )
+  )
+)
+
+(defwidget mpris-previous []
+  (revealer
+    :reveal mpris_revealed
+    :transition "slideleft"
+    :duration "500ms"
+    (button
+      :class "previous"
+      :onclick "playerctl previous"
+      (label :text "󰒫")
+    )
+  )
+)
+
+(defwidget mpris-track []
+  (button
+    :class "track"
+    :onclick "playerctl play-pause"
+    (label
+      :limit-width 40
+      :text "${mpris_status == "Playing" ? "󰏤" : "󰐊"}  ${mpris_artist} - ${mpris_tile}"
+    )
+  )
+)
+
+(defwidget mpris-next []
+  (revealer
+    :reveal mpris_revealed
+    :transition "slideright"
+    :duration "500ms"
+    (button
+      :class "next"
+      :onclick "playerctl next"
+      (label :text "󰒬")
+    )
+  )
+)

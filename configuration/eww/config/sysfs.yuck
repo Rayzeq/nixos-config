@@ -1,0 +1,31 @@
+(defvar battery_revealed false)
+(deflisten sysfs
+  :initial '{"icon":"?","class":"","capacity":0,"health":0,"time_to":""}'
+  "python ./scripts/sysfs.py"
+)
+
+(defwidget battery []
+  (eventbox
+    :onhover "eww update battery_revealed=true"
+    :onhoverlost "eww update battery_revealed=false"
+    (box
+      :class "battery ${sysfs.class} ${battery_revealed ? "expanded" : ""}"
+      :orientation "h"
+      :space-evenly false
+      (label :text "${sysfs.icon}  ${sysfs.capacity}%")
+      (revealer
+        :transition "slideleft"
+        :reveal battery_revealed
+        (box
+          :orientation "h"
+          :space-evenly false
+          (label :text "󰣐  ${sysfs.health}%")
+          (label
+            :visible {sysfs.time_to != "0h 0min"}
+            :text "󰅐  ${sysfs.time_to}"
+          )
+        )
+      )
+    )
+  )
+)

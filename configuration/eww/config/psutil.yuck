@@ -1,0 +1,86 @@
+(defvar temps_revealed false)
+(defvar memory_revealed false)
+(defvar cpu_revealed false)
+(deflisten psutil
+  :initial '{"temperatures":{"cpu":{"value":0,"class":""},"nvme":{"value":0,"class":""}},"memory":{"usedp":0,"used":"","cache":"","swap":""},"cpu":{"class":"","percent":"","freq":"","tooltip":""}}'
+  "python ./scripts/psutils.py"
+)
+
+(defwidget temperatures []
+  (eventbox
+    :onhover "eww update temps_revealed=true"
+    :onhoverlost "eww update temps_revealed=false"
+    (box
+      :class "temperatures ${temps_revealed ? "expanded" : ""}"
+      :orientation "h"
+      :space-evenly false
+      (label :text "")
+      (label
+        :class {psutil.temperatures.cpu.class}
+        :text "󰘚  ${psutil.temperatures.cpu.value}°C"
+      )
+      (revealer
+        :transition "slideleft"
+        :reveal temps_revealed
+        (label
+          :class {psutil.temperatures.nvme.class}
+          :text "󰋊  ${psutil.temperatures.nvme.value}°C"
+        )
+      )
+    )
+  )
+)
+
+(defwidget memory []
+  (eventbox
+    :onhover "eww update memory_revealed=true"
+    :onhoverlost "eww update memory_revealed=false"
+    (box
+      :class "memory ${memory_revealed ? "expanded" : ""}"
+      :orientation "h"
+      :space-evenly false
+      (label :text "")
+      (revealer
+        :transition "slideright"
+        :reveal {!memory_revealed}
+        (label
+          :class {psutil.memory.class}
+          :text "${psutil.memory.usedp}%"
+        )
+      )
+      (revealer
+        :transition "slideleft"
+        :reveal memory_revealed
+        (box
+          :space-evenly false
+          :spacing 5
+          (label :text {psutil.memory.used})
+          (label :text "  ${psutil.memory.cache}")
+          (label :text "󰋊  ${psutil.memory.swap}")
+        )
+      )
+    )
+  )
+)
+
+(defwidget cpu []
+  (eventbox
+    :onhover "eww update cpu_revealed=true"
+    :onhoverlost "eww update cpu_revealed=false"
+    (box
+      :class "cpu"
+      :orientation "h"
+      :space-evenly false
+      :tooltip {psutil.cpu.tooltip}
+      (label
+        :class {psutil.cpu.class}
+        :text "󰻠  ${psutil.cpu.percent}%"
+      )
+      (revealer
+        :transition "slideleft"
+        :reveal cpu_revealed
+        (label :text "@ ${psutil.cpu.freq}GHz")
+      )
+    )
+  )
+)

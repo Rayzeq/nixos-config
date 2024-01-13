@@ -1,10 +1,11 @@
-{ config, pkgs, ... }:
+{ config, pkgs, unstable, ... }:
 let
   home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
 in
 {
   imports = [
     (import "${home-manager}/nixos")
+    ./hyprland/user.nix
   ];
 
   home-manager.users.zacharie = {
@@ -30,6 +31,7 @@ in
         ls = "lsd";
         cat = "bat";
         grep = "rg";
+        sudogui = "sudo -EH";
         unilim = "sudo openfortivpn u-vpn.unilim.fr -u dubrulle3 -p @Zacharie36";
         system-update = "sudo zsh -c \"nix-channel --update unstable && nixos-rebuild switch --upgrade\"";
         nixos-cleanup = "sudo zsh -c \"nix-collect-garbage -d && nixos-rebuild boot\"";
@@ -58,11 +60,23 @@ in
       server = "10.42.0.48";
     };
 
-    xdg.configFile."sublime-text/Packages/User/LiveServer.sublime-settings".text = "
+    xdg.configFile."sublime-text/Packages/User/LiveServer.sublime-settings".text = ''
       {
-        \"node_executable_path\": \"${pkgs.nodejs}/bin/node\",
-        \"global_node_modules_path\": \"${pkgs.nodePackages.live-server}/lib/node_modules\",
+        "node_executable_path": "${pkgs.nodejs}/bin/node",
+        "global_node_modules_path": "${pkgs.nodePackages.live-server}/lib/node_modules",
       }
-    ";
+    '';
+    xdg.configFile."sublime-text/Packages/User/LSP-copilot.sublime-settings".text = ''
+      {
+        "command": [
+          "${pkgs.nodejs}/bin/node",
+          "''${server_path}",
+          "--stdio"
+        ],
+        "settings": {
+          "hook_to_auto_complete_command": true
+        }
+      }
+    '';
   };
 }

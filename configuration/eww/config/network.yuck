@@ -1,0 +1,27 @@
+(deflisten network
+  :initial '{"icon":"","tooltip":"","speeds":""}'
+  "python ./scripts/network.py"
+)
+
+(defwidget network []
+  (box
+    :class "network"
+    :orientation "h"
+    :space-evenly false
+    (eventbox
+      :onclick "kitty 'nmtui' &"
+      (label
+        :tooltip {network.tooltip}
+        :text {network.icon}
+      )
+    )
+    (eventbox
+      :onclick "kitty 'ping' -- www.google.com &"
+      :visible {network.speeds != ""}
+      (label
+        :class "speeds"
+        :text {network.speeds}
+      )
+    )
+  )
+)

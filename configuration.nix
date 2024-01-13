@@ -5,7 +5,8 @@ let
   unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in
 {
-  imports = [ ./hardware-configuration.nix ./zacharie.nix ];
+  _module.args.unstable = unstable;
+  imports = [ ./hardware-configuration.nix ./zacharie.nix ./hyprland/system.nix ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -39,7 +40,6 @@ in
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
   services.xserver.excludePackages = with pkgs; [ xterm ];
 
   # Enable the KDE Plasma Desktop Environment.
@@ -47,6 +47,15 @@ in
   services.xserver.displayManager.sddm.autoNumlock = true;
   services.xserver.desktopManager.plasma5.enable = true;
   environment.plasma5.excludePackages = with pkgs.libsForQt5; [ elisa ];
+
+  services.logind.extraConfig = ''
+    HandleLidSwitch=hibernate
+    HandleLidSwitchExternalPower=hibernate
+  '';
+
+  systemd.sleep.extraConfig = ''
+    HibernateDelaySec=1h
+  '';
 
   # Configure keymap in X11
   services.xserver = {
@@ -85,7 +94,7 @@ in
   users.users.zacharie = {
     isNormalUser = true;
     description = "Zacharie";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "input" ];
     packages = with pkgs; [
       barrier
       vlc
@@ -98,7 +107,8 @@ in
           patchelf --add-needed ${pkgs.libGL}/lib/libGL.so.1 $out/usr/lib/x86_64-linux-gnu/opera/opera
         '';
       })).override { proprietaryCodecs = true; })
-      (discord.override { withOpenASAR = true; withVencord = true; vencord = (vencord.overrideAttrs { patches = vencord.patches ++ [ ./mudaebot.patch ]; }); })
+      vesktop
+      bitwarden
 
       mangohud
       gamemode
@@ -113,6 +123,7 @@ in
       # IUT
       openfortivpn
       (azuredatastudio.overrideAttrs (old: {
+        nativeBuildInputs = old.nativeBuildInputs ++ [ wrapGAppsHook ];
         postInstall = ''
           fix_sqltoolsservice()
           {
@@ -139,6 +150,23 @@ in
     "openssl-1.1.1w" # Sublime Text needs this
     "electron-25.9.0" # azure need this
   ];
+
+  nixpkgs.overlays = [
+    (self: super: {
+      vencord = super.vencord.overrideAttrs (oldAttrs: {
+        patches = (oldAttrs.patches or [ ]) ++ [ ./mudaebot.patch ];
+      });
+    })
+    (self: super: {
+      wpa_supplicant = super.wpa_supplicant.overrideAttrs (oldAttrs: rec {
+        extraConfig = oldAttrs.extraConfig + ''
+          CONFIG_WEP=y
+        '';
+      });
+    })
+  ];
+
+  programs.firefox.enable = true;
 
   environment.systemPackages = with pkgs; [
     git
@@ -179,10 +207,6 @@ in
   };
   users.defaultUserShell = pkgs.zsh;
   environment.shells = with pkgs; [ zsh ];
-
-  fonts.packages = with pkgs; [
-    fira-code
-  ];
 
   # pour la sae
   virtualisation.virtualbox.host.enable = true;

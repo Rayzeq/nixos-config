@@ -1,0 +1,75 @@
+(include "./hyprland.yuck")
+(include "./mpris.yuck")
+(include "./psutil.yuck")
+(include "./sysfs.yuck")
+(include "./udev.yuck")
+(include "./pulseaudio.yuck")
+(include "./network.yuck")
+
+(defwindow statusbar
+  :monitor 0
+  :geometry (geometry
+    :x "0px"
+    :y "0px"
+    :width "100%"
+    :height "40px"
+    :anchor "top center"
+  )
+  :stacking "fg"
+  :exclusive true
+  :focusable false
+  :namespace "eww"
+
+  (statusbar)
+)
+
+(defpoll time
+  :interval "1s"
+  :initial ""
+  `date +"%d %b %Y %R"`
+)
+
+(defwidget statusbar []
+  (centerbox
+    :class "statusbar"
+    :orientation "h"
+    (box
+      :orientation "h"
+      :space-evenly false
+      (workspaces)
+      (mpris)
+      (window)
+      (systray
+        :class "tray"
+        :pack-direction "ltr"
+        :icon-size 18
+      )
+    )
+    (label
+      :class "clock"
+      :text time
+    )
+    (box
+      :halign "end"
+      :orientation "h"
+      :space-evenly false
+      (network)
+      (temperatures)
+      (memory)
+      (cpu)
+      (box
+        :orientation "h"
+        :space-evenly false
+        :class "power"
+        (battery)
+        (brightness)
+      )
+      (audio)
+      (button
+        :class "powerbtn"
+        :onclick "wlogout -p layer-shell &"
+        (label :text "")
+      )
+    )
+  )
+)
