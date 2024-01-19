@@ -9,6 +9,7 @@ in
   ];
 
   home-manager.users.zacharie = {
+    imports = [ ./new ];
     home.stateVersion = "23.05";
 
     programs.git = {
@@ -58,25 +59,6 @@ in
       enableCrypto = true;
       enableDragDrop = true;
       server = "10.42.0.48";
-    };
 
-    xdg.configFile."sublime-text/Packages/User/LiveServer.sublime-settings".text = ''
-      {
-        "node_executable_path": "${pkgs.nodejs}/bin/node",
-        "global_node_modules_path": "${pkgs.nodePackages.live-server}/lib/node_modules",
-      }
-    '';
-    xdg.configFile."sublime-text/Packages/User/LSP-copilot.sublime-settings".text = ''
-      {
-        "command": [
-          "${pkgs.nodejs}/bin/node",
-          "''${server_path}",
-          "--stdio"
-        ],
-        "settings": {
-          "hook_to_auto_complete_command": true
-        }
-      }
-    '';
   };
 }
