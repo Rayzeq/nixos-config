@@ -70,7 +70,6 @@
       selector = "source.python";
     };
     # TODO: install servers as packages and replace commands (also apply to nixd)
-    # TODO: install sublime4 package as home package
     plugins = {
       ANSIescape = { };
       AutoFoldCode = { };
@@ -319,6 +318,7 @@
         managed = false;
         settings.extensions = [ "hbs" ];
       };
+      SCSS = {};
     };
   };
 }
