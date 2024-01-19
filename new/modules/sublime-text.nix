@@ -1,4 +1,4 @@
-{ lib, pkgs, config, globals, ... }:
+{ lib, pkgs, config, ... }:
 with lib;
 let
   cfg = config.programs.sublime-text;
