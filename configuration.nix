@@ -182,10 +182,12 @@ in
     unrar
     man-pages
     file
+    piper
   ];
 
   programs.gamemode.enable = true;
   programs.kdeconnect.enable = true;
+  services.ratbagd.enable = true;
 
   programs.zsh = {
     enable = true;
