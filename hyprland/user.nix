@@ -143,7 +143,7 @@ in lib.mkMerge [
               ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_SINK@ toggle"
               ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_SOURCE@ toggle"
             ];
-            binde = [
+            bindle = [
               ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_SINK@ 1%-"
               ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_SINK@ 1%+"
               ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
@@ -152,6 +152,9 @@ in lib.mkMerge [
             bindl = [
               # the doc say we shouldn't call dpms directly from a keybind, so I used hyprctl
               "$mod, F12, exec, hyprctl dispatch dpms on"
+
+              ", XF86AudioPause, exec, playerctl -a pause"
+              ", XF86AudioPlay, exec, playerctl -a play"
             ];
             bindr = [
               "$mod, SUPER_L, exec, pkill -x rofi || rofi -show drun -theme \"~/.config/rofi/launcher.rasi\""
