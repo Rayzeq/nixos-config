@@ -9,11 +9,13 @@ in
   ];
 
   home-manager.users.root = {
+    _module.args.unstable = unstable;
     imports = [ ./new ];
     home.stateVersion = "23.05";
   };
 
   home-manager.users.zacharie = {
+    _module.args.unstable = unstable;
     imports = [ ./new ];
     home.stateVersion = "23.05";
 

@@ -83,7 +83,11 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ cfg.package ] ++ optional (cfg.font.package != null) cfg.font.package;
+    home.packages = [
+      cfg.package
+      # nixd is broken, so we need to add this package globally
+      pkgs.nixpkgs-fmt
+    ] ++ optional (cfg.font.package != null) cfg.font.package;
     nixpkgs.config = {
       allowUnfree = true;
       permittedInsecurePackages = [

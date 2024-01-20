@@ -143,11 +143,10 @@ in
   };
   environment.etc."ppp/options".text = "ipcp-accept-remote";
 
-  # Allow unfree packages (like Sublime Text)
+  # Allow unfree packages (like Sublime Merge)
   nixpkgs.config.allowUnfree = true;
 
   nixpkgs.config.permittedInsecurePackages = [
-    "openssl-1.1.1w" # Sublime Text needs this
     "electron-25.9.0" # azure need this
   ];
 
@@ -171,16 +170,10 @@ in
   environment.systemPackages = with pkgs; [
     git
     sublime-merge
-    sublime4
-    nodePackages.live-server
     gparted
-    unstable.nixd
-    nixpkgs-fmt
-    nodejs
     zsh-syntax-highlighting
     zsh-autosuggestions
     zsh-powerlevel10k
-    meslo-lgs-nf
     trashy
     lsd
     bat

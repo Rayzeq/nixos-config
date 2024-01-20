@@ -1,4 +1,4 @@
-{ pkgs, globals, ... }: {
+{ pkgs, unstable, globals, ... }: {
   programs.sublime-text = {
     enable = true;
 
@@ -90,14 +90,14 @@
         default_clients = { };
         clients.nixd = {
           enabled = true;
-          command = [ "nixd" ];
+          command = [ "${unstable.nixd}/bin/nixd" ];
           selector = "source.nix";
         };
       };
       LSP-bash = { };
       LSP-clangd.settings = {
         binary = "custom";
-        initializationOptions.custom_command = [ "steam-run" "\${storage_path}/LSP-clangd/clangd_16.0.2/bin/clangd" ];
+        initializationOptions.custom_command = [ "${pkgs.clang-tools}/bin/clangd" ];
       };
       LSP-copilot.settings = {
         command = [ "${pkgs.nodejs}/bin/node" "\${server_path}" "--stdio" ];
@@ -112,7 +112,7 @@
       };
       LSP-json.settings = { };
       LSP-marksman.settings = {
-        command = [ "steam-run" "\${storage_path}/LSP-marksman/bin/\${marksman_bin}" ];
+        command = [ "${pkgs.marksman}/bin/marksman" ];
       };
       LSP-pylsp.settings = {
         env = {
@@ -268,7 +268,7 @@
         };
       };
       LSP-rust-analyzer.settings = {
-        command = [ "nix-shell" "-p" "clang" "--run" ''steam-run sh -c "LD_LIBRARY_PATH= \"''${storage_path}/LSP-rust-analyzer/rust-analyzer\""'' ];
+        command = [ "${pkgs.rust-analyzer}/bin/rust-analyzer" ];
         settings = {
           "rust-analyzer.assist.emitMustUse" = true;
           "rust-analyzer.cargo.features" = "all";
@@ -318,7 +318,7 @@
         managed = false;
         settings.extensions = [ "hbs" ];
       };
-      SCSS = {};
+      SCSS = { };
     };
   };
 }
