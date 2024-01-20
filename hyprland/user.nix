@@ -204,7 +204,7 @@ in lib.mkMerge [
             "ctrl+s" = "show_scrollback";
           };
           settings = {
-            scrollback_pager = "subl -";
+            scrollback_pager = ''sh -c 'subl -n - && subl --command "set_file_type { \"syntax\": \"scope:text.ansi\" }"' '';
             font_features = "Fira Code +ss03 +ss05";
             tab_bar_edge = "top";
             tab_bar_style = "powerline";
