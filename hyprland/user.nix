@@ -65,7 +65,7 @@ in lib.mkMerge [
               "swaync"
               "nm-applet"
               "[workspace special silent;noanim] kitty"
-              "vencorddesktop"
+              "discord"
             ];
             monitor = ",1920x1080@60,0x0,1";
 
@@ -121,7 +121,7 @@ in lib.mkMerge [
 
               "$mod, K, exec, kitty"
               "$mod, E, exec, dolphin"
-              "$mod, D, exec, vencorddesktop"
+              "$mod, D, exec, discord"
               "$mod, F, exec, firefox"
 
               "$mod, W, togglefloating"

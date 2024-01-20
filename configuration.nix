@@ -107,7 +107,7 @@ in
           patchelf --add-needed ${pkgs.libGL}/lib/libGL.so.1 $out/usr/lib/x86_64-linux-gnu/opera/opera
         '';
       })).override { proprietaryCodecs = true; })
-      vesktop
+      (discord.override { withOpenASAR = true; withVencord = true; })
       bitwarden
 
       mangohud
