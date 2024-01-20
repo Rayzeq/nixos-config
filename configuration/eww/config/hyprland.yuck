@@ -26,7 +26,6 @@
   (label
     :class "window"
     :visible {hyprland.window != ""}
-    :limit-width 60
     :markup {hyprland.window}
   )
 )

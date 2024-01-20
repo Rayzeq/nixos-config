@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import time
 from dataclasses import dataclass
-from threading import Thread
+from threading import Lock, Thread
 
 import pyric.pyw  # noqa: F401
 from pyric.utils import rfkill
@@ -49,9 +49,9 @@ class Route:
     # Speed
     rx_bytes: int = 0
     tx_bytes: int = 0
-    last_update: int = 0
-    rx_speed: int = 0
-    tx_speed: int = 0
+    last_update: float = 0
+    rx_speed: float = 0
+    tx_speed: float = 0
 
     # Wifi only
     ssid: str | None = None
@@ -60,6 +60,7 @@ class Route:
 
 class NetState:
     def __init__(self: NetState) -> None:
+        self.lock = Lock()
         self.default_route: Route | None = None
 
     def run(self: NetState) -> None:
@@ -75,31 +76,33 @@ class NetState:
                 for _ in ipr.get():
                     # tbh I don't want to parse events to update infos, we juste re-read everything from scratch
                     new_route = self.get_default_route()
-                    if new_route is None:
-                        self.default_route = None
-                    elif self.default_route is None:
-                        self.default_route = new_route
-                    elif new_route.index != self.default_route.index:
-                        self.default_route = new_route
-                        self.wifi_strength()
-                        self.updated()
+                    with self.lock:
+                        if new_route is None:
+                            self.default_route = None
+                        elif self.default_route is None:
+                            self.default_route = new_route
+                        elif new_route.index != self.default_route.index:
+                            self.default_route = new_route
+                            self.wifi_strength()
+                            self.updated()
 
     def mainloop(self: NetState) -> None:
         while True:
-            self.wifi_strength()
+            with self.lock:
+                self.wifi_strength()
 
-            if self.default_route:
-                rx, tx = self.get_bytes()
-                now = time.time()
-                delta_time = now - self.default_route.last_update
-                self.default_route.rx_speed, self.default_route.tx_speed = (
-                    (rx - self.default_route.rx_bytes) / delta_time,
-                    (tx - self.default_route.tx_bytes) / delta_time,
-                )
-                self.default_route.rx_bytes, self.default_route.tx_bytes = rx, tx
-                self.default_route.last_update = now
+                if self.default_route:
+                    rx, tx = self.get_bytes()
+                    now = time.time()
+                    delta_time = now - self.default_route.last_update
+                    self.default_route.rx_speed, self.default_route.tx_speed = (
+                        (rx - self.default_route.rx_bytes) / delta_time,
+                        (tx - self.default_route.tx_bytes) / delta_time,
+                    )
+                    self.default_route.rx_bytes, self.default_route.tx_bytes = rx, tx
+                    self.default_route.last_update = now
 
-            self.updated()
+                self.updated()
             time.sleep(1)
 
     def get_default_route(self: NetState) -> Route | None:
@@ -161,6 +164,7 @@ class NetState:
             data = self.iw.get_associated_bss(self.default_route.index)
         except netlink.exceptions.NetlinkDumpInterrupted:
             self.wifi_strength()
+            return
 
         if not data:
             return
@@ -190,6 +194,8 @@ class NetState:
     def get_bytes(self: NetState) -> tuple[int, int]:
         if self.default_route is None:
             return 0, 0
+
+        # apparently the default route can change here, which is why I added a lock
 
         link = next(filter(lambda x: x["index"] == self.default_route.index, self.ipr.get_links()), None)
         if not link:

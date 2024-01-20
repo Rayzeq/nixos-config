@@ -26,7 +26,7 @@
 (defpoll time
   :interval "1s"
   :initial ""
-  `date +"%d %b %Y %R"`
+  `date +"%d %b %Y %T"`
 )
 
 (defwidget statusbar []

@@ -135,7 +135,7 @@ class Pulseinfo:
 
         if self.is_bluetooth(self.sink):
             sink_class += " bluetooth"
-            icon = "󰂯" + icon
+            icon = "󰂯 " + icon
 
         sink_fmt = f"{icon}  {self.sink.volume}%"
 
@@ -147,7 +147,7 @@ class Pulseinfo:
         icon = ""
         if self.is_bluetooth(self.source):
             source_class += " bluetooth"
-            icon = "󰂯" + icon
+            icon = "󰂯 " + icon
 
         source_fmt = f"{icon}  {self.source.volume}%"
 
