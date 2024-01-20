@@ -17,6 +17,16 @@ with lib; {
       '';
     };
 
+    fallbacks = mkOption {
+      type = types.listOf types.package;
+      default = [ ];
+      example = literalExpression "[ pkgs.meslo-lgs-nf ]";
+      description = ''
+        Other fonts to install to use as fallback for glyphs not available
+        in the font you specified.
+      '';
+    };
+
     name = mkOption {
       type = types.nullOr types.str;
       default = null;

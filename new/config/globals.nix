@@ -1,8 +1,16 @@
 { pkgs, self, ... }: rec {
   font = {
     monospace = {
-      package = pkgs.fira-code-nerdfont;
-      name = "FiraCode Nerd Font";
+      # We don't use the NerdFont version of Fira Code
+      # because its icons are too small, by not using it
+      # applications will load those glyphs from another font
+      package = pkgs.fira-code;
+      fallbacks = [
+        # We install Meslo LGS NerdFont so apps will use it as a
+        # fallback for NerdFont icons
+        pkgs.meslo-lgs-nf
+      ];
+      name = "Fira Code";
       features = [
         "subpixel_antialias"
         "ss03"
