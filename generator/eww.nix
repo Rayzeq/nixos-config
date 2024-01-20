@@ -6,7 +6,7 @@ let
 in
 if config.enable then {
   packages = with pkgs; [ playerctl ];
-  python-packages = ps: with ps; [ psutil pyudev pulsectl pyroute2 pyric ];
+  python-packages = ps: with ps; [ psutil pyudev pulsectl pyroute2 pyric pydbus ];
 
   programs.eww = {
     enable = true;

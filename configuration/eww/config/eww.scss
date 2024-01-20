@@ -90,6 +90,49 @@
 	padding-left: 8px;
 }
 
+.player {
+	&:last-child {
+		margin-bottom: 0px;
+	}
+
+	margin-bottom: 5px;
+	border-radius: 15px;
+	padding: 10px;
+
+	background-color: rgba(0, 0, 0, 0.8);
+	font-family: unset;
+
+	image {
+		margin-right: 10px;
+	}
+
+	.title {
+		font-size: 16px;
+	}
+
+	.controls {
+		font-size: 40px;
+
+		button {
+			margin: 10px;
+
+			&.disabled {
+				color: #3e6b94;
+			}
+		}
+	}
+
+	progressbar {
+		border-radius: 10px;
+		background-color: gray;
+
+		progress {
+			border-radius: 6px;
+			background-color: #66aced;
+		}
+	}
+}
+
 .window {
 	font-weight: bold;
 	color: #f7768e;

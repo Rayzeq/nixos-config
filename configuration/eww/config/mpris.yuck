@@ -15,18 +15,103 @@
   "playerctl -F metadata title"
 )
 
+(defpoll mpris_players
+  :interval "1s"
+  :initial "[]"
+  "python ./scripts/mpris.py"
+)
+
 (defwidget mpris []
-  (eventbox
-    :visible {mpris_status != ""}
-    :onhover "eww update mpris_revealed=true"
-    :onhoverlost "eww update mpris_revealed=false"
+  (popovered
     (box
-      :class "mpris"
-      :orientation "h"
       :space-evenly false
-      (mpris-previous)
-      (mpris-track)
-      (mpris-next)
+      :orientation "v"
+      :class "mpris-popover"
+      (for player in {mpris_players}
+        (eventbox
+          :onclick 'hyprctl dispatch workspace $(hyprctl clients | grep -B 7 "pid: ${player.pid}" | head -n 1 | cut -d":" -f 2 | cut -d" " -f2)'
+          (box
+            :space-evenly false
+            :class "player"
+            (image
+              :path "${player.art}"
+              :image-height 150
+            )
+            (box
+              :orientation "v"
+              :space-evenly false
+              (box
+                :space-evenly false
+                (label
+                  :class "title"
+                  :text "${player.title}"
+                )
+              )
+              (box
+                :space-evenly false
+                :visible {player.album != "" || player.artists != "Unknown"}
+                (label
+                  :class "album_artist"
+                  :text "${player.album == "" ? player.artists : "${player.album} - ${player.artists}"}"
+                )
+              )
+              (box
+                :space-evenly false
+                :class "controls"
+                (button
+                  :class {player.can_go_previous ? "" : "disabled"}
+                  :onclick "playerctl -p ${player.id} previous"
+                  (label :text "󰒫")
+                )
+                (button
+                  :class {player.can_toggle ? "" : "disabled"}
+                  :onclick "playerctl -p ${player.id} play-pause"
+                  (label :text {player.status})
+                )
+                (button
+                  :class {player.can_go_next ? "" : "disabled"}
+                  :onclick "playerctl -p ${player.id} next"
+                  (label :text "󰒬")
+                )
+              )
+              (box
+                :space-evenly false
+                :hexpand true
+                :visible {player.progress != -1 || player.position != "???" || player.length != "???"}
+                (box
+                  :space-evenly false
+                  :orientation "v"
+                  :valign "center"
+                  :hexpand true
+                  (progress
+                    :visible {player.progress != -1}
+                    :value {player.progress ?: 0}
+                    :orientation "h"
+                    :hexpand true
+                  )
+                )
+                (label
+                  :visible {player.position != "???" || player.length != "???"}
+                  :text "${player.position} / ${player.length}"
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+    (eventbox
+      :visible {mpris_status != ""}
+      :onhover "eww update mpris_revealed=true"
+      :onhoverlost "eww update mpris_revealed=false"
+      (box
+        :class "mpris"
+        :orientation "h"
+        :space-evenly false
+        (mpris-previous)
+        (mpris-track)
+        (mpris-next)
+      )
     )
   )
 )
@@ -49,8 +134,8 @@
     :class "track"
     :onclick "playerctl play-pause"
     (label
-      :limit-width 40
-      :text "${mpris_status == "Playing" ? "󰏤" : "󰐊"}  ${mpris_artist} - ${mpris_tile}"
+      :limit-width 150
+      :text "${mpris_status == "Playing" ? "󰏤" : "󰐊"}  ${mpris_artist == "" ? "${mpris_tile}" : "${mpris_tile} - ${mpris_tile}"}"
     )
   )
 )
