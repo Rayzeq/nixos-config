@@ -2,8 +2,9 @@
 with lib;
 let
   cfg = config.programs.sublime-text;
+  configDirectory = "sublime-text/Packages/User/";
   jsonFormat = pkgs.formats.json { };
-  fontType = (import ./utils.nix { inherit lib; }).types.font;
+  utils = import ./utils.nix { inherit lib; };
   pluginOptions = types.submodule ({ config, ... }: {
     options = {
       managed = mkOption {
@@ -44,7 +45,7 @@ in
         Sublime Text's user settings.
       '';
     };
-    font = fontType;
+    font = utils.types.font;
     keymap = mkOption {
       type = jsonFormat.type;
       default = [ ];
@@ -96,7 +97,7 @@ in
     };
 
     xdg.configFile = {
-      "sublime-text/Packages/User/Preferences.sublime-settings".source = jsonFormat.generate "sublime-text-settings" (
+      "${configDirectory}/Preferences.sublime-settings".source = jsonFormat.generate "sublime-text-settings" (
         optionalAttrs (cfg.font.name != null)
           {
             font_face = cfg.font.name;
@@ -111,22 +112,22 @@ in
         } //
         cfg.settings
       );
-      "sublime-text/Packages/User/Default (Linux).sublime-keymap".source = jsonFormat.generate "sublime-text-keymap" cfg.keymap;
-      "sublime-text/Packages/User/Package Control.sublime-settings".source = jsonFormat.generate "sublime-text-package-control" {
+      "${configDirectory}/Default (Linux).sublime-keymap".source = jsonFormat.generate "sublime-text-keymap" cfg.keymap;
+      "${configDirectory}/Package Control.sublime-settings".source = jsonFormat.generate "sublime-text-package-control" {
         bootstrapped = true;
         in_process_packages = [ ];
         installed_packages = (filter (plugin_name: (getAttr plugin_name cfg.plugins).managed) (attrNames cfg.plugins)) ++ [ "Package Control" ];
         repositories = filter (repo: repo != null) (map (plugin: plugin.repository or null) (attrValues cfg.plugins));
       };
     } // (foldl'
-      (all: name: all // {
-        "sublime-text/Packages/User/${name}.sublime-settings".source = jsonFormat.generate "sublime-text-settings-${name}" ((getAttr name cfg.plugins).settings or { });
+      (all: { name, value }: all // {
+        "${configDirectory}/${name}.sublime-settings".source = jsonFormat.generate "sublime-text-settings-${name}" value.settings;
       })
       { }
-      (attrNames cfg.plugins)
+      (filter ({ name, value }: value.settings != { }) (utils.attrItems cfg.plugins))
     ) // (foldl'
       (all: name: all // {
-        "sublime-text/Packages/User/${name}.sublime-build".source = jsonFormat.generate "sublime-text-build-${name}" (getAttr name cfg.build-systems);
+        "${configDirectory}/${name}.sublime-build".source = jsonFormat.generate "sublime-text-build-${name}" (getAttr name cfg.build-systems);
       })
       { }
       (attrNames cfg.build-systems)

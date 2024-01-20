@@ -1,5 +1,10 @@
 { lib, ... }:
 with lib; {
+  attrItems = attrset: builtins.attrValues (
+    builtins.mapAttrs
+      (name: value: { inherit name value; })
+      attrset
+  );
   types.font = {
     package = mkOption {
       type = types.nullOr types.package;

@@ -69,7 +69,6 @@
       working_dir = "$folder";
       selector = "source.python";
     };
-    # TODO: install servers as packages and replace commands (also apply to nixd)
     plugins = {
       ANSIescape = { };
       AutoFoldCode = { };
