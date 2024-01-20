@@ -1,0 +1,76 @@
+diff --git a/crates/eww/src/widgets/widget_definitions.rs b/crates/eww/src/widgets/widget_definitions.rs
+index 07a081d..67e64e9 100644
+--- a/crates/eww/src/widgets/widget_definitions.rs
++++ b/crates/eww/src/widgets/widget_definitions.rs
+@@ -10,7 +10,7 @@ use codespan_reporting::diagnostic::Severity;
+ use eww_shared_util::Spanned;
+ use gdk::{ModifierType, NotifyType};
+ 
+-use glib::translate::FromGlib;
++use glib::{translate::FromGlib, SignalHandlerId};
+ use gtk::{self, glib, prelude::*, DestDefaults, TargetEntry, TargetList};
+ use itertools::Itertools;
+ use once_cell::sync::Lazy;
+@@ -161,7 +161,13 @@ pub(super) fn resolve_widget_attrs(bargs: &mut BuilderArgs, gtk_widget: &gtk::Wi
+         error_handling_ctx::print_error(err);
+     }
+ 
+-    def_widget!(bargs, _g, gtk_widget, {
++    let literal_file_id: Rc<RefCell<Option<usize>>> = Rc::new(RefCell::new(None));
++    let tooltip_handler_id: Rc<RefCell<Option<SignalHandlerId>>> = Rc::new(RefCell::new(None));
++    let widget_defs = bargs.widget_defs.clone();
++    let calling_scope = bargs.calling_scope;
++    let literal_use_span = bargs.widget_use.span;
++
++    def_widget!(bargs, scope_graph, gtk_widget, {
+         // @prop class - css class name
+         prop(class: as_string) {
+             // TODO currently this overrides classes that gtk adds automatically, which is kinda stupid...
+@@ -198,6 +204,47 @@ pub(super) fn resolve_widget_attrs(bargs: &mut BuilderArgs, gtk_widget: &gtk::Wi
+         prop(tooltip: as_string) {
+             gtk_widget.set_tooltip_text(Some(&tooltip));
+         },
++        // @prop custom_tooltip - tooltip widget (on hover)
++        prop(custom_tooltip: as_string) {
++            gtk_widget.set_has_tooltip(true);
++
++            let tooltip_content = gtk::Box::new(gtk::Orientation::Vertical, 0);
++            tooltip_content.set_widget_name("tooltip-content");
++            if !custom_tooltip.is_empty() {
++                let content_widget_use: DiagResult<_> = try {
++                    let ast = {
++                        let mut yuck_files = error_handling_ctx::FILE_DATABASE.write().unwrap();
++                        let (span, asts) = yuck_files.load_yuck_str("<literal-content>".to_string(), custom_tooltip)?;
++                        if let Some(file_id) = literal_file_id.replace(Some(span.2)) {
++                            yuck_files.unload(file_id);
++                            drop(yuck_files);
++                        }
++                        yuck::parser::require_single_toplevel(span, asts)?
++                    };
++
++                    yuck::config::widget_use::WidgetUse::from_ast(ast)?
++                };
++                let content_widget_use = content_widget_use?;
++
++                // TODO a literal should create a new scope, that I'm not even sure should inherit from root
++                let child_widget = build_gtk_widget(scope_graph, widget_defs.clone(), calling_scope, content_widget_use, None)
++                    .map_err(|e| {
++                        let diagnostic = error_handling_ctx::anyhow_err_to_diagnostic(&e)
++                            .unwrap_or_else(|| gen_diagnostic!(e))
++                            .with_label(span_to_secondary_label(literal_use_span).with_message("Error in the literal used here"));
++                        DiagError(diagnostic)
++                    })?;
++                tooltip_content.add(&child_widget);
++                child_widget.show();
++            }
++            let handler_id = gtk_widget.connect_query_tooltip(move |_this, _x, _y, _keyboard_mode, tooltip| {
++                tooltip.set_custom(Some(&tooltip_content));
++                true
++            });
++            if let Some(id) = tooltip_handler_id.replace(Some(handler_id)) {
++                gtk_widget.disconnect(id);
++            }
++        },
+         // @prop visible - visibility of the widget
+         prop(visible: as_bool = true) {
+             if visible { gtk_widget.show(); } else { gtk_widget.hide(); }

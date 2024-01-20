@@ -10,9 +10,9 @@ pkgs.rustPlatform.buildRustPackage rec {
     hash = "sha256-MR91Ytt9Jf63dshn7LX64LWAVygbZgQYkcTIKhfVNXI=";
   };
 
-  cargoPatches = [ ./sni.patch ./max_width.patch ];
+  cargoPatches = [ ./sni.patch ./sni-click.patch ./max_width.patch ./custom_tooltips.patch ./custom_popover.patch ];
 
-  cargoHash = "sha256-AVVOE6P7YwGFnwcnh2B97pmkQ+A8wXj5zZhxB6F0nVA=";
+  cargoHash = "sha256-toJsCFOIVs8XhyPGDu10UIbf5+gCRz6hpwsRE/+Y+jw=";
 
   nativeBuildInputs = with pkgs; [ pkg-config wrapGAppsHook ];
 
