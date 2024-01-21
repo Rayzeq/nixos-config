@@ -1,7 +1,7 @@
 { lib, pkgs, config, ... }:
 with lib;
 let
-  cfg = config.programs.sublime-text;
+  cfg = config.bettermanager.sublime-text;
   configDirectory = "sublime-text/Packages/User/";
   jsonFormat = pkgs.formats.json { };
   utils = import ./utils.nix { inherit lib; };
@@ -34,7 +34,7 @@ let
   });
 in
 {
-  options.programs.sublime-text = {
+  options.bettermanager.sublime-text = {
     enable = mkEnableOption "Sublime Text 4";
     package = mkPackageOption pkgs "sublime4" { };
 

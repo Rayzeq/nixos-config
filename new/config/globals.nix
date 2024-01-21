@@ -5,16 +5,16 @@
       # because its icons are too small, by not using it
       # applications will load those glyphs from another font
       package = pkgs.fira-code;
-      fallbacks = [
-        # We install Meslo LGS NerdFont so apps will use it as a
-        # fallback for NerdFont icons
-        pkgs.meslo-lgs-nf
-      ];
       name = "Fira Code";
       features = [
         "subpixel_antialias"
         "ss03"
         "ss05"
+      ];
+      fallbacks = [
+        # We install Meslo LGS NerdFont so apps will use it as a
+        # fallback for NerdFont icons
+        pkgs.meslo-lgs-nf
       ];
     };
   };

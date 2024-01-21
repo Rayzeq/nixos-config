@@ -1,5 +1,5 @@
 { pkgs, unstable, globals, ... }: {
-  programs.sublime-text = {
+  bettermanager.sublime-text = {
     enable = true;
 
     settings = {

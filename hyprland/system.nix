@@ -25,7 +25,6 @@
   services.blueman.enable = true;
   programs.hyprland.enable = true;
   environment.systemPackages = with pkgs; [
-    kitty
     pavucontrol
     rofi-wayland
     grimblast
