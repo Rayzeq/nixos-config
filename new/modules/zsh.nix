@@ -218,7 +218,7 @@ in
     };
 
     keybinds = mkOption {
-      type = types.attrsOf types.str;
+      type = types.attrsOf (types.either types.str (types.attrsOf types.str));
       default = { };
       example = {
         "^H" = "backward-kill-word";
@@ -287,7 +287,16 @@ in
         (optionalString cfg.autosuggestions.enable ''
           ZSH_AUTOSUGGEST_STRATEGY=(${concatStringsSep " " cfg.autosuggestions.strategy})
         '')
-      ] ++ mapAttrsToList (key: action: "bindkey '${key}' ${action}") cfg.keybinds);
+      ] ++ mapAttrsToList
+        (key: action:
+          if builtins.typeOf action == "string" then
+            "bindkey '${key}' ${action}"
+          else
+            let keymap = key; keybinds = action; in
+            concatStringsSep "\n" (mapAttrsToList (key: action: "bindkey -M ${keymap} '${key}' ${action}") keybinds)
+        )
+        cfg.keybinds
+      );
     };
 
     programs.autojump = mkIf cfg.autojump.enable {
