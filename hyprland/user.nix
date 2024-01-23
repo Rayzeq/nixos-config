@@ -67,7 +67,7 @@ in lib.mkMerge [
               "[workspace special silent;noanim] kitty"
               "discord"
             ];
-            monitor = ",1920x1080@60,0x0,1";
+            monitor = [ "e-DP1,1920x1080@60,0x0,1" ",preferred,auto,1" ];
 
             general = {
               gaps_in = 0;
