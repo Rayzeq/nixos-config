@@ -189,35 +189,6 @@ in lib.mkMerge [
           };
         };
 
-        programs.kitty = {
-          enable = true;
-          font = {
-            package = pkgs.fira-code;
-            name = "Fira Code";
-          };
-          keybindings = {
-            "ctrl+c" = "combine : copy_or_interrupt : clear_selection";
-            "ctrl+v" = "paste_from_clipboard";
-            "ctrl+k" = "signal_child SIGKILL";
-            "ctrl+t" = "new_tab_with_cwd";
-            "ctrl+shift+t" = "new_tab";
-            "ctrl+w" = "close_tab";
-            "ctrl+alt+left" = "previous_tab";
-            "ctrl+alt+right" = "next_tab";
-            "ctrl+s" = "show_scrollback";
-          };
-          settings = {
-            scrollback_pager = ''sh -c 'subl -n - && subl --command "set_file_type { \"syntax\": \"scope:text.ansi\" }"' '';
-            font_features = "Fira Code +ss03 +ss05";
-            tab_bar_edge = "top";
-            tab_bar_style = "powerline";
-            tab_title_max_length = 30;
-            background_opacity = "0.8";
-            # fix p10k theme
-            color0 = "#222222";
-          };
-        };
-
         programs.zsh = {
           shellAliases = {
             clear = "clear -T xterm-256color";
