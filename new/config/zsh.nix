@@ -7,7 +7,7 @@
 
     autosuggestions = {
       enable = true;
-      strategy = [ "completion" "history" ];
+      strategy = [ "history" "completion" ];
     };
     autojump.enable = true;
     autocomplete.enable = true;
