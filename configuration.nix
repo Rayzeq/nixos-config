@@ -189,17 +189,7 @@ in
   programs.kdeconnect.enable = true;
   services.ratbagd.enable = true;
 
-  programs.zsh = {
-    enable = true;
-    autosuggestions.enable = true;
-    syntaxHighlighting.enable = true;
-    ohMyZsh = {
-      enable = true;
-      plugins = [ "git" "sublime" "python" "command-not-found" "rust" ];
-      customPkgs = with pkgs; [ nix-zsh-completions zsh-powerlevel10k ];
-    };
-    promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-  };
+  programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
   environment.shells = with pkgs; [ zsh ];
 

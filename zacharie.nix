@@ -28,39 +28,6 @@ in
       };
     };
 
-    programs.zsh = {
-      enable = true;
-      history.share = false;
-      autocd = true;
-      shellAliases = {
-        fix = "reset; stty sane; tput rs1; echo -e \"\\033c\"; clear";
-        # safety net when using mv
-        mv = "mv -b -i";
-        ls = "lsd";
-        cat = "bat";
-        grep = "rg";
-        sudogui = "sudo -EH";
-        unilim = "sudo openfortivpn u-vpn.unilim.fr -u dubrulle3 -p @Zacharie36";
-        system-update = "sudo zsh -c \"nix-channel --update unstable && nixos-rebuild switch --upgrade\"";
-        nixos-cleanup = "sudo zsh -c \"nix-collect-garbage -d && nixos-rebuild boot\"";
-      };
-
-      # Powerlevel10k configuration
-      initExtraFirst = ''
-        if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-          source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-        fi
-      '';
-      initExtra = ''
-        source ~/.p10k.zsh
-        bindkey '^H' backward-kill-word
-        bindkey '5~' kill-word
-        bindkey '^K' backward-kill-line
-
-        ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-      '';
-    };
-
     services.barrier.client = {
       enable = true;
       enableCrypto = true;

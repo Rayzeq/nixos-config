@@ -189,12 +189,6 @@ in lib.mkMerge [
           };
         };
 
-        programs.zsh = {
-          shellAliases = {
-            clear = "clear -T xterm-256color";
-          };
-        };
-
         services.blueman-applet.enable = true;
       }
     ];
