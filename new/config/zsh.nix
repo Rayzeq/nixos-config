@@ -21,6 +21,7 @@
       p10k = {
         enable = true;
         instant-prompt = true;
+        config = ./p10k-config;
       };
     };
 

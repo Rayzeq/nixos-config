@@ -139,6 +139,15 @@ let
           Whether to enable instant prompt
         '';
       };
+
+      config = mkOption {
+        type = types.nullOr types.path;
+        default = null;
+        example = literalExpression "./p10k-config";
+        description = ''
+          The path to a directory containing a file named `p10k.zsh`
+        '';
+      };
     };
   };
   ohMyZshOptions = types.submodule {
@@ -255,6 +264,11 @@ in
           src = cfg.oh-my-zsh.p10k.package;
           file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
         })
+        (mkIf (cfg.oh-my-zsh.p10k.enable && cfg.oh-my-zsh.p10k.config != null) {
+          name = "powerlevel10k-config";
+          src = lib.cleanSource cfg.oh-my-zsh.p10k.config;
+          file = "p10k.zsh";
+        })
         (mkIf cfg.autocomplete.enable {
           name = "zsh-autocomplete";
           src = cfg.autocomplete.package;
@@ -270,10 +284,6 @@ in
         fi
       '';
       initExtra = concatStringsSep "\n" ([
-        (optionalString cfg.oh-my-zsh.p10k.enable ''
-          source ~/.p10k.zsh
-        '')
-
         (optionalString cfg.autosuggestions.enable ''
           ZSH_AUTOSUGGEST_STRATEGY=(${concatStringsSep " " cfg.autosuggestions.strategy})
         '')

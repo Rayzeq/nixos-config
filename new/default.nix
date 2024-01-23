@@ -6,7 +6,7 @@ let
   globalsFinal = globals;
 
   inputModules = map (filename: ./modules/${filename}) (filter (filename: filename != "utils.nix") (attrNames (readDir ./modules)));
-  inputConfigs = map (filename: ./config/${filename}) (filter (filename: filename != "globals.nix") (attrNames (readDir ./config)));
+  inputConfigs = map (filename: ./config/${filename}) (filter (filename: !elem filename [ "globals.nix" "p10k-config" ]) (attrNames (readDir ./config)));
 in
 {
   _module.args.globals = globalsFinal;
