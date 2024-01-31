@@ -6,7 +6,7 @@ let
 in
 {
   _module.args.unstable = unstable;
-  imports = [ ./hardware-configuration.nix ./zacharie.nix ./hyprland/system.nix ];
+  imports = [ ./hardware-configuration.nix ./zacharie.nix ./hyprland/system.nix ./tuigreet.nix ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -43,8 +43,6 @@ in
   services.xserver.excludePackages = with pkgs; [ xterm ];
 
   # Enable the KDE Plasma Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.sddm.autoNumlock = true;
   services.xserver.desktopManager.plasma5.enable = true;
   environment.plasma5.excludePackages = with pkgs.libsForQt5; [ elisa ];
 
