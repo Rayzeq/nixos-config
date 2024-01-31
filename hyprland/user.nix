@@ -60,12 +60,10 @@ in lib.mkMerge [
           settings = {
             exec-once = [
               "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
-              "eww open statusbar"
+              "eww open statusbar && ( nm-applet & blueman-applet & discord --start-minimized & )"
               "hyprpaper"
               "swaync"
-              "nm-applet"
               "[workspace special silent;noanim] kitty"
-              "discord"
             ];
             monitor = [ "e-DP1,1920x1080@60,0x0,1" ",preferred,auto,1" ];
 
