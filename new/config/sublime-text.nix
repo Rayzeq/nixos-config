@@ -324,6 +324,7 @@
         saveActions.organizeImports = true;
         signatureHelp.description.enabled = true;
       };
+      Debugger = { };
       Nix = { };
       SublimeRandomCrap = {
         repository = "https://github.com/facelessuser/SublimeRandomCrap";
