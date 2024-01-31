@@ -18,7 +18,6 @@ in
     _module.args.unstable = unstable;
     imports = [ ./new ];
     home.stateVersion = "23.05";
-    home.packages = with pkgs; [ meslo-lgs-nf fira ];
 
     programs.git = {
       enable = true;

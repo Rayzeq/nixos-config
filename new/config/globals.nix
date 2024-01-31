@@ -1,5 +1,9 @@
 { pkgs, self, ... }: rec {
   font = {
+    sans = {
+      package = pkgs.noto-fonts;
+      name = "Noto Sans";
+    };
     monospace = {
       # We don't use the NerdFont version of Fira Code
       # because its icons are too small, by not using it
