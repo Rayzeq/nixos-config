@@ -41,7 +41,6 @@
       (window)
       (systray
         :class "tray"
-        :pack-direction "ltr"
         :icon-size 18
       )
     )
