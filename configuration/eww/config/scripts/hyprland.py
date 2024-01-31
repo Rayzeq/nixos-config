@@ -115,7 +115,7 @@ workspaces = [
 result = call("activeworkspace")
 active_workspace = result["name"]
 result = call("activewindow")
-active_window = result["title"]
+active_window = result.get("title", "")
 
 workspaces.sort(key=int)
 print_data(workspaces, active_workspace, active_window)
