@@ -80,10 +80,10 @@
       };
       LSP.settings = {
         lsp_format_on_save = true;
-        lsp_code_actions_on_save = {
-          "source.fixAll" = true;
-          "source.addMissingImports" = true;
-          "source.organizeImports" = true;
+        lsp_code_actions_on_save.source = {
+          fixAll = true;
+          addMissingImports = true;
+          organizeImports = true;
         };
         show_inlay_hints = true;
         default_clients = { };
@@ -104,9 +104,9 @@
       };
       LSP-css = { };
       LSP-html.settings = {
-        settings = {
-          "html.format.indentHandlebars" = true;
-          "html.format.templating" = true;
+        settings.html.format = {
+          indentHandlebars = true;
+          templating = true;
         };
       };
       LSP-json.settings = { };
@@ -119,160 +119,164 @@
           MYPYPATH = "\${sublime_py_files_dir}\${pathsep}\${packages}:/home/zacharie/.nix-profile/lib/python3.11/site-packages/";
         };
         command = [ "steam-run" "$server_path" ];
-        settings = {
-          "pylsp.plugins.jedi_completion.enabled" = true;
-          "pylsp.plugins.jedi_definition.enabled" = true;
-          "pylsp.plugins.jedi_hover.enabled" = true;
-          "pylsp.plugins.jedi_references.enabled" = true;
-          "pylsp.plugins.jedi_signature_help.enabled" = true;
-          "pylsp.plugins.jedi_symbols.enabled" = true;
-          "pylsp.plugins.pycodestyle.enabled" = false;
-          "pylsp.plugins.mccabe.enabled" = false;
+        settings.pylsp.plugins = {
+          jedi_completion.enabled = true;
+          jedi_definition.enabled = true;
+          jedi_hover.enabled = true;
+          jedi_references.enabled = true;
+          jedi_signature_help.enabled = true;
+          jedi_symbols.enabled = true;
+          pycodestyle.enabled = false;
+          mccabe.enabled = false;
           # Crash pylsp
           # I think it's because it execute external code which comes from python2
-          #"pylsp.plugins.rope_autoimport.enabled": true,
-          "pylsp.plugins.autopep8.enabled" = false;
-          "pylsp.plugins.pylsp_mypy.enabled" = true;
-          "pylsp.plugins.pylsp_mypy.strict" = true;
+          #rope_autoimport.enabled = true;
+          autopep8.enabled = false;
+          pylsp_mypy = {
+            enabled = true;
+            strict = true;
+          };
           # Ruff config
-          "pylsp.plugins.ruff.enabled" = true;
-          "pylsp.plugins.ruff.lineLength" = 120;
-          "pylsp.plugins.ruff.select" = [
-            "F"
-            "E"
-            "W"
-            "C90"
-            "I"
-            "N"
-            "D"
-            "UP"
-            "YTT"
-            "ANN"
-            "ASYNC"
-            "S"
-            "BLE"
-            "FBT"
-            "B"
-            "A"
-            "COM"
-            #"CPY"
-            "C4"
-            "DTZ"
-            "T10"
-            "DJ"
-            "EM"
-            "EXE"
-            "FA"
-            "ISC"
-            "ICN"
-            "G"
-            #"INP"
-            "PIE"
-            "T20"
-            "PYI"
-            "PT"
-            "Q"
-            "RSE"
-            "RET"
-            "SLF"
-            "SLOT"
-            "SIM"
-            "TID"
-            "TCH"
-            "INT"
-            "ARG"
-            "PTH"
-            "TD"
-            "FIX"
-            "ERA"
-            "PD"
-            "PGH"
-            "PL"
-            "TRY"
-            "FLY"
-            "NPY"
-            "AIR"
-            "PERF"
-            "FURB"
-            "LOG"
-            "RUF"
-          ];
-          "pylsp.plugins.ruff.format" = [
-            "F"
-            "E"
-            "W"
-            "I"
-            "D"
-            "UP"
-            "ANN"
-            "B"
-            "COM"
-            "C4"
-            "EM"
-            "EXE"
-            "ISC"
-            "ICN"
-            "G"
-            "PIE"
-            "PYI"
-            "PT"
-            "Q"
-            "RSE"
-            "RET"
-            "SIM"
-            "TID"
-            "TCH"
-            "PTH"
-            "TD"
-            "ERA"
-            "PD"
-            "PL"
-            "TRY"
-            "FLY"
-            "NPY"
-            "PERF"
-            "FURB"
-            "LOG"
-            "RUF"
-          ];
-          "pylsp.plugins.ruff.ignore" = [
-            # Ignore missing docstrings
-            "D100"
-            "D101"
-            "D102"
-            "D103"
-            "D104"
-            "D105"
-            "D106"
-            "D107"
-            # Remove "docstring should be in imperative mood"
-            "D401"
-            # Allow print
-            "T201"
-            # Allow commented out code
-            "ERA001"
-            # Allow useless else after return
-            "RET505"
-            # Remove warnings for nixos shebang
-            "EXE003"
-            "EXE005"
-            # Allow private member access
-            "SLF001"
-            # Allow builtin shadowing
-            "A003"
-          ];
+          ruff = {
+            enabled = true;
+            lineLength = 120;
+            select = [
+              "F"
+              "E"
+              "W"
+              "C90"
+              "I"
+              "N"
+              "D"
+              "UP"
+              "YTT"
+              "ANN"
+              "ASYNC"
+              "S"
+              "BLE"
+              "FBT"
+              "B"
+              "A"
+              "COM"
+              #"CPY"
+              "C4"
+              "DTZ"
+              "T10"
+              "DJ"
+              "EM"
+              "EXE"
+              "FA"
+              "ISC"
+              "ICN"
+              "G"
+              #"INP"
+              "PIE"
+              "T20"
+              "PYI"
+              "PT"
+              "Q"
+              "RSE"
+              "RET"
+              "SLF"
+              "SLOT"
+              "SIM"
+              "TID"
+              "TCH"
+              "INT"
+              "ARG"
+              "PTH"
+              "TD"
+              "FIX"
+              "ERA"
+              "PD"
+              "PGH"
+              "PL"
+              "TRY"
+              "FLY"
+              "NPY"
+              "AIR"
+              "PERF"
+              "FURB"
+              "LOG"
+              "RUF"
+            ];
+            format = [
+              "F"
+              "E"
+              "W"
+              "I"
+              "D"
+              "UP"
+              "ANN"
+              "B"
+              "COM"
+              "C4"
+              "EM"
+              "EXE"
+              "ISC"
+              "ICN"
+              "G"
+              "PIE"
+              "PYI"
+              "PT"
+              "Q"
+              "RSE"
+              "RET"
+              "SIM"
+              "TID"
+              "TCH"
+              "PTH"
+              "TD"
+              "ERA"
+              "PD"
+              "PL"
+              "TRY"
+              "FLY"
+              "NPY"
+              "PERF"
+              "FURB"
+              "LOG"
+              "RUF"
+            ];
+            ignore = [
+              # Ignore missing docstrings
+              "D100"
+              "D101"
+              "D102"
+              "D103"
+              "D104"
+              "D105"
+              "D106"
+              "D107"
+              # Remove "docstring should be in imperative mood"
+              "D401"
+              # Allow print
+              "T201"
+              # Allow commented out code
+              "ERA001"
+              # Allow useless else after return
+              "RET505"
+              # Remove warnings for nixos shebang
+              "EXE003"
+              "EXE005"
+              # Allow private member access
+              "SLF001"
+              # Allow builtin shadowing
+              "A003"
+            ];
+          };
           # Black config
-          "pylsp.plugins.pylsp_black.enabled" = true;
-          "pylsp.plugins.black.line_length" = 120;
+          pylsp_black.enabled = true;
+          black.line_length = 120;
         };
       };
       LSP-rust-analyzer.settings = {
         command = [ "${pkgs.rust-analyzer}/bin/rust-analyzer" ];
-        settings = {
-          "rust-analyzer.assist.emitMustUse" = true;
-          "rust-analyzer.cargo.features" = "all";
-          "rust-analyzer.check.command" = "clippy";
-          "rust-analyzer.check.extraArgs" = [
+        settings.rust-analyzer = {
+          assist.emitMustUse = true;
+          cargo.features = "all";
+          check.command = "clippy";
+          check.extraArgs = [
             "--"
             "-W"
             "clippy::pedantic"
