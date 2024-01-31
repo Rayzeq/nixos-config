@@ -27,12 +27,5 @@ in
         forget = "!git rm -r --cached . && git add . && :";
       };
     };
-
-    services.barrier.client = {
-      enable = true;
-      enableCrypto = true;
-      enableDragDrop = true;
-      server = "10.42.0.48";
-
   };
 }
