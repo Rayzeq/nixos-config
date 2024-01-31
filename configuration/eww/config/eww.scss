@@ -24,6 +24,7 @@
 .statusbar {
 	padding: 2px;
 	font-size: 14px;
+	font-family: "Fira Sans";
 }
 
 .workspaces,
@@ -70,10 +71,10 @@
 }
 
 .mpris .previous,
-.temperatures > label:first-child,
-.temperatures.expanded > label:nth-child(2),
+.temperatures>label:first-child,
+.temperatures.expanded>label:nth-child(2),
 .memory.expanded label,
-.battery.expanded > label:first-child,
+.battery.expanded>label:first-child,
 .output {
 	margin-right: 8px;
 	border-right: 1px solid #404040;
@@ -82,8 +83,8 @@
 
 .mpris .next,
 .network .speeds,
-.battery.discharging > * > * > label:last-child,
-.battery.charging > * > * > label:last-child,
+.battery.discharging>*>*>label:last-child,
+.battery.charging>*>*>label:last-child,
 .brightness label {
 	margin-left: 6px;
 	border-left: 1px solid #404040;
@@ -138,7 +139,8 @@
 	color: #f7768e;
 }
 
-tooltip, .tray menu {
+tooltip,
+.tray menu {
 	border-radius: 10px;
 	padding: 5px 0px;
 
@@ -146,11 +148,11 @@ tooltip, .tray menu {
 }
 
 tooltip {
-	font-family: "Noto Sans Mono";
+	font-family: "Fira Code";
 }
 
 .tray menu {
-	> menuitem {
+	>menuitem {
 		padding: 0px 5px;
 
 		&:disabled label {
@@ -176,7 +178,7 @@ tooltip {
 	color: #73daca;
 }
 
-.temperatures label{
+.temperatures label {
 	&.high {
 		color: red;
 	}
@@ -187,7 +189,7 @@ tooltip {
 }
 
 .memory {
-	> label {
+	>label {
 		margin-right: 5px;
 	}
 
@@ -202,23 +204,25 @@ tooltip {
 	}
 
 	&.expanded {
-		> label, box > label:last-child {
+
+		>label,
+		box>label:last-child {
 			border: none;
 			padding: 0;
 		}
 
-		> label {
+		>label {
 			margin-right: 4px;
 		}
 
-		box > label {
+		box>label {
 			margin-right: 3px;
 		}
 	}
 }
 
 .cpu {
-	> revealer > label {
+	>revealer>label {
 		margin-left: 4px;
 	}
 
@@ -231,7 +235,7 @@ tooltip {
 	}
 }
 
-.battery{
+.battery {
 	&.warning {
 		color: orange;
 	}
@@ -241,17 +245,18 @@ tooltip {
 	}
 
 	&.discharging {
-		&.warning > label {
+		&.warning>label {
 			animation: blink-warning 1s linear infinite alternate-reverse;
 		}
 
-		&.critical > label {
+		&.critical>label {
 			animation: blink-critical 1s linear infinite alternate-reverse;
 		}
 	}
 }
 
-.audio label, .powerbtn label {
+.audio label,
+.powerbtn label {
 	color: #f79aec;
 }
 
