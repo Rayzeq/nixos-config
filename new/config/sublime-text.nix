@@ -311,6 +311,19 @@
         };
       };
       LSP-typescript = { };
+      LSP-jdtls.settings.settings.java = {
+        jdt.ls.java.home = "${pkgs.jdk21}";
+        codeGeneration = {
+          generateComments = true;
+          toString.codeStyle = "STRING_FORMAT";
+        };
+        foldingRange.enabled = true;
+        format.onType.enabled = true;
+        implementationsCodeLens.enabled = true;
+        referencesCodeLens.enabled = true;
+        saveActions.organizeImports = true;
+        signatureHelp.description.enabled = true;
+      };
       Nix = { };
       SublimeRandomCrap = {
         repository = "https://github.com/facelessuser/SublimeRandomCrap";
