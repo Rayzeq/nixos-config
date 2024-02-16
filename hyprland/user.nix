@@ -67,6 +67,8 @@ in lib.mkMerge [
             ];
             monitor = [ "e-DP1,1920x1080@60,0x0,1" ",preferred,auto,1" ];
 
+            env = builtins.attrValues (builtins.mapAttrs (name: value: name + "," + value) config.systemd.user.sessionVariables);
+
             general = {
               gaps_in = 0;
               gaps_out = 0;
