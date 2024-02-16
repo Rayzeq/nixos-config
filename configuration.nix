@@ -106,7 +106,6 @@ in
         '';
       })).override { proprietaryCodecs = true; })
       (discord.override { withOpenASAR = true; withVencord = true; })
-      bitwarden
 
       mangohud
       gamemode
