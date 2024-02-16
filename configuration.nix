@@ -161,6 +161,16 @@ in
         '';
       });
     })
+    (self: super: {
+      trashy = super.trashy.overrideAttrs (oldAttrs: rec {
+        preFixup = ''
+          installShellCompletion --cmd trash \
+            --bash <($out/bin/trash completions bash) \
+            --fish <($out/bin/trash completions fish) \
+            --zsh <($out/bin/trash completions zsh | grep -v ">trashy") \
+        '';
+      });
+    })
   ];
 
   programs.firefox.enable = true;
