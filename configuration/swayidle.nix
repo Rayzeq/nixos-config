@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, unstable, ... }: {
   enable = true;
 
   timeouts = [
@@ -14,7 +14,7 @@
     }
   ];
   events = [
-    { event = "lock"; command = "${pkgs.procps}/bin/pgrep swaylock || ${pkgs.swaylock-effects}/bin/swaylock -f"; }
-    # { event = "before-sleep"; command = "${pkgs.procps}/bin/pgrep swaylock || ${pkgs.swaylock-effects}/bin/swaylock -f"; }
+    { event = "lock"; command = "${unstable.swaylock-effects}/bin/swaylock -f"; }
+    { event = "before-sleep"; command = "${pkgs.systemd}/bin/loginctl lock-session"; }
   ];
 }
