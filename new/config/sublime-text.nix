@@ -11,6 +11,7 @@
       ignored_packages = [ "Vintage" ];
       relative_line_numbers = true;
       index_files = true;
+      update_check = false;
     };
     font = globals.font.monospace;
     keymap = [
