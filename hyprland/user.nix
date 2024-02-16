@@ -75,6 +75,7 @@ in lib.mkMerge [
 
             misc = {
               force_default_wallpaper = 0;
+              focus_on_activate = true;
             };
 
             input = {
@@ -163,10 +164,10 @@ in lib.mkMerge [
             ];
 
             layerrule = [
-              "ignorezero,rofi"
-              "ignorezero,waybar"
-              "blur,rofi"
-              "blur,waybar"
+              "ignorezero, rofi"
+              "ignorezero, waybar"
+              "blur, rofi"
+              "blur, waybar"
             ];
           };
         };
