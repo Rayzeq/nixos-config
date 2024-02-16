@@ -150,7 +150,7 @@ in
 
   nixpkgs.overlays = [
     (self: super: {
-      vencord = super.vencord.overrideAttrs (oldAttrs: {
+      vencord = unstable.vencord.overrideAttrs (oldAttrs: rec {
         patches = (oldAttrs.patches or [ ]) ++ [ ./mudaebot.patch ];
       });
     })
