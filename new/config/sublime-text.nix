@@ -61,6 +61,12 @@
         keys = [ "ctrl+alt+right" ];
         command = "next_view";
       }
+      {
+        keys = [
+          "ctrl+shift+k"
+        ];
+        command = "open_terminal";
+      }
     ];
     build-systems."Python - Terminus" = {
       target = "terminus_open";
@@ -330,6 +336,7 @@
         repository = "https://github.com/facelessuser/SublimeRandomCrap";
       };
       Terminus = { };
+      Terminal.settings = { terminal = "kitty"; };
       TOML = { };
       HTML = {
         managed = false;
