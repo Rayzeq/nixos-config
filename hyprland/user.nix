@@ -163,6 +163,10 @@ in lib.mkMerge [
               "$mod, mouse:273, resizewindow"
             ];
 
+            windowrulev2 = [
+              "idleinhibit fullscreen, class:.*"
+            ];
+
             layerrule = [
               "ignorezero, rofi"
               "ignorezero, waybar"
