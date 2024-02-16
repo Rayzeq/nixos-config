@@ -112,7 +112,7 @@ in lib.mkMerge [
             "$mod" = "SUPER";
             bind = [
               "$mod, DELETE, exit"
-              "$mod, L, exec, wlogout -p layer-shell"
+              "$mod, L, exec, pkill -x wlogout || wlogout -p layer-shell"
               "$mod, F4, killactive"
               "$mod, MULTI_KEY, exec, grimblast copy area"
               "$mod + SHIFT, MULTI_KEY, exec, grimblast copy screen"
