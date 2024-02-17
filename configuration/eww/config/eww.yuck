@@ -5,6 +5,7 @@
 (include "./udev.yuck")
 (include "./pulseaudio.yuck")
 (include "./network.yuck")
+(include "./time.yuck")
 
 (defwindow statusbar
   :monitor 0
@@ -23,12 +24,6 @@
   (statusbar)
 )
 
-(defpoll time
-  :interval "1s"
-  :initial ""
-  `date +"%d %b %Y %T"`
-)
-
 (defwidget statusbar []
   (centerbox
     :class "statusbar"
@@ -44,10 +39,7 @@
         :icon-size 18
       )
     )
-    (label
-      :class "clock"
-      :text time
-    )
+    (clock)
     (box
       :halign "end"
       :orientation "h"

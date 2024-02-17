@@ -173,6 +173,56 @@ tooltip {
 	}
 }
 
+calendar {
+	border-radius: 10px;
+	color: white;
+
+	&.view {
+		background-color: rgba(0, 0, 0, 0.8);
+	}
+
+	// button to change month and year
+	&.button {
+		color: gray;
+
+		&:insensitive {
+			color: gray;
+		}
+
+		&:hover,
+		&:focus {
+			color: white;
+		}
+	}
+
+	// week numbers and day names
+	&.highlight {
+		color: gray;
+	}
+
+	// day numbers
+	&.day-number {
+		padding-top: 1px;
+		padding-bottom: 1px;
+	}
+
+	// day numbers of another month
+	&:inconsistent {
+		color: rgb(80, 80, 80);
+	}
+
+	// day with an event ?
+	&:active {
+		background-color: rgba(176, 165, 255, 0.8);
+	}
+
+	// selected day
+	&:selected {
+		background-color: rgba(114, 211, 254, 0.8);
+	}
+}
+
+
 .clock {
 	color: #73daca;
 }

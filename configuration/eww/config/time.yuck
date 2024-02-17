@@ -1,0 +1,22 @@
+(defpoll time
+  :interval "1s"
+  :initial ""
+  `date +"%d %b %Y %T"`
+)
+
+(defwidget clock []
+  (popovered
+    (calendar
+      :show-details true
+      :show-heading true
+      :show-day-names true
+      :show-week-numbers true
+    )
+    (eventbox
+      (label
+        :class "clock"
+        :text time
+      )
+    )
+  )
+)
