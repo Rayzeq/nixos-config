@@ -10,7 +10,19 @@ pkgs.rustPlatform.buildRustPackage rec {
     hash = "sha256-MR91Ytt9Jf63dshn7LX64LWAVygbZgQYkcTIKhfVNXI=";
   };
 
-  cargoPatches = [ ./sni.patch ./sni-click.patch ./max_width.patch ./custom_tooltips.patch ./custom_popover.patch ];
+  cargoPatches = [
+    ./sni.patch
+    ./sni-click.patch
+    ./max_width.patch
+    ./custom_tooltips.patch
+    # Custom popovers
+    # The `#1` at the end of the url is here to force nixos to re-download the patch
+    # when the remote repo is updated
+    (pkgs.fetchpatch {
+      url = "https://patch-diff.githubusercontent.com/raw/Rayzeq/eww/pull/1.patch#1";
+      hash = "sha256-vSV8fYBOFzhBPlouxr34e13SeEw5NC53LLbI+pT8drA=";
+    })
+  ];
 
   cargoHash = "sha256-toJsCFOIVs8XhyPGDu10UIbf5+gCRz6hpwsRE/+Y+jw=";
 
