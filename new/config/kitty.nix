@@ -19,6 +19,7 @@
       tab_title_max_length = 30;
 
       scrollback_pager = ''sh -c 'subl -n - && subl --command "set_file_type { \"syntax\": \"scope:text.ansi\" }"' '';
+      scrollback_lines = 1000000000;
 
       # By default, black is transparent (why?) and full black is way to dark anyway
       # so we set a lighter color
