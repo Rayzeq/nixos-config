@@ -190,6 +190,7 @@ in
     man-pages
     file
     piper
+    htop
   ];
 
   programs.gamemode.enable = true;
