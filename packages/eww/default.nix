@@ -1,32 +1,37 @@
 { pkgs, lib }:
-pkgs.rustPlatform.buildRustPackage rec {
+with import <nixpkgs>
+{
+  overlays = [
+    (import (fetchTarball "https://github.com/oxalica/rust-overlay/archive/master.tar.gz"))
+  ];
+};
+let
+  rustPlatform = makeRustPlatform {
+    cargo = rust-bin.stable.latest.minimal;
+    rustc = rust-bin.stable.latest.minimal;
+  };
+in
+rustPlatform.buildRustPackage rec {
   pname = "eww";
-  version = "unstable-20-12-2023";
+  version = "0.5.0";
 
   src = pkgs.fetchFromGitHub {
     owner = "elkowar";
     repo = "eww";
-    rev = "65d622c81f2e753f462d23121fa1939b0a84a3e0";
-    hash = "sha256-MR91Ytt9Jf63dshn7LX64LWAVygbZgQYkcTIKhfVNXI=";
+    rev = "387d344690903949121040f8a892f946e323c472";
+    hash = "sha256-HBBz1NDtj2TnDK5ghDLRrAOwHXDZlzclvVscYnmKGck=";
   };
 
   cargoPatches = [
-    ./sni.patch
-    ./sni-click.patch
-    ./max_width.patch
-    ./custom_tooltips.patch
-    # Custom popovers
-    # The `#1` at the end of the url is here to force nixos to re-download the patch
-    # when the remote repo is updated
-    (pkgs.fetchpatch {
-      url = "https://patch-diff.githubusercontent.com/raw/Rayzeq/eww/pull/1.patch#1";
-      hash = "sha256-vSV8fYBOFzhBPlouxr34e13SeEw5NC53LLbI+pT8drA=";
-    })
+    ./custom-popover.patch
+    ./string-truncation.patch
+    ./tray3.patch
+    ./completions.patch
   ];
 
-  cargoHash = "sha256-toJsCFOIVs8XhyPGDu10UIbf5+gCRz6hpwsRE/+Y+jw=";
+  cargoHash = "sha256-B/wibyWbhztGnws4WFk+d9R6Ldxmc5BfoHo4763pFrQ=";
 
-  nativeBuildInputs = with pkgs; [ pkg-config wrapGAppsHook ];
+  nativeBuildInputs = with pkgs; [ pkg-config wrapGAppsHook installShellFiles ];
 
   buildInputs = with pkgs; [ gtk3 librsvg gtk-layer-shell libdbusmenu libdbusmenu-gtk3 ];
 
@@ -37,6 +42,10 @@ pkgs.rustPlatform.buildRustPackage rec {
 
   cargoTestFlags = cargoBuildFlags;
 
-  # requires unstable rust features
-  RUSTC_BOOTSTRAP = 1;
+  preFixup = ''
+    installShellCompletion --cmd eww \
+      --bash <($out/bin/eww shell-completions --shell bash) \
+      --fish <($out/bin/eww shell-completions --shell fish) \
+      --zsh <($out/bin/eww shell-completions --shell zsh) \
+  '';
 }

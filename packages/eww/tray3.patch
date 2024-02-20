@@ -1,0 +1,2976 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 0991441..98ef192 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -32,6 +32,7 @@ All notable changes to eww will be listed here, starting at changes since versio
+ - Switch to stable rust toolchain (1.76)
+ - Add `tooltip` widget, which allows setting a custom tooltip (not only text), to a widget (By: Rayzeq)
+ - Add `eww shell-completions` command, generating completion scripts for different shells
++- Add `systray` widget (By: ralismark)
+ 
+ ### Fixes
+ - Fix wrong values in `EWW_NET`
+diff --git a/Cargo.lock b/Cargo.lock
+index 55fef71..ec661ba 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -123,6 +123,102 @@ dependencies = [
+  "term",
+ ]
+ 
++[[package]]
++name = "async-broadcast"
++version = "0.5.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "7c48ccdbf6ca6b121e0f586cbc0e73ae440e56c67c30fa0873b4e110d9c26d2b"
++dependencies = [
++ "event-listener",
++ "futures-core",
++]
++
++[[package]]
++name = "async-channel"
++version = "1.9.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "81953c529336010edd6d8e358f886d9581267795c61b19475b71314bffa46d35"
++dependencies = [
++ "concurrent-queue",
++ "event-listener",
++ "futures-core",
++]
++
++[[package]]
++name = "async-io"
++version = "1.13.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "0fc5b45d93ef0529756f812ca52e44c221b35341892d3dcc34132ac02f3dd2af"
++dependencies = [
++ "async-lock",
++ "autocfg",
++ "cfg-if",
++ "concurrent-queue",
++ "futures-lite",
++ "log",
++ "parking",
++ "polling",
++ "rustix 0.37.23",
++ "slab",
++ "socket2 0.4.9",
++ "waker-fn",
++]
++
++[[package]]
++name = "async-lock"
++version = "2.8.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "287272293e9d8c41773cec55e365490fe034813a2f172f502d6ddcf75b2f582b"
++dependencies = [
++ "event-listener",
++]
++
++[[package]]
++name = "async-process"
++version = "1.7.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "7a9d28b1d97e08915212e2e45310d47854eafa69600756fc735fb788f75199c9"
++dependencies = [
++ "async-io",
++ "async-lock",
++ "autocfg",
++ "blocking",
++ "cfg-if",
++ "event-listener",
++ "futures-lite",
++ "rustix 0.37.23",
++ "signal-hook",
++ "windows-sys 0.48.0",
++]
++
++[[package]]
++name = "async-recursion"
++version = "1.0.4"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "0e97ce7de6cf12de5d7226c73f5ba9811622f4db3a5b91b55c53e987e5f91cba"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn 2.0.49",
++]
++
++[[package]]
++name = "async-task"
++version = "4.4.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "ecc7ab41815b3c653ccd2978ec3255c81349336702dfdf62ee6f7069b12a3aae"
++
++[[package]]
++name = "async-trait"
++version = "0.1.73"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "bc00ceb34980c03614e35a3a4e218276a0a824e911d07651cd0d858a51e8c0f0"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn 2.0.49",
++]
++
+ [[package]]
+ name = "atk"
+ version = "0.17.1"
+@@ -147,6 +243,12 @@ dependencies = [
+  "system-deps",
+ ]
+ 
++[[package]]
++name = "atomic-waker"
++version = "1.1.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "1181e1e0d1fce796a03db1ae795d67167da795f9cf4a39c37589e85ef57f26d3"
++
+ [[package]]
+ name = "autocfg"
+ version = "1.1.0"
+@@ -210,12 +312,42 @@ version = "2.4.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "ed570934406eb16438a4e976b1b4500774099c13b8cb96eec99f620f05090ddf"
+ 
++[[package]]
++name = "block-buffer"
++version = "0.10.4"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "3078c7629b62d3f0439517fa394996acacc5cbc91c5a20d8c658e77abd503a71"
++dependencies = [
++ "generic-array",
++]
++
++[[package]]
++name = "blocking"
++version = "1.3.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "77231a1c8f801696fc0123ec6150ce92cffb8e164a02afb9c8ddee0e9b65ad65"
++dependencies = [
++ "async-channel",
++ "async-lock",
++ "async-task",
++ "atomic-waker",
++ "fastrand 1.9.0",
++ "futures-lite",
++ "log",
++]
++
+ [[package]]
+ name = "bumpalo"
+ version = "3.15.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "d32a994c2b3ca201d9b263612a374263f05e7adde37c4707f693dcd375076d1f"
+ 
++[[package]]
++name = "byteorder"
++version = "1.4.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "14c189c53d098945499cdfa7ecc63567cf3886b3332b312a5b4585d8d3a6a610"
++
+ [[package]]
+ name = "bytes"
+ version = "1.5.0"
+@@ -421,6 +553,15 @@ version = "1.0.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "acbf1af155f9b9ef647e42cdc158db4b64a1b61f743629225fde6f3e0be2a7c7"
+ 
++[[package]]
++name = "concurrent-queue"
++version = "2.2.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "62ec6771ecfa0762d24683ee5a32ad78487a3d3afdc0fb8cae19d2c5deb50b7c"
++dependencies = [
++ "crossbeam-utils",
++]
++
+ [[package]]
+ name = "console"
+ version = "0.15.8"
+@@ -445,6 +586,15 @@ version = "0.8.6"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "06ea2b9bc92be3c2baa9334a323ebca2d6f074ff852cd1d7b11064035cd3868f"
+ 
++[[package]]
++name = "cpufeatures"
++version = "0.2.9"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "a17b76ff3a4162b0b27f354a0c87015ddad39d35f9c0c36607a3bdd175dde1f1"
++dependencies = [
++ "libc",
++]
++
+ [[package]]
+ name = "crossbeam-channel"
+ version = "0.5.11"
+@@ -485,6 +635,16 @@ version = "0.2.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "7a81dae078cea95a014a339291cec439d2f232ebe854a9d672b796c6afafa9b7"
+ 
++[[package]]
++name = "crypto-common"
++version = "0.1.6"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "1bfb12502f3fc46cca1bb51ac28df9d618d813cdc3d2f25b9fe775a34af26bb3"
++dependencies = [
++ "generic-array",
++ "typenum",
++]
++
+ [[package]]
+ name = "darling"
+ version = "0.14.4"
+@@ -520,6 +680,59 @@ dependencies = [
+  "syn 1.0.109",
+ ]
+ 
++[[package]]
++name = "dbusmenu-glib"
++version = "0.1.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "fd1629dccc5775e0668eb9f07e78d1b88392a63efc34033a18c87ea44318b894"
++dependencies = [
++ "dbusmenu-glib-sys",
++ "glib",
++ "libc",
++]
++
++[[package]]
++name = "dbusmenu-glib-sys"
++version = "0.1.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "7ff9ed40330718c94342b953c997ac19d840db07a7710fe35b45a5d3a3a1d6eb"
++dependencies = [
++ "glib-sys",
++ "gobject-sys",
++ "libc",
++ "system-deps",
++]
++
++[[package]]
++name = "dbusmenu-gtk3"
++version = "0.1.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "b15e02bf53eed790cee4d6111643529bf2fdb82c9e61242407d254612f98436e"
++dependencies = [
++ "atk",
++ "dbusmenu-glib",
++ "dbusmenu-gtk3-sys",
++ "glib",
++ "gtk",
++ "libc",
++]
++
++[[package]]
++name = "dbusmenu-gtk3-sys"
++version = "0.1.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "6f30ba5f8aec0e38a84c579bc8ee3db6f6417b201e729fdd96a23d1f61cb6eca"
++dependencies = [
++ "dbusmenu-glib-sys",
++ "gdk-pixbuf-sys",
++ "gdk-sys",
++ "glib-sys",
++ "gobject-sys",
++ "gtk-sys",
++ "libc",
++ "system-deps",
++]
++
+ [[package]]
+ name = "deranged"
+ version = "0.3.11"
+@@ -529,6 +742,17 @@ dependencies = [
+  "powerfmt",
+ ]
+ 
++[[package]]
++name = "derivative"
++version = "2.2.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "fcc3dd5e9e9c0b295d6e1e4d811fb6f157d5ffd784b8d202fc62eac8035a770b"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn 1.0.109",
++]
++
+ [[package]]
+ name = "derive_more"
+ version = "0.99.17"
+@@ -548,6 +772,16 @@ version = "0.1.13"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "56254986775e3233ffa9c4d7d3faaf6d36a2c09d30b20687e9f88bc8bafc16c8"
+ 
++[[package]]
++name = "digest"
++version = "0.10.7"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "9ed9a281f7bc9b7576e61468ba615a66a5c8cfdff42420a70aa82701a3b1e292"
++dependencies = [
++ "block-buffer",
++ "crypto-common",
++]
++
+ [[package]]
+ name = "dirs-next"
+ version = "2.0.0"
+@@ -596,6 +830,27 @@ version = "0.3.6"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "a357d28ed41a50f9c765dbfe56cbc04a64e53e5fc58ba79fbc34c10ef3df831f"
+ 
++[[package]]
++name = "enumflags2"
++version = "0.7.7"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "c041f5090df68b32bcd905365fd51769c8b9d553fe87fde0b683534f10c01bd2"
++dependencies = [
++ "enumflags2_derive",
++ "serde",
++]
++
++[[package]]
++name = "enumflags2_derive"
++version = "0.7.7"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5e9a1f9f7d83e59740248a6e14ecf93929ade55027844dfcea78beafccc15745"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn 2.0.49",
++]
++
+ [[package]]
+ name = "env_logger"
+ version = "0.10.2"
+@@ -615,6 +870,33 @@ version = "1.0.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "5443807d6dff69373d433ab9ef5378ad8df50ca6298caf15de6e52e24aaf54d5"
+ 
++[[package]]
++name = "errno"
++version = "0.3.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "6b30f669a7961ef1631673d2766cc92f52d64f7ef354d4fe0ddfd30ed52f0f4f"
++dependencies = [
++ "errno-dragonfly",
++ "libc",
++ "windows-sys 0.48.0",
++]
++
++[[package]]
++name = "errno-dragonfly"
++version = "0.1.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "aa68f1b12764fab894d2755d2518754e71b4fd80ecfb822714a1206c2aab39bf"
++dependencies = [
++ "cc",
++ "libc",
++]
++
++[[package]]
++name = "event-listener"
++version = "2.5.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "0206175f82b8d6bf6652ff7d71a1e27fd2e4efde587fd368662814d6ec1d9ce0"
++
+ [[package]]
+ name = "eww"
+ version = "0.5.0"
+@@ -644,6 +926,7 @@ dependencies = [
+  "log",
+  "maplit",
+  "nix 0.27.1",
++ "notifier_host",
+  "notify",
+  "once_cell",
+  "pretty_env_logger",
+@@ -659,6 +942,7 @@ dependencies = [
+  "wait-timeout",
+  "x11rb",
+  "yuck",
++ "zbus",
+ ]
+ 
+ [[package]]
+@@ -681,6 +965,21 @@ dependencies = [
+  "syn 2.0.49",
+ ]
+ 
++[[package]]
++name = "fastrand"
++version = "1.9.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "e51093e27b0797c359783294ca4f0a911c270184cb10f85783b118614a1501be"
++dependencies = [
++ "instant",
++]
++
++[[package]]
++name = "fastrand"
++version = "2.0.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "6999dc1837253364c2ebb0704ba97994bd874e8f195d665c50b7548f6ea92764"
++
+ [[package]]
+ name = "field-offset"
+ version = "0.3.6"
+@@ -699,7 +998,7 @@ checksum = "1ee447700ac8aa0b2f2bd7bc4462ad686ba06baa6727ac149a2d6277f0d240fd"
+ dependencies = [
+  "cfg-if",
+  "libc",
+- "redox_syscall",
++ "redox_syscall 0.4.1",
+  "windows-sys 0.52.0",
+ ]
+ 
+@@ -772,6 +1071,21 @@ version = "0.3.30"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "a44623e20b9681a318efdd71c299b6b222ed6f231972bfe2f224ebad6311f0c1"
+ 
++[[package]]
++name = "futures-lite"
++version = "1.13.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "49a9d51ce47660b1e808d3c990b4709f2f415d928835a17dfd16991515c46bce"
++dependencies = [
++ "fastrand 1.9.0",
++ "futures-core",
++ "futures-io",
++ "memchr",
++ "parking",
++ "pin-project-lite",
++ "waker-fn",
++]
++
+ [[package]]
+ name = "futures-macro"
+ version = "0.3.30"
+@@ -900,6 +1214,16 @@ dependencies = [
+  "x11",
+ ]
+ 
++[[package]]
++name = "generic-array"
++version = "0.14.7"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "85649ca51fd72272d7821adaf274ad91c288277713d9c18820d8499a7ff69e9a"
++dependencies = [
++ "typenum",
++ "version_check",
++]
++
+ [[package]]
+ name = "gethostname"
+ version = "0.2.3"
+@@ -1155,6 +1479,12 @@ version = "0.3.6"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "bd5256b483761cd23699d0da46cc6fd2ee3be420bbe6d020ae4a091e70b7e9fd"
+ 
++[[package]]
++name = "hex"
++version = "0.4.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
++
+ [[package]]
+ name = "hifijson"
+ version = "0.2.0"
+@@ -1248,6 +1578,17 @@ dependencies = [
+  "cfg-if",
+ ]
+ 
++[[package]]
++name = "io-lifetimes"
++version = "1.0.11"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "eae7b9aee968036d54dce06cebaefd919e4472e753296daccd6d344e3e2df0c2"
++dependencies = [
++ "hermit-abi",
++ "libc",
++ "windows-sys 0.48.0",
++]
++
+ [[package]]
+ name = "is-terminal"
+ version = "0.4.12"
+@@ -1441,7 +1782,7 @@ checksum = "85c833ca1e66078851dba29046874e38f08b2c883700aa29a03ddd3b23814ee8"
+ dependencies = [
+  "bitflags 2.4.2",
+  "libc",
+- "redox_syscall",
++ "redox_syscall 0.4.1",
+ ]
+ 
+ [[package]]
+@@ -1450,6 +1791,18 @@ version = "0.5.6"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "0717cef1bc8b636c6e1c1bbdefc09e6322da8a9321966e8928ef80d20f7f770f"
+ 
++[[package]]
++name = "linux-raw-sys"
++version = "0.3.8"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "ef53942eb7bf7ff43a617b3e2c1c4a5ecf5944a7c1bc12d7ee39bbb15e5c1519"
++
++[[package]]
++name = "linux-raw-sys"
++version = "0.4.13"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "01cda141df6706de531b6c46c3a33ecca755538219bd484262fa09410c13539c"
++
+ [[package]]
+ name = "lock_api"
+ version = "0.4.11"
+@@ -1487,6 +1840,15 @@ dependencies = [
+  "autocfg",
+ ]
+ 
++[[package]]
++name = "memoffset"
++version = "0.7.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5de893c32cde5f383baa4c04c5d6dbdd735cfd4a794b0debdb2bb1b421da5ff4"
++dependencies = [
++ "autocfg",
++]
++
+ [[package]]
+ name = "memoffset"
+ version = "0.9.0"
+@@ -1536,6 +1898,18 @@ dependencies = [
+  "memoffset 0.6.5",
+ ]
+ 
++[[package]]
++name = "nix"
++version = "0.26.4"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "598beaf3cc6fdd9a5dfb1630c2800c7acd31df7aaf0f565796fba2b53ca1af1b"
++dependencies = [
++ "bitflags 1.3.2",
++ "cfg-if",
++ "libc",
++ "memoffset 0.7.1",
++]
++
+ [[package]]
+ name = "nix"
+ version = "0.27.1"
+@@ -1547,6 +1921,19 @@ dependencies = [
+  "libc",
+ ]
+ 
++[[package]]
++name = "notifier_host"
++version = "0.1.0"
++dependencies = [
++ "dbusmenu-gtk3",
++ "gdk",
++ "gtk",
++ "log",
++ "thiserror",
++ "tokio",
++ "zbus",
++]
++
+ [[package]]
+ name = "notify"
+ version = "6.1.1"
+@@ -1615,6 +2002,16 @@ version = "1.19.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "3fdb12b2476b595f9358c5161aa467c2438859caa136dec86c26fdd2efe17b92"
+ 
++[[package]]
++name = "ordered-stream"
++version = "0.2.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "9aa2b01e1d916879f73a53d01d1d6cee68adbb31d6d9177a8cfce093cced1d50"
++dependencies = [
++ "futures-core",
++ "pin-project-lite",
++]
++
+ [[package]]
+ name = "pango"
+ version = "0.17.10"
+@@ -1641,6 +2038,12 @@ dependencies = [
+  "system-deps",
+ ]
+ 
++[[package]]
++name = "parking"
++version = "2.1.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "14f2252c834a40ed9bb5422029649578e63aa341ac401f74e719dd1afda8394e"
++
+ [[package]]
+ name = "parking_lot"
+ version = "0.12.1"
+@@ -1659,7 +2062,7 @@ checksum = "4c42a9226546d68acdd9c0a280d17ce19bfe27a46bf68784e4066115788d008e"
+ dependencies = [
+  "cfg-if",
+  "libc",
+- "redox_syscall",
++ "redox_syscall 0.4.1",
+  "smallvec",
+  "windows-targets 0.48.5",
+ ]
+@@ -1768,12 +2171,34 @@ version = "0.3.30"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "d231b230927b5e4ad203db57bbcbee2802f6bce620b1e4a9024a07d94e2907ec"
+ 
++[[package]]
++name = "polling"
++version = "2.8.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "4b2d323e8ca7996b3e23126511a523f7e62924d93ecd5ae73b333815b0eb3dce"
++dependencies = [
++ "autocfg",
++ "bitflags 1.3.2",
++ "cfg-if",
++ "concurrent-queue",
++ "libc",
++ "log",
++ "pin-project-lite",
++ "windows-sys 0.48.0",
++]
++
+ [[package]]
+ name = "powerfmt"
+ version = "0.2.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "439ee305def115ba05938db6eb1644ff94165c5ab5e9420d1c1bcedbba909391"
+ 
++[[package]]
++name = "ppv-lite86"
++version = "0.2.17"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5b40af805b3121feab8a3c29f04d8ad262fa8e0561883e7653e024ae4479e6de"
++
+ [[package]]
+ name = "precomputed-hash"
+ version = "0.1.1"
+@@ -1858,6 +2283,18 @@ version = "0.8.5"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "34af8d1a0e25924bc5b7c43c079c942339d8f0a8b57c39049bef581b46327404"
+ dependencies = [
++ "libc",
++ "rand_chacha",
++ "rand_core",
++]
++
++[[package]]
++name = "rand_chacha"
++version = "0.3.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "e6c10a63a0fa32252be49d21e7709d4d4baf8d231c2dbce1eaa8141b9b127d88"
++dependencies = [
++ "ppv-lite86",
+  "rand_core",
+ ]
+ 
+@@ -1866,6 +2303,9 @@ name = "rand_core"
+ version = "0.6.4"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "ec0be4795e2f6a28069bec0b5ff3e2ac9bafc99e6a9a7dc3547996c5c816922c"
++dependencies = [
++ "getrandom",
++]
+ 
+ [[package]]
+ name = "rayon"
+@@ -1887,6 +2327,15 @@ dependencies = [
+  "crossbeam-utils",
+ ]
+ 
++[[package]]
++name = "redox_syscall"
++version = "0.3.5"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "567664f262709473930a4bf9e51bf2ebf3348f2e748ccc50dea20646858f8f29"
++dependencies = [
++ "bitflags 1.3.2",
++]
++
+ [[package]]
+ name = "redox_syscall"
+ version = "0.4.1"
+@@ -1977,6 +2426,33 @@ dependencies = [
+  "semver",
+ ]
+ 
++[[package]]
++name = "rustix"
++version = "0.37.23"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "4d69718bf81c6127a49dc64e44a742e8bb9213c0ff8869a22c308f84c1d4ab06"
++dependencies = [
++ "bitflags 1.3.2",
++ "errno",
++ "io-lifetimes",
++ "libc",
++ "linux-raw-sys 0.3.8",
++ "windows-sys 0.48.0",
++]
++
++[[package]]
++name = "rustix"
++version = "0.38.25"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "dc99bc2d4f1fed22595588a013687477aedf3cdcfb26558c559edb67b4d9b22e"
++dependencies = [
++ "bitflags 2.4.2",
++ "errno",
++ "libc",
++ "linux-raw-sys 0.4.13",
++ "windows-sys 0.48.0",
++]
++
+ [[package]]
+ name = "rustversion"
+ version = "1.0.14"
+@@ -2041,6 +2517,17 @@ dependencies = [
+  "serde",
+ ]
+ 
++[[package]]
++name = "serde_repr"
++version = "0.1.16"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "8725e1dfadb3a50f7e5ce0b1a540466f6ed3fe7a0fca2ac2b8b831d31316bd00"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn 2.0.49",
++]
++
+ [[package]]
+ name = "serde_spanned"
+ version = "0.6.5"
+@@ -2050,6 +2537,27 @@ dependencies = [
+  "serde",
+ ]
+ 
++[[package]]
++name = "sha1"
++version = "0.10.5"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "f04293dc80c3993519f2d7f6f511707ee7094fe0c6d3406feb330cdb3540eba3"
++dependencies = [
++ "cfg-if",
++ "cpufeatures",
++ "digest",
++]
++
++[[package]]
++name = "signal-hook"
++version = "0.3.17"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "8621587d4798caf8eb44879d42e56b9a93ea5dcd315a6487c357130095b62801"
++dependencies = [
++ "libc",
++ "signal-hook-registry",
++]
++
+ [[package]]
+ name = "signal-hook-registry"
+ version = "1.4.1"
+@@ -2134,6 +2642,16 @@ dependencies = [
+  "syn 2.0.49",
+ ]
+ 
++[[package]]
++name = "socket2"
++version = "0.4.9"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "64a4a911eed85daf18834cfaa86a79b7d266ff93ff5ba14005426219480ed662"
++dependencies = [
++ "libc",
++ "winapi",
++]
++
+ [[package]]
+ name = "socket2"
+ version = "0.5.5"
+@@ -2253,6 +2771,19 @@ version = "0.12.13"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "69758bda2e78f098e4ccb393021a0963bb3442eac05f135c30f61b7370bbafae"
+ 
++[[package]]
++name = "tempfile"
++version = "3.8.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "cb94d2f3cc536af71caac6b6fcebf65860b347e7ce0cc9ebe8f70d3e521054ef"
++dependencies = [
++ "cfg-if",
++ "fastrand 2.0.0",
++ "redox_syscall 0.3.5",
++ "rustix 0.38.25",
++ "windows-sys 0.48.0",
++]
++
+ [[package]]
+ name = "term"
+ version = "0.7.0"
+@@ -2347,8 +2878,9 @@ dependencies = [
+  "parking_lot",
+  "pin-project-lite",
+  "signal-hook-registry",
+- "socket2",
++ "socket2 0.5.5",
+  "tokio-macros",
++ "tracing",
+  "windows-sys 0.48.0",
+ ]
+ 
+@@ -2421,6 +2953,54 @@ dependencies = [
+  "winnow 0.6.1",
+ ]
+ 
++[[package]]
++name = "tracing"
++version = "0.1.37"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "8ce8c33a8d48bd45d624a6e523445fd21ec13d3653cd51f681abf67418f54eb8"
++dependencies = [
++ "cfg-if",
++ "pin-project-lite",
++ "tracing-attributes",
++ "tracing-core",
++]
++
++[[package]]
++name = "tracing-attributes"
++version = "0.1.26"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "5f4f31f56159e98206da9efd823404b79b6ef3143b4a7ab76e67b1751b25a4ab"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn 2.0.49",
++]
++
++[[package]]
++name = "tracing-core"
++version = "0.1.31"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "0955b8137a1df6f1a2e9a37d8a6656291ff0297c1a97c24e0d8425fe2312f79a"
++dependencies = [
++ "once_cell",
++]
++
++[[package]]
++name = "typenum"
++version = "1.16.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "497961ef93d974e23eb6f433eb5fe1b7930b659f06d12dec6fc44a8f554c0bba"
++
++[[package]]
++name = "uds_windows"
++version = "1.0.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "ce65604324d3cce9b966701489fbd0cf318cb1f7bd9dd07ac9a4ee6fb791930d"
++dependencies = [
++ "tempfile",
++ "winapi",
++]
++
+ [[package]]
+ name = "unescape"
+ version = "0.1.0"
+@@ -2478,6 +3058,12 @@ dependencies = [
+  "libc",
+ ]
+ 
++[[package]]
++name = "waker-fn"
++version = "1.1.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "9d5b2c62b4012a3e1eca5a7e077d13b3bf498c4073e33ccd58626607748ceeca"
++
+ [[package]]
+ name = "walkdir"
+ version = "2.4.0"
+@@ -2789,6 +3375,16 @@ dependencies = [
+  "nix 0.25.1",
+ ]
+ 
++[[package]]
++name = "xdg-home"
++version = "1.0.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "2769203cd13a0c6015d515be729c526d041e9cf2c0cc478d57faee85f40c6dcd"
++dependencies = [
++ "nix 0.26.4",
++ "winapi",
++]
++
+ [[package]]
+ name = "yaml-rust"
+ version = "0.4.5"
+@@ -2828,6 +3424,67 @@ dependencies = [
+  "thiserror",
+ ]
+ 
++[[package]]
++name = "zbus"
++version = "3.14.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "31de390a2d872e4cd04edd71b425e29853f786dc99317ed72d73d6fcf5ebb948"
++dependencies = [
++ "async-broadcast",
++ "async-process",
++ "async-recursion",
++ "async-trait",
++ "byteorder",
++ "derivative",
++ "enumflags2",
++ "event-listener",
++ "futures-core",
++ "futures-sink",
++ "futures-util",
++ "hex",
++ "nix 0.26.4",
++ "once_cell",
++ "ordered-stream",
++ "rand",
++ "serde",
++ "serde_repr",
++ "sha1",
++ "static_assertions",
++ "tokio",
++ "tracing",
++ "uds_windows",
++ "winapi",
++ "xdg-home",
++ "zbus_macros",
++ "zbus_names",
++ "zvariant",
++]
++
++[[package]]
++name = "zbus_macros"
++version = "3.14.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "41d1794a946878c0e807f55a397187c11fc7a038ba5d868e7db4f3bd7760bc9d"
++dependencies = [
++ "proc-macro-crate",
++ "proc-macro2",
++ "quote",
++ "regex",
++ "syn 1.0.109",
++ "zvariant_utils",
++]
++
++[[package]]
++name = "zbus_names"
++version = "2.6.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "fb80bb776dbda6e23d705cf0123c3b95df99c4ebeaec6c2599d4a5419902b4a9"
++dependencies = [
++ "serde",
++ "static_assertions",
++ "zvariant",
++]
++
+ [[package]]
+ name = "zerocopy"
+ version = "0.7.32"
+@@ -2847,3 +3504,41 @@ dependencies = [
+  "quote",
+  "syn 2.0.49",
+ ]
++
++[[package]]
++name = "zvariant"
++version = "3.15.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "44b291bee0d960c53170780af148dca5fa260a63cdd24f1962fa82e03e53338c"
++dependencies = [
++ "byteorder",
++ "enumflags2",
++ "libc",
++ "serde",
++ "static_assertions",
++ "zvariant_derive",
++]
++
++[[package]]
++name = "zvariant_derive"
++version = "3.15.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "934d7a7dfc310d6ee06c87ffe88ef4eca7d3e37bb251dece2ef93da8f17d8ecd"
++dependencies = [
++ "proc-macro-crate",
++ "proc-macro2",
++ "quote",
++ "syn 1.0.109",
++ "zvariant_utils",
++]
++
++[[package]]
++name = "zvariant_utils"
++version = "1.0.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "7234f0d811589db492d16893e3f21e8e2fd282e6d01b0cddee310322062cc200"
++dependencies = [
++ "proc-macro2",
++ "quote",
++ "syn 1.0.109",
++]
+diff --git a/crates/eww/Cargo.toml b/crates/eww/Cargo.toml
+index 554fd86..6bcce09 100644
+--- a/crates/eww/Cargo.toml
++++ b/crates/eww/Cargo.toml
+@@ -34,6 +34,9 @@ gtk-layer-shell = { version = "0.6.1", optional = true }
+ gdkx11 = { version = "0.17", optional = true }
+ x11rb = { version = "0.11.1", features = ["randr"], optional = true }
+ 
++zbus = { version = "3.7.0", default-features = false, features = ["tokio"] }
++notifier_host = { version = "0.1.0", path = "../notifier_host" }
++
+ anyhow.workspace  = true
+ bincode.workspace = true
+ chrono.workspace = true
+diff --git a/crates/eww/src/app.rs b/crates/eww/src/app.rs
+index 8b13a67..41b3364 100644
+--- a/crates/eww/src/app.rs
++++ b/crates/eww/src/app.rs
+@@ -7,6 +7,7 @@ use crate::{
+     paths::EwwPaths,
+     script_var_handler::ScriptVarHandlerHandle,
+     state::scope_graph::{ScopeGraph, ScopeIndex},
++    widgets::window::Window,
+     window_arguments::WindowArguments,
+     window_initiator::WindowInitiator,
+     *,
+@@ -92,7 +93,7 @@ pub struct EwwWindow {
+     pub instance_id: String,
+     pub name: String,
+     pub scope_index: ScopeIndex,
+-    pub gtk_window: gtk::Window,
++    pub gtk_window: Window,
+     pub destroy_event_handler_id: Option<glib::SignalHandlerId>,
+ }
+ 
+@@ -524,15 +525,21 @@ fn initialize_window<B: DisplayBackend>(
+     window_scope: ScopeIndex,
+ ) -> Result<EwwWindow> {
+     let monitor_geometry = monitor.geometry();
+-    let window = B::initialize_window(window_init, monitor_geometry)
++    let (actual_window_rect, x, y) = match window_init.geometry {
++        Some(geometry) => {
++            let rect = get_window_rectangle(geometry, monitor_geometry);
++            (Some(rect), rect.x(), rect.y())
++        }
++        _ => (None, 0, 0),
++    };
++    let window = B::initialize_window(window_init, monitor_geometry, x, y)
+         .with_context(|| format!("monitor {} is unavailable", window_init.monitor.clone().unwrap()))?;
+ 
+     window.set_title(&format!("Eww - {}", window_init.name));
+     window.set_position(gtk::WindowPosition::None);
+     window.set_gravity(gdk::Gravity::Center);
+ 
+-    if let Some(geometry) = window_init.geometry {
+-        let actual_window_rect = get_window_rectangle(geometry, monitor_geometry);
++    if let Some(actual_window_rect) = actual_window_rect {
+         window.set_size_request(actual_window_rect.width(), actual_window_rect.height());
+         window.set_default_size(actual_window_rect.width(), actual_window_rect.height());
+     }
+@@ -575,11 +582,7 @@ fn initialize_window<B: DisplayBackend>(
+ 
+ /// Apply the provided window-positioning rules to the window.
+ #[cfg(feature = "x11")]
+-fn apply_window_position(
+-    mut window_geometry: WindowGeometry,
+-    monitor_geometry: gdk::Rectangle,
+-    window: &gtk::Window,
+-) -> Result<()> {
++fn apply_window_position(mut window_geometry: WindowGeometry, monitor_geometry: gdk::Rectangle, window: &Window) -> Result<()> {
+     let gdk_window = window.window().context("Failed to get gdk window from gtk window")?;
+     window_geometry.size = Coords::from_pixels(window.size());
+     let actual_window_rect = get_window_rectangle(window_geometry, monitor_geometry);
+@@ -593,7 +596,7 @@ fn apply_window_position(
+     Ok(())
+ }
+ 
+-fn on_screen_changed(window: &gtk::Window, _old_screen: Option<&gdk::Screen>) {
++fn on_screen_changed(window: &Window, _old_screen: Option<&gdk::Screen>) {
+     let visual = gtk::prelude::GtkWindowExt::screen(window)
+         .and_then(|screen| screen.rgba_visual().filter(|_| screen.is_composited()).or_else(|| screen.system_visual()));
+     window.set_visual(visual.as_ref());
+diff --git a/crates/eww/src/display_backend.rs b/crates/eww/src/display_backend.rs
+index 74a6033..d416166 100644
+--- a/crates/eww/src/display_backend.rs
++++ b/crates/eww/src/display_backend.rs
+@@ -1,4 +1,4 @@
+-use crate::window_initiator::WindowInitiator;
++use crate::{widgets::window::Window, window_initiator::WindowInitiator};
+ 
+ #[cfg(feature = "wayland")]
+ pub use platform_wayland::WaylandBackend;
+@@ -9,7 +9,7 @@ pub use platform_x11::{set_xprops, X11Backend};
+ pub trait DisplayBackend: Send + Sync + 'static {
+     const IS_X11: bool;
+ 
+-    fn initialize_window(window_init: &WindowInitiator, monitor: gdk::Rectangle) -> Option<gtk::Window>;
++    fn initialize_window(window_init: &WindowInitiator, monitor: gdk::Rectangle, x: i32, y: i32) -> Option<Window>;
+ }
+ 
+ pub struct NoBackend;
+@@ -17,14 +17,14 @@ pub struct NoBackend;
+ impl DisplayBackend for NoBackend {
+     const IS_X11: bool = false;
+ 
+-    fn initialize_window(_window_init: &WindowInitiator, _monitor: gdk::Rectangle) -> Option<gtk::Window> {
+-        Some(gtk::Window::new(gtk::WindowType::Toplevel))
++    fn initialize_window(_window_init: &WindowInitiator, _monitor: gdk::Rectangle, x: i32, y: i32) -> Option<Window> {
++        Some(Window::new(gtk::WindowType::Toplevel, x, y))
+     }
+ }
+ 
+ #[cfg(feature = "wayland")]
+ mod platform_wayland {
+-    use crate::window_initiator::WindowInitiator;
++    use crate::{widgets::window::Window, window_initiator::WindowInitiator};
+     use gtk::prelude::*;
+     use yuck::config::{window_definition::WindowStacking, window_geometry::AnchorAlignment};
+ 
+@@ -35,8 +35,8 @@ mod platform_wayland {
+     impl DisplayBackend for WaylandBackend {
+         const IS_X11: bool = false;
+ 
+-        fn initialize_window(window_init: &WindowInitiator, monitor: gdk::Rectangle) -> Option<gtk::Window> {
+-            let window = gtk::Window::new(gtk::WindowType::Toplevel);
++        fn initialize_window(window_init: &WindowInitiator, monitor: gdk::Rectangle, x: i32, y: i32) -> Option<Window> {
++            let window = Window::new(gtk::WindowType::Toplevel, x, y);
+             // Initialising a layer shell surface
+             gtk_layer_shell::init_for_window(&window);
+             // Sets the monitor where the surface is shown
+@@ -112,7 +112,7 @@ mod platform_wayland {
+ 
+ #[cfg(feature = "x11")]
+ mod platform_x11 {
+-    use crate::window_initiator::WindowInitiator;
++    use crate::{widgets::window::Window, window_initiator::WindowInitiator};
+     use anyhow::{Context, Result};
+     use gdk::Monitor;
+     use gtk::{self, prelude::*};
+@@ -135,10 +135,10 @@ mod platform_x11 {
+     impl DisplayBackend for X11Backend {
+         const IS_X11: bool = true;
+ 
+-        fn initialize_window(window_init: &WindowInitiator, _monitor: gdk::Rectangle) -> Option<gtk::Window> {
++        fn initialize_window(window_init: &WindowInitiator, _monitor: gdk::Rectangle, x: i32, y: i32) -> Option<Window> {
+             let window_type =
+                 if window_init.backend_options.x11.wm_ignore { gtk::WindowType::Popup } else { gtk::WindowType::Toplevel };
+-            let window = gtk::Window::new(window_type);
++            let window = Window::new(window_type, x, y);
+             window.set_resizable(window_init.resizable);
+             window.set_keep_above(window_init.stacking == WindowStacking::Foreground);
+             window.set_keep_below(window_init.stacking == WindowStacking::Background);
+@@ -151,7 +151,7 @@ mod platform_x11 {
+         }
+     }
+ 
+-    pub fn set_xprops(window: &gtk::Window, monitor: Monitor, window_init: &WindowInitiator) -> Result<()> {
++    pub fn set_xprops(window: &Window, monitor: Monitor, window_init: &WindowInitiator) -> Result<()> {
+         let backend = X11BackendConnection::new()?;
+         backend.set_xprops_for(window, monitor, window_init)?;
+         Ok(())
+@@ -171,7 +171,7 @@ mod platform_x11 {
+             Ok(X11BackendConnection { conn, root_window: screen.root, atoms })
+         }
+ 
+-        fn set_xprops_for(&self, window: &gtk::Window, monitor: Monitor, window_init: &WindowInitiator) -> Result<()> {
++        fn set_xprops_for(&self, window: &Window, monitor: Monitor, window_init: &WindowInitiator) -> Result<()> {
+             let monitor_rect = monitor.geometry();
+             let scale_factor = monitor.scale_factor() as u32;
+             let gdk_window = window.window().context("Couldn't get gdk window from gtk window")?;
+diff --git a/crates/eww/src/main.rs b/crates/eww/src/main.rs
+index aac52a6..9384c8f 100644
+--- a/crates/eww/src/main.rs
++++ b/crates/eww/src/main.rs
+@@ -41,7 +41,10 @@ fn main() {
+     if std::env::var("RUST_LOG").is_ok() {
+         pretty_env_logger::init_timed();
+     } else {
+-        pretty_env_logger::formatted_timed_builder().filter(Some("eww"), log_level_filter).init();
++        pretty_env_logger::formatted_timed_builder()
++            .filter(Some("eww"), log_level_filter)
++            .filter(Some("notifier_host"), log_level_filter)
++            .init();
+     }
+ 
+     #[allow(unused)]
+diff --git a/crates/eww/src/server.rs b/crates/eww/src/server.rs
+index be00db3..50b24b2 100644
+--- a/crates/eww/src/server.rs
++++ b/crates/eww/src/server.rs
+@@ -103,7 +103,7 @@ pub fn initialize_server<B: DisplayBackend>(
+     }
+ 
+     // initialize all the handlers and tasks running asyncronously
+-    init_async_part(app.paths.clone(), ui_send);
++    let tokio_handle = init_async_part(app.paths.clone(), ui_send);
+ 
+     glib::MainContext::default().spawn_local(async move {
+         // if an action was given to the daemon initially, execute it first.
+@@ -124,22 +124,26 @@ pub fn initialize_server<B: DisplayBackend>(
+         }
+     });
+ 
++    // allow the GTK main thread to do tokio things
++    let _g = tokio_handle.enter();
++
+     gtk::main();
+     log::info!("main application thread finished");
+ 
+     Ok(ForkResult::Child)
+ }
+ 
+-fn init_async_part(paths: EwwPaths, ui_send: UnboundedSender<app::DaemonCommand>) {
++fn init_async_part(paths: EwwPaths, ui_send: UnboundedSender<app::DaemonCommand>) -> tokio::runtime::Handle {
++    let rt = tokio::runtime::Builder::new_multi_thread()
++        .thread_name("main-async-runtime")
++        .enable_all()
++        .build()
++        .expect("Failed to initialize tokio runtime");
++    let handle = rt.handle().clone();
++
+     std::thread::Builder::new()
+         .name("outer-main-async-runtime".to_string())
+         .spawn(move || {
+-            let rt = tokio::runtime::Builder::new_multi_thread()
+-                .thread_name("main-async-runtime")
+-                .enable_all()
+-                .build()
+-                .expect("Failed to initialize tokio runtime");
+-
+             rt.block_on(async {
+                 let filewatch_join_handle = {
+                     let ui_send = ui_send.clone();
+@@ -171,6 +175,8 @@ fn init_async_part(paths: EwwPaths, ui_send: UnboundedSender<app::DaemonCommand>
+             })
+         })
+         .expect("Failed to start outer-main-async-runtime thread");
++
++    handle
+ }
+ 
+ /// Watch configuration files for changes, sending reload events to the eww app when the files change.
+diff --git a/crates/eww/src/widgets/def_widget_macro.rs b/crates/eww/src/widgets/def_widget_macro.rs
+index 311ce6f..44a1faf 100644
+--- a/crates/eww/src/widgets/def_widget_macro.rs
++++ b/crates/eww/src/widgets/def_widget_macro.rs
+@@ -53,6 +53,8 @@ macro_rules! def_widget {
+                                     // values is a map of all the variables that are required to evaluate the
+                                     // attributes expression.
+ 
++                                    // allow $gtk_widget to never be used, by creating a reference that gets immediately discarded
++                                    {let _ = &$gtk_widget;};
+ 
+                                     // We first initialize all the local variables for all the expected attributes in scope
+                                     $(
+diff --git a/crates/eww/src/widgets/mod.rs b/crates/eww/src/widgets/mod.rs
+index 6e7c6c9..34abab0 100644
+--- a/crates/eww/src/widgets/mod.rs
++++ b/crates/eww/src/widgets/mod.rs
+@@ -4,8 +4,10 @@ pub mod build_widget;
+ pub mod circular_progressbar;
+ pub mod def_widget_macro;
+ pub mod graph;
++mod systray;
+ pub mod transform;
+ pub mod widget_definitions;
++pub mod window;
+ 
+ /// Run a command that was provided as an attribute.
+ /// This command may use placeholders which will be replaced by the values of the arguments given.
+diff --git a/crates/eww/src/widgets/systray.rs b/crates/eww/src/widgets/systray.rs
+new file mode 100644
+index 0000000..384bb61
+--- /dev/null
++++ b/crates/eww/src/widgets/systray.rs
+@@ -0,0 +1,260 @@
++use crate::widgets::window::Window;
++use gtk::{cairo::Surface, gdk::ffi::gdk_cairo_surface_create_from_pixbuf, prelude::*};
++use notifier_host::{self, export::ordered_stream::OrderedStreamExt};
++use std::{future::Future, rc::Rc};
++
++// DBus state shared between systray instances, to avoid creating too many connections etc.
++struct DBusSession {
++    // con: zbus::Connection,
++    // name: zbus::names::WellKnownName<'static>,
++    snw: notifier_host::dbus::StatusNotifierWatcherProxy<'static>,
++}
++
++async fn dbus_session() -> zbus::Result<&'static DBusSession> {
++    // TODO make DBusSession reference counted so it's dropped when not in use?
++
++    static DBUS_STATE: tokio::sync::OnceCell<DBusSession> = tokio::sync::OnceCell::const_new();
++    DBUS_STATE
++        .get_or_try_init(|| async {
++            // TODO error handling?
++            let con = zbus::Connection::session().await?;
++            notifier_host::Watcher::new().attach_to(&con).await?;
++
++            let name = notifier_host::attach_new_wellknown_name(&con).await?;
++            let snw = notifier_host::register_to_watcher(&con, &name).await?;
++
++            Ok(DBusSession {
++                // con,
++                // name,
++                snw,
++            })
++        })
++        .await
++}
++
++fn run_async_task<F: Future>(f: F) -> F::Output {
++    let rt = tokio::runtime::Builder::new_current_thread().enable_all().build().expect("Failed to initialize tokio runtime");
++    rt.block_on(f)
++}
++
++pub struct Props {
++    icon_size_tx: tokio::sync::watch::Sender<i32>,
++}
++
++impl Props {
++    pub fn new() -> Self {
++        let (icon_size_tx, _) = tokio::sync::watch::channel(24);
++        Self { icon_size_tx }
++    }
++
++    pub fn icon_size(&self, value: i32) {
++        let _ = self.icon_size_tx.send_if_modified(|x| {
++            if *x == value {
++                false
++            } else {
++                *x = value;
++                true
++            }
++        });
++    }
++}
++
++struct Tray {
++    container: gtk::Box,
++    items: std::collections::HashMap<String, Item>,
++
++    icon_size: tokio::sync::watch::Receiver<i32>,
++}
++
++pub fn spawn_systray(container: &gtk::Box, props: &Props) {
++    let mut systray = Tray { container: container.clone(), items: Default::default(), icon_size: props.icon_size_tx.subscribe() };
++
++    let task = glib::MainContext::default().spawn_local(async move {
++        let s = match dbus_session().await {
++            Ok(x) => x,
++            Err(e) => {
++                log::error!("could not initialise dbus connection for tray: {}", e);
++                return;
++            }
++        };
++
++        systray.container.show();
++        if let Err(e) = notifier_host::run_host_forever(&mut systray, &s.snw).await {
++            log::error!("notifier host error: {}", e);
++        }
++    });
++
++    // stop the task when the widget is dropped
++    container.connect_destroy(move |_| {
++        task.abort();
++    });
++}
++
++impl notifier_host::Host for Tray {
++    fn add_item(&mut self, id: &str, item: notifier_host::Item) {
++        let item = Item::new(id.to_owned(), item, self.icon_size.clone());
++        self.container.add(&item.widget);
++        if let Some(old_item) = self.items.insert(id.to_string(), item) {
++            self.container.remove(&old_item.widget);
++        }
++    }
++
++    fn remove_item(&mut self, id: &str) {
++        if let Some(item) = self.items.get(id) {
++            self.container.remove(&item.widget);
++        } else {
++            log::warn!("Tried to remove nonexistent item {:?} from systray", id);
++        }
++    }
++}
++
++/// Item represents a single icon being shown in the system tray.
++struct Item {
++    /// Main widget representing this tray item.
++    widget: gtk::EventBox,
++
++    /// Async task to stop when this item gets removed.
++    task: Option<glib::JoinHandle<()>>,
++}
++
++impl Drop for Item {
++    fn drop(&mut self) {
++        if let Some(task) = &self.task {
++            task.abort();
++        }
++    }
++}
++
++impl Item {
++    fn new(id: String, item: notifier_host::Item, icon_size: tokio::sync::watch::Receiver<i32>) -> Self {
++        let widget = gtk::EventBox::new();
++        let out_widget = widget.clone(); // copy so we can return it
++
++        let task = glib::MainContext::default().spawn_local(async move {
++            if let Err(e) = Item::maintain(widget.clone(), item, icon_size).await {
++                log::error!("error for systray item {}: {}", id, e);
++            }
++        });
++
++        Self { widget: out_widget, task: Some(task) }
++    }
++
++    async fn maintain(
++        widget: gtk::EventBox,
++        mut item: notifier_host::Item,
++        mut icon_size: tokio::sync::watch::Receiver<i32>,
++    ) -> zbus::Result<()> {
++        // init icon
++        let icon = gtk::Image::new();
++        widget.add(&icon);
++        icon.show();
++
++        // init menu
++        if let Err(e) = item.set_menu().await {
++            log::warn!("failed to get menu: {}", e);
++        }
++
++        // TODO this is a lot of code duplication unfortunately, i'm not really sure how to
++        // refactor without making the borrow checker angry
++
++        // set status
++        match item.status().await? {
++            notifier_host::Status::Passive => widget.hide(),
++            notifier_host::Status::Active | notifier_host::Status::NeedsAttention => widget.show(),
++        }
++
++        // set title
++        widget.set_tooltip_text(Some(&item.sni.title().await?));
++
++        // set icon
++        let scale = icon.scale_factor();
++        load_icon_for_item(&icon, &item, *icon_size.borrow_and_update(), scale).await;
++
++        let item = Rc::new(item);
++        let window =
++            widget.toplevel().expect("Failed to obtain toplevel window").downcast::<Window>().expect("Failed to downcast window");
++        widget.add_events(gdk::EventMask::BUTTON_PRESS_MASK);
++        widget.connect_button_press_event(glib::clone!(@strong item => move |widget, evt| {
++            let (x, y) = (evt.root().0 as i32 + window.x(), evt.root().1 as i32 + window.y());
++            let item_is_menu = run_async_task(async { item.sni.item_is_menu().await });
++            let have_item_is_menu = item_is_menu.is_ok();
++            let item_is_menu = item_is_menu.unwrap_or(false);
++            log::debug!(
++                "mouse click button={}, x={}, y={}, have_item_is_menu={}, item_is_menu={}",
++                evt.button(),
++                x,
++                y,
++                have_item_is_menu,
++                item_is_menu
++            );
++
++            let result = match (evt.button(), item_is_menu) {
++                (gdk::BUTTON_PRIMARY, false) => {
++                    let result = run_async_task(async { item.sni.activate(x, y).await });
++                    if result.is_err() && !have_item_is_menu {
++                        log::debug!("fallback to context menu due to: {}", result.unwrap_err());
++                        // Some applications are in fact menu-only (don't have Activate method)
++                        // but don't report so through ItemIsMenu property. Fallback to menu if
++                        // activate failed in this case.
++                        run_async_task(async { item.popup_menu(widget, evt, x, y).await })
++                    } else {
++                        result
++                    }
++                }
++                (gdk::BUTTON_MIDDLE, _) => run_async_task(async { item.sni.secondary_activate(x, y).await }),
++                (gdk::BUTTON_SECONDARY, _) | (gdk::BUTTON_PRIMARY, true) => {
++                    run_async_task(async { item.popup_menu(widget, evt, x, y).await })
++                }
++                _ => Err(zbus::Error::Failure(format!("unknown button {}", evt.button()))),
++            };
++            if let Err(result) = result {
++                log::error!("failed to handle mouse click {}: {}", evt.button(), result);
++            }
++            gtk::Inhibit(true)
++        }));
++
++        // updates
++        let mut status_updates = item.sni.receive_new_status().await?;
++        let mut title_updates = item.sni.receive_new_title().await?;
++        let mut icon_updates = item.sni.receive_new_icon().await?;
++
++        loop {
++            tokio::select! {
++                Some(_) = status_updates.next() => {
++                    // set status
++                    match item.status().await? {
++                        notifier_host::Status::Passive => widget.hide(),
++                        notifier_host::Status::Active | notifier_host::Status::NeedsAttention => widget.show(),
++                    }
++                }
++                Ok(_) = icon_size.changed() => {
++                    // set icon
++                    load_icon_for_item(&icon, &item, *icon_size.borrow_and_update(), scale).await;
++                }
++                Some(_) = title_updates.next() => {
++                    // set title
++                    widget.set_tooltip_text(Some(&item.sni.title().await?));
++                }
++                Some(_) = icon_updates.next() => {
++                    // set icon
++                    load_icon_for_item(&icon, &item, *icon_size.borrow_and_update(), scale).await;
++                }
++            }
++        }
++    }
++}
++
++async fn load_icon_for_item(icon: &gtk::Image, item: &notifier_host::Item, size: i32, scale: i32) {
++    if let Some(pixbuf) = item.icon(size, scale).await {
++        let surface = unsafe {
++            // gtk::cairo::Surface will destroy the underlying surface on drop
++            let ptr = gdk_cairo_surface_create_from_pixbuf(
++                pixbuf.as_ptr(),
++                scale,
++                icon.window().map_or(std::ptr::null_mut(), |v| v.as_ptr()),
++            );
++            Surface::from_raw_full(ptr)
++        };
++        icon.set_from_surface(surface.ok().as_ref());
++    }
++}
+diff --git a/crates/eww/src/widgets/widget_definitions.rs b/crates/eww/src/widgets/widget_definitions.rs
+index a390c0d..18dff78 100644
+--- a/crates/eww/src/widgets/widget_definitions.rs
++++ b/crates/eww/src/widgets/widget_definitions.rs
+@@ -3,7 +3,7 @@ use super::{build_widget::BuilderArgs, circular_progressbar::*, run_command, tra
+ use crate::{
+     def_widget, enum_parse, error_handling_ctx,
+     util::{self, list_difference},
+-    widgets::build_widget::build_gtk_widget,
++    widgets::{build_widget::build_gtk_widget, systray},
+ };
+ use anyhow::{anyhow, Context, Result};
+ use codespan_reporting::diagnostic::Severity;
+@@ -82,6 +82,7 @@ pub const BUILTIN_WIDGET_NAMES: &[&str] = &[
+     WIDGET_NAME_SCROLL,
+     WIDGET_NAME_OVERLAY,
+     WIDGET_NAME_STACK,
++    WIDGET_NAME_SYSTRAY,
+ ];
+ 
+ /// widget definitions
+@@ -111,6 +112,7 @@ pub(super) fn widget_use_to_gtk_widget(bargs: &mut BuilderArgs) -> Result<gtk::W
+         WIDGET_NAME_SCROLL => build_gtk_scrolledwindow(bargs)?.upcast(),
+         WIDGET_NAME_OVERLAY => build_gtk_overlay(bargs)?.upcast(),
+         WIDGET_NAME_STACK => build_gtk_stack(bargs)?.upcast(),
++        WIDGET_NAME_SYSTRAY => build_systray(bargs)?.upcast(),
+         _ => {
+             return Err(DiagError(gen_diagnostic! {
+                 msg = format!("referenced unknown widget `{}`", bargs.widget_use.name),
+@@ -1133,6 +1135,36 @@ fn build_graph(bargs: &mut BuilderArgs) -> Result<super::graph::Graph> {
+     Ok(w)
+ }
+ 
++const WIDGET_NAME_SYSTRAY: &str = "systray";
++/// @widget systray
++/// @desc Tray for system notifier icons
++fn build_systray(bargs: &mut BuilderArgs) -> Result<gtk::Box> {
++    let gtk_widget = gtk::Box::new(gtk::Orientation::Horizontal, 0);
++    let props = Rc::new(systray::Props::new());
++    let props_clone = props.clone(); // copies for def_widget
++
++    def_widget!(bargs, _g, gtk_widget, {
++        // @prop spacing - spacing between elements
++        prop(spacing: as_i32 = 0) { gtk_widget.set_spacing(spacing) },
++        // @prop orientation - orientation of the box. possible values: $orientation
++        prop(orientation: as_string) { gtk_widget.set_orientation(parse_orientation(&orientation)?) },
++        // @prop space-evenly - space the widgets evenly.
++        prop(space_evenly: as_bool = true) { gtk_widget.set_homogeneous(space_evenly) },
++        // @prop icon-size - size of icons in the tray
++        prop(icon_size: as_i32) {
++            if icon_size <= 0 {
++                log::warn!("Icon size is not a positive number");
++            } else {
++                props.icon_size(icon_size);
++            }
++        },
++    });
++
++    systray::spawn_systray(&gtk_widget, &props_clone);
++
++    Ok(gtk_widget)
++}
++
+ /// @var orientation - "vertical", "v", "horizontal", "h"
+ fn parse_orientation(o: &str) -> Result<gtk::Orientation> {
+     enum_parse! { "orientation", o,
+diff --git a/crates/eww/src/widgets/window.rs b/crates/eww/src/widgets/window.rs
+new file mode 100644
+index 0000000..4e6c0dc
+--- /dev/null
++++ b/crates/eww/src/widgets/window.rs
+@@ -0,0 +1,64 @@
++use glib::{object_subclass, wrapper};
++use glib_macros::Properties;
++use gtk::{prelude::*, subclass::prelude::*};
++use std::cell::RefCell;
++
++wrapper! {
++    pub struct Window(ObjectSubclass<WindowPriv>)
++    @extends gtk::Window, gtk::Bin, gtk::Container, gtk::Widget, @implements gtk::Buildable;
++}
++
++#[derive(Properties)]
++#[properties(wrapper_type = Window)]
++pub struct WindowPriv {
++    #[property(get, name = "x", nick = "X", blurb = "Global x coordinate", default = 0)]
++    x: RefCell<i32>,
++
++    #[property(get, name = "y", nick = "Y", blurb = "Global y coordinate", default = 0)]
++    y: RefCell<i32>,
++}
++
++// This should match the default values from the ParamSpecs
++impl Default for WindowPriv {
++    fn default() -> Self {
++        WindowPriv { x: RefCell::new(0), y: RefCell::new(0) }
++    }
++}
++
++#[object_subclass]
++impl ObjectSubclass for WindowPriv {
++    type ParentType = gtk::Window;
++    type Type = Window;
++
++    const NAME: &'static str = "WindowEww";
++}
++
++impl Default for Window {
++    fn default() -> Self {
++        glib::Object::new::<Self>()
++    }
++}
++
++impl Window {
++    pub fn new(type_: gtk::WindowType, x_: i32, y_: i32) -> Self {
++        let w: Self = glib::Object::builder().property("type", type_).build();
++        let priv_ = w.imp();
++        priv_.x.replace(x_);
++        priv_.y.replace(y_);
++        w
++    }
++}
++
++impl ObjectImpl for WindowPriv {
++    fn properties() -> &'static [glib::ParamSpec] {
++        Self::derived_properties()
++    }
++
++    fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
++        self.derived_property(id, pspec)
++    }
++}
++impl WindowImpl for WindowPriv {}
++impl BinImpl for WindowPriv {}
++impl ContainerImpl for WindowPriv {}
++impl WidgetImpl for WindowPriv {}
+diff --git a/crates/notifier_host/Cargo.toml b/crates/notifier_host/Cargo.toml
+new file mode 100644
+index 0000000..79db74c
+--- /dev/null
++++ b/crates/notifier_host/Cargo.toml
+@@ -0,0 +1,18 @@
++[package]
++name = "notifier_host"
++version = "0.1.0"
++authors = ["elkowar <5300871+elkowar@users.noreply.github.com>"]
++edition = "2021"
++license = "MIT"
++description = "SystemNotifierHost implementation"
++repository = "https://github.com/elkowar/eww"
++homepage = "https://github.com/elkowar/eww"
++
++[dependencies]
++gtk = { version = "0.17.1" }
++gdk = "0.17.1"
++log = "0.4"
++thiserror = "1.0"
++tokio = { version = "1.31.0", features = ["full"] }
++zbus = { version = "3.7.0", default-features = false, features = ["tokio"] }
++dbusmenu-gtk3 = "0.1.0"
+diff --git a/crates/notifier_host/src/dbus/dbus_menu.xml b/crates/notifier_host/src/dbus/dbus_menu.xml
+new file mode 100644
+index 0000000..ae5d790
+--- /dev/null
++++ b/crates/notifier_host/src/dbus/dbus_menu.xml
+@@ -0,0 +1,69 @@
++<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
++"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
++<node>
++<interface name="com.canonical.dbusmenu">
++    <!-- Properties -->
++    <property name="Version" type="u" access="read" />
++    <property name="TextDirection" type="s" access="read" />
++    <property name="Status" type="s" access="read" />
++    <property name="IconThemePath" type="as" access="read" />
++
++    <!-- Functions -->
++    <method name="GetLayout">
++        <arg type="i" name="parentId" direction="in" />
++        <arg type="i" name="recursionDepth" direction="in" />
++        <arg type="as" name="propertyNames" direction="in" />
++        <arg type="u" name="revision" direction="out" />
++        <arg type="(ia{sv}av)" name="layout" direction="out" />
++    </method>
++
++    <method name="GetGroupProperties">
++        <arg type="ai" name="ids" direction="in" />
++        <arg type="as" name="propertyNames" direction="in" />
++        <arg type="a(ia{sv})" name="properties" direction="out" />
++    </method>
++
++    <method name="GetProperty">
++        <arg type="i" name="id" direction="in" />
++        <arg type="s" name="name" direction="in" />
++        <arg type="v" name="value" direction="out" />
++    </method>
++
++    <method name="Event">
++        <arg type="i" name="id" direction="in" />
++        <arg type="s" name="eventId" direction="in" />
++        <arg type="v" name="data" direction="in" />
++        <arg type="u" name="timestamp" direction="in" />
++    </method>
++
++    <method name="EventGroup">
++        <arg type="a(isvu)" name="events" direction="in" />
++        <arg type="ai" name="idErrors" direction="out" />
++    </method>
++
++    <method name="AboutToShow">
++        <arg type="i" name="id" direction="in" />
++        <arg type="b" name="needUpdate" direction="out" />
++    </method>
++
++    <method name="AboutToShowGroup">
++        <arg type="ai" name="ids" direction="in" />
++        <arg type="ai" name="updatesNeeded" direction="out" />
++        <arg type="ai" name="idErrors" direction="out" />
++    </method>
++
++    <!-- Signals -->
++    <signal name="ItemsPropertiesUpdated">
++        <arg type="a(ia{sv})" name="updatedProps" direction="out" />
++        <arg type="a(ias)" name="removedProps" direction="out" />
++    </signal>
++    <signal name="LayoutUpdated">
++        <arg type="u" name="revision" direction="out" />
++        <arg type="i" name="parent" direction="out" />
++    </signal>
++    <signal name="ItemActivationRequested">
++        <arg type="i" name="id" direction="out" />
++        <arg type="u" name="timestamp" direction="out" />
++    </signal>
++</interface>
++</node>
+\ No newline at end of file
+diff --git a/crates/notifier_host/src/dbus/dbus_status_notifier_item.rs b/crates/notifier_host/src/dbus/dbus_status_notifier_item.rs
+new file mode 100644
+index 0000000..5c57b2a
+--- /dev/null
++++ b/crates/notifier_host/src/dbus/dbus_status_notifier_item.rs
+@@ -0,0 +1,114 @@
++//! # DBus interface proxy for: `org.kde.StatusNotifierItem`
++//!
++//! This code was generated by `zbus-xmlgen` `3.1.0` from DBus introspection data.
++//! Source: `dbus-status-notifier-item.xml`.
++//!
++//! You may prefer to adapt it, instead of using it verbatim.
++//!
++//! More information can be found in the
++//! [Writing a client proxy](https://dbus.pages.freedesktop.org/zbus/client.html)
++//! section of the zbus documentation.
++
++// suppress warning from generated code
++#![allow(clippy::type_complexity)]
++
++use zbus::dbus_proxy;
++
++#[dbus_proxy(interface = "org.kde.StatusNotifierItem", assume_defaults = true)]
++trait StatusNotifierItem {
++    /// Activate method
++    fn activate(&self, x: i32, y: i32) -> zbus::Result<()>;
++
++    /// ContextMenu method
++    fn context_menu(&self, x: i32, y: i32) -> zbus::Result<()>;
++
++    /// Scroll method
++    fn scroll(&self, delta: i32, orientation: &str) -> zbus::Result<()>;
++
++    /// SecondaryActivate method
++    fn secondary_activate(&self, x: i32, y: i32) -> zbus::Result<()>;
++
++    /// NewAttentionIcon signal
++    #[dbus_proxy(signal)]
++    fn new_attention_icon(&self) -> zbus::Result<()>;
++
++    /// NewIcon signal
++    #[dbus_proxy(signal)]
++    fn new_icon(&self) -> zbus::Result<()>;
++
++    /// NewOverlayIcon signal
++    #[dbus_proxy(signal)]
++    fn new_overlay_icon(&self) -> zbus::Result<()>;
++
++    /// NewStatus signal
++    #[dbus_proxy(signal)]
++    fn new_status(&self, status: &str) -> zbus::Result<()>;
++
++    /// NewTitle signal
++    #[dbus_proxy(signal)]
++    fn new_title(&self) -> zbus::Result<()>;
++
++    /// NewToolTip signal
++    #[dbus_proxy(signal)]
++    fn new_tool_tip(&self) -> zbus::Result<()>;
++
++    /// AttentionIconName property
++    #[dbus_proxy(property)]
++    fn attention_icon_name(&self) -> zbus::Result<String>;
++
++    /// AttentionIconPixmap property
++    #[dbus_proxy(property)]
++    fn attention_icon_pixmap(&self) -> zbus::Result<Vec<(i32, i32, Vec<u8>)>>;
++
++    /// AttentionMovieName property
++    #[dbus_proxy(property)]
++    fn attention_movie_name(&self) -> zbus::Result<String>;
++
++    /// Category property
++    #[dbus_proxy(property)]
++    fn category(&self) -> zbus::Result<String>;
++
++    /// IconName property
++    #[dbus_proxy(property(emits_changed_signal = "false"))]
++    fn icon_name(&self) -> zbus::Result<String>;
++
++    /// IconPixmap property
++    #[dbus_proxy(property(emits_changed_signal = "false"))]
++    fn icon_pixmap(&self) -> zbus::Result<Vec<(i32, i32, Vec<u8>)>>;
++
++    /// IconThemePath property
++    #[dbus_proxy(property)]
++    fn icon_theme_path(&self) -> zbus::Result<String>;
++
++    /// Id property
++    #[dbus_proxy(property)]
++    fn id(&self) -> zbus::Result<String>;
++
++    /// ItemIsMenu property
++    #[dbus_proxy(property)]
++    fn item_is_menu(&self) -> zbus::Result<bool>;
++
++    /// Menu property
++    #[dbus_proxy(property)]
++    fn menu(&self) -> zbus::Result<zbus::zvariant::OwnedObjectPath>;
++
++    /// OverlayIconName property
++    #[dbus_proxy(property)]
++    fn overlay_icon_name(&self) -> zbus::Result<String>;
++
++    /// OverlayIconPixmap property
++    #[dbus_proxy(property)]
++    fn overlay_icon_pixmap(&self) -> zbus::Result<Vec<(i32, i32, Vec<u8>)>>;
++
++    /// Status property
++    #[dbus_proxy(property)]
++    fn status(&self) -> zbus::Result<String>;
++
++    /// Title property
++    #[dbus_proxy(property)]
++    fn title(&self) -> zbus::Result<String>;
++
++    /// ToolTip property
++    #[dbus_proxy(property)]
++    fn tool_tip(&self) -> zbus::Result<(String, Vec<(i32, i32, Vec<u8>)>)>;
++}
+diff --git a/crates/notifier_host/src/dbus/dbus_status_notifier_item.xml b/crates/notifier_host/src/dbus/dbus_status_notifier_item.xml
+new file mode 100644
+index 0000000..c33cd84
+--- /dev/null
++++ b/crates/notifier_host/src/dbus/dbus_status_notifier_item.xml
+@@ -0,0 +1,49 @@
++<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
++"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
++<node>
++  <interface name='org.kde.StatusNotifierItem'>
++    <annotation name="org.gtk.GDBus.C.Name" value="Item" />
++    <method name='ContextMenu'>
++      <arg type='i' direction='in' name='x'/>
++      <arg type='i' direction='in' name='y'/>
++    </method>
++    <method name='Activate'>
++      <arg type='i' direction='in' name='x'/>
++      <arg type='i' direction='in' name='y'/>
++    </method>
++    <method name='SecondaryActivate'>
++      <arg type='i' direction='in' name='x'/>
++      <arg type='i' direction='in' name='y'/>
++    </method>
++    <method name='Scroll'>
++      <arg type='i' direction='in' name='delta'/>
++      <arg type='s' direction='in' name='orientation'/>
++    </method>
++    <signal name='NewTitle'/>
++    <signal name='NewIcon'/>
++    <signal name='NewAttentionIcon'/>
++    <signal name='NewOverlayIcon'/>
++    <signal name='NewToolTip'/>
++    <signal name='NewStatus'>
++      <arg type='s' name='status'/>
++    </signal>
++    <property name='Category' type='s' access='read'/>
++    <property name='Id' type='s' access='read'/>
++    <property name='Title' type='s' access='read'/>
++    <property name='Status' type='s' access='read'/>
++    <!-- See discussion on pull #536
++    <property name='WindowId' type='u' access='read'/>
++    -->
++    <property name='IconThemePath' type='s' access='read'/>
++    <property name='IconName' type='s' access='read'/>
++    <property name='IconPixmap' type='a(iiay)' access='read'/>
++    <property name='OverlayIconName' type='s' access='read'/>
++    <property name='OverlayIconPixmap' type='a(iiay)' access='read'/>
++    <property name='AttentionIconName' type='s' access='read'/>
++    <property name='AttentionIconPixmap' type='a(iiay)' access='read'/>
++    <property name='AttentionMovieName' type='s' access='read'/>
++    <property name='ToolTip' type='(sa(iiay)ss)' access='read'/>
++    <property name='Menu' type='o' access='read'/>
++    <property name='ItemIsMenu' type='b' access='read'/>
++  </interface>
++</node>
+diff --git a/crates/notifier_host/src/dbus/dbus_status_notifier_watcher.rs b/crates/notifier_host/src/dbus/dbus_status_notifier_watcher.rs
+new file mode 100644
+index 0000000..9ac2eaa
+--- /dev/null
++++ b/crates/notifier_host/src/dbus/dbus_status_notifier_watcher.rs
+@@ -0,0 +1,53 @@
++//! # DBus interface proxy for: `org.kde.StatusNotifierWatcher`
++//!
++//! This code was generated by `zbus-xmlgen` `3.1.0` from DBus introspection data.
++//! Source: `dbus-status-notifier-watcher.xml`.
++//!
++//! You may prefer to adapt it, instead of using it verbatim.
++//!
++//! More information can be found in the
++//! [Writing a client proxy](https://dbus.pages.freedesktop.org/zbus/client.html)
++//! section of the zbus documentation.
++
++use zbus::dbus_proxy;
++
++#[dbus_proxy(
++    default_service = "org.kde.StatusNotifierWatcher",
++    interface = "org.kde.StatusNotifierWatcher",
++    default_path = "/StatusNotifierWatcher"
++)]
++trait StatusNotifierWatcher {
++    /// RegisterStatusNotifierHost method
++    fn register_status_notifier_host(&self, service: &str) -> zbus::Result<()>;
++
++    /// RegisterStatusNotifierItem method
++    fn register_status_notifier_item(&self, service: &str) -> zbus::Result<()>;
++
++    /// StatusNotifierHostRegistered signal
++    #[dbus_proxy(signal)]
++    fn status_notifier_host_registered(&self) -> zbus::Result<()>;
++
++    /// StatusNotifierHostUnregistered signal
++    #[dbus_proxy(signal)]
++    fn status_notifier_host_unregistered(&self) -> zbus::Result<()>;
++
++    /// StatusNotifierItemRegistered signal
++    #[dbus_proxy(signal)]
++    fn status_notifier_item_registered(&self, service: &str) -> zbus::Result<()>;
++
++    /// StatusNotifierItemUnregistered signal
++    #[dbus_proxy(signal)]
++    fn status_notifier_item_unregistered(&self, service: &str) -> zbus::Result<()>;
++
++    /// IsStatusNotifierHostRegistered property
++    #[dbus_proxy(property)]
++    fn is_status_notifier_host_registered(&self) -> zbus::Result<bool>;
++
++    /// ProtocolVersion property
++    #[dbus_proxy(property)]
++    fn protocol_version(&self) -> zbus::Result<i32>;
++
++    /// RegisteredStatusNotifierItems property
++    #[dbus_proxy(property)]
++    fn registered_status_notifier_items(&self) -> zbus::Result<Vec<String>>;
++}
+diff --git a/crates/notifier_host/src/dbus/dbus_status_notifier_watcher.xml b/crates/notifier_host/src/dbus/dbus_status_notifier_watcher.xml
+new file mode 100644
+index 0000000..6370e4d
+--- /dev/null
++++ b/crates/notifier_host/src/dbus/dbus_status_notifier_watcher.xml
+@@ -0,0 +1,52 @@
++<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
++<node>
++  <interface name="org.kde.StatusNotifierWatcher">
++    <annotation name="org.gtk.GDBus.C.Name" value="Watcher" />
++
++    <!-- methods -->
++    <method name="RegisterStatusNotifierItem">
++      <annotation name="org.gtk.GDBus.C.Name" value="RegisterItem" />
++      <arg name="service" type="s" direction="in"/>
++    </method>
++
++    <method name="RegisterStatusNotifierHost">
++        <annotation name="org.gtk.GDBus.C.Name" value="RegisterHost" />
++        <arg name="service" type="s" direction="in"/>
++    </method>
++
++
++    <!-- properties -->
++
++    <property name="RegisteredStatusNotifierItems" type="as" access="read">
++      <annotation name="org.gtk.GDBus.C.Name" value="RegisteredItems" />
++      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QStringList"/>
++    </property>
++
++    <property name="IsStatusNotifierHostRegistered" type="b" access="read">
++      <annotation name="org.gtk.GDBus.C.Name" value="IsHostRegistered" />
++    </property>
++
++    <property name="ProtocolVersion" type="i" access="read"/>
++
++
++    <!-- signals -->
++
++    <signal name="StatusNotifierItemRegistered">
++      <annotation name="org.gtk.GDBus.C.Name" value="ItemRegistered" />
++      <arg type="s" direction="out" name="service" />
++    </signal>
++
++    <signal name="StatusNotifierItemUnregistered">
++      <annotation name="org.gtk.GDBus.C.Name" value="ItemUnregistered" />
++      <arg type="s" direction="out" name="service" />
++    </signal>
++
++    <signal name="StatusNotifierHostRegistered">
++      <annotation name="org.gtk.GDBus.C.Name" value="HostRegistered" />
++    </signal>
++
++    <signal name="StatusNotifierHostUnregistered">
++      <annotation name="org.gtk.GDBus.C.Name" value="HostUnregistered" />
++    </signal>
++  </interface>
++</node>
+\ No newline at end of file
+diff --git a/crates/notifier_host/src/dbus/mod.rs b/crates/notifier_host/src/dbus/mod.rs
+new file mode 100644
+index 0000000..2852ce8
+--- /dev/null
++++ b/crates/notifier_host/src/dbus/mod.rs
+@@ -0,0 +1,11 @@
++//! # DBus interface proxies
++//!
++//! The interface XML files are taken from
++//! [Waybar](https://github.com/Alexays/Waybar/tree/master/protocol), and the proxies generated
++//! with [zbus-gen](https://docs.rs/crate/zbus_xmlgen/latest).
++
++mod dbus_status_notifier_item;
++pub use dbus_status_notifier_item::*;
++
++mod dbus_status_notifier_watcher;
++pub use dbus_status_notifier_watcher::*;
+diff --git a/crates/notifier_host/src/error.rs b/crates/notifier_host/src/error.rs
+new file mode 100644
+index 0000000..a8a2d6f
+--- /dev/null
++++ b/crates/notifier_host/src/error.rs
+@@ -0,0 +1,11 @@
++use thiserror::Error;
++
++#[derive(Error, Debug)]
++pub enum Error {
++    #[error("Dbus connection error")]
++    DbusError(#[from] zbus::Error),
++    #[error("Service path {0} was not understood")]
++    DbusAddressError(String),
++}
++
++pub type Result<T> = std::result::Result<T, Error>;
+diff --git a/crates/notifier_host/src/host.rs b/crates/notifier_host/src/host.rs
+new file mode 100644
+index 0000000..ff60a0d
+--- /dev/null
++++ b/crates/notifier_host/src/host.rs
+@@ -0,0 +1,101 @@
++use crate::*;
++
++use zbus::export::ordered_stream::{self, OrderedStreamExt};
++
++pub trait Host {
++    fn add_item(&mut self, id: &str, item: Item);
++    fn remove_item(&mut self, id: &str);
++}
++
++/// Add a new well-known name of format `org.freedesktop.StatusNotifierHost-{pid}-{nr}` for this connection.
++pub async fn attach_new_wellknown_name(con: &zbus::Connection) -> zbus::Result<zbus::names::WellKnownName<'static>> {
++    let pid = std::process::id();
++    let mut i = 0;
++    let wellknown = loop {
++        use zbus::fdo::RequestNameReply::*;
++
++        i += 1;
++        let wellknown = format!("org.freedesktop.StatusNotifierHost-{}-{}", pid, i);
++        let wellknown: zbus::names::WellKnownName = wellknown.try_into().expect("generated well-known name is invalid");
++
++        let flags = [zbus::fdo::RequestNameFlags::DoNotQueue];
++        match con.request_name_with_flags(&wellknown, flags.into_iter().collect()).await? {
++            PrimaryOwner => break wellknown,
++            Exists => {}
++            AlreadyOwner => {}
++            InQueue => unreachable!("request_name_with_flags returned InQueue even though we specified DoNotQueue"),
++        };
++    };
++    Ok(wellknown)
++}
++
++pub async fn register_to_watcher(
++    con: &zbus::Connection,
++    name: &zbus::names::WellKnownName<'_>,
++) -> zbus::Result<dbus::StatusNotifierWatcherProxy<'static>> {
++    // register ourself to StatusNotifierWatcher
++    let snw = dbus::StatusNotifierWatcherProxy::new(con).await?;
++    snw.register_status_notifier_host(name).await?;
++    Ok(snw)
++}
++
++pub async fn run_host_forever(host: &mut dyn Host, snw: &dbus::StatusNotifierWatcherProxy<'static>) -> zbus::Result<()> {
++    enum ItemEvent {
++        NewItem(dbus::StatusNotifierItemRegistered),
++        GoneItem(dbus::StatusNotifierItemUnregistered),
++    }
++
++    // start listening to these streams
++    let new_items = snw.receive_status_notifier_item_registered().await?;
++    let gone_items = snw.receive_status_notifier_item_unregistered().await?;
++
++    let mut item_names = std::collections::HashSet::new();
++
++    // initial items first
++    for svc in snw.registered_status_notifier_items().await? {
++        match Item::from_address(snw.connection(), &svc).await {
++            Ok(item) => {
++                item_names.insert(svc.to_owned());
++                host.add_item(&svc, item);
++            }
++            Err(e) => {
++                log::warn!("Could not create StatusNotifierItem from address {:?}: {:?}", svc, e);
++            }
++        }
++    }
++
++    let mut ev_stream = ordered_stream::join(
++        OrderedStreamExt::map(new_items, ItemEvent::NewItem),
++        OrderedStreamExt::map(gone_items, ItemEvent::GoneItem),
++    );
++    while let Some(ev) = ev_stream.next().await {
++        match ev {
++            ItemEvent::NewItem(sig) => {
++                let svc = sig.args()?.service;
++                if item_names.contains(svc) {
++                    log::info!("Got duplicate new item: {:?}", svc);
++                } else {
++                    match Item::from_address(snw.connection(), svc).await {
++                        Ok(item) => {
++                            item_names.insert(svc.to_owned());
++                            host.add_item(svc, item);
++                        }
++                        Err(e) => {
++                            log::warn!("Could not create StatusNotifierItem from address {:?}: {:?}", svc, e);
++                        }
++                    }
++                }
++            }
++            ItemEvent::GoneItem(sig) => {
++                let svc = sig.args()?.service;
++                if item_names.remove(svc) {
++                    host.remove_item(svc);
++                }
++            }
++        }
++    }
++
++    // TODO handle running out of events? why could this happen?
++
++    Ok(())
++}
+diff --git a/crates/notifier_host/src/icon.rs b/crates/notifier_host/src/icon.rs
+new file mode 100644
+index 0000000..45f7fc6
+--- /dev/null
++++ b/crates/notifier_host/src/icon.rs
+@@ -0,0 +1,202 @@
++use crate::*;
++
++use gtk::{self, prelude::*};
++
++#[derive(thiserror::Error, Debug)]
++pub enum IconError {
++    #[error("while fetching icon name: {0}")]
++    DBusIconName(#[source] zbus::Error),
++    #[error("while fetching icon theme path: {0}")]
++    DBusTheme(#[source] zbus::Error),
++    #[error("while fetching pixmap: {0}")]
++    DBusPixmap(#[source] zbus::Error),
++    #[error("loading icon from file {path:?}")]
++    LoadIconFromFile {
++        path: String,
++        #[source]
++        source: gtk::glib::Error,
++    },
++    #[error("loading icon {icon_name:?} from theme {}", .theme_path.as_ref().unwrap_or(&"(default)".to_owned()))]
++    LoadIconFromTheme {
++        icon_name: String,
++        theme_path: Option<String>,
++        #[source]
++        source: gtk::glib::Error,
++    },
++    #[error("no icon available")]
++    NotAvailable,
++}
++
++/// Get the fallback GTK icon
++async fn fallback_icon(size: i32, scale: i32) -> Option<gtk::gdk_pixbuf::Pixbuf> {
++    let theme = gtk::IconTheme::default().expect("Could not get default gtk theme");
++    match theme.load_icon_for_scale("image-missing", size, scale, gtk::IconLookupFlags::FORCE_SIZE) {
++        Ok(pb) => pb,
++        Err(e) => {
++            log::error!("failed to load \"image-missing\" from default theme: {}", e);
++            None
++        }
++    }
++}
++
++/// Load a pixbuf from StatusNotifierItem's [Icon format].
++///
++/// [Icon format]: https://freedesktop.org/wiki/Specifications/StatusNotifierItem/Icons/
++fn icon_from_pixmap(width: i32, height: i32, mut data: Vec<u8>) -> gtk::gdk_pixbuf::Pixbuf {
++    // We need to convert data from ARGB32 to RGBA32, since that's the only one that gdk-pixbuf
++    // understands.
++    for chunk in data.chunks_exact_mut(4) {
++        let a = chunk[0];
++        let r = chunk[1];
++        let g = chunk[2];
++        let b = chunk[3];
++        chunk[0] = r;
++        chunk[1] = g;
++        chunk[2] = b;
++        chunk[3] = a;
++    }
++
++    gtk::gdk_pixbuf::Pixbuf::from_bytes(
++        &gtk::glib::Bytes::from_owned(data),
++        gtk::gdk_pixbuf::Colorspace::Rgb,
++        true,
++        8,
++        width,
++        height,
++        width * 4,
++    )
++}
++
++/// From a list of pixmaps, create an icon from the most appropriately sized one.
++///
++/// This function returns None if and only if no pixmaps are provided.
++fn icon_from_pixmaps(pixmaps: Vec<(i32, i32, Vec<u8>)>, size: i32) -> Option<gtk::gdk_pixbuf::Pixbuf> {
++    pixmaps
++        .into_iter()
++        .max_by(|(w1, h1, _), (w2, h2, _)| {
++            // take smallest one bigger than requested size, otherwise take biggest
++            let a = size * size;
++            let a1 = w1 * h1;
++            let a2 = w2 * h2;
++            match (a1 >= a, a2 >= a) {
++                (true, true) => a2.cmp(&a1),
++                (true, false) => std::cmp::Ordering::Greater,
++                (false, true) => std::cmp::Ordering::Less,
++                (false, false) => a1.cmp(&a2),
++            }
++        })
++        .and_then(|(w, h, d)| {
++            let pixbuf = icon_from_pixmap(w, h, d);
++            if w != size || h != size {
++                pixbuf.scale_simple(size, size, gtk::gdk_pixbuf::InterpType::Bilinear)
++            } else {
++                Some(pixbuf)
++            }
++        })
++}
++
++fn icon_from_name(
++    icon_name: &str,
++    theme_path: Option<&str>,
++    size: i32,
++    scale: i32,
++) -> std::result::Result<gtk::gdk_pixbuf::Pixbuf, IconError> {
++    let theme = if let Some(path) = theme_path {
++        let theme = gtk::IconTheme::new();
++        theme.prepend_search_path(&path);
++        theme
++    } else {
++        gtk::IconTheme::default().expect("Could not get default gtk theme")
++    };
++
++    match theme.load_icon_for_scale(icon_name, size, scale, gtk::IconLookupFlags::FORCE_SIZE) {
++        Ok(pb) => Ok(pb.expect("no pixbuf from theme.load_icon despite no error")),
++        Err(e) => Err(IconError::LoadIconFromTheme {
++            icon_name: icon_name.to_owned(),
++            theme_path: theme_path.map(str::to_owned),
++            source: e,
++        }),
++    }
++}
++
++pub async fn load_icon_from_sni(
++    sni: &dbus::StatusNotifierItemProxy<'_>,
++    size: i32,
++    scale: i32,
++) -> Option<gtk::gdk_pixbuf::Pixbuf> {
++    // "Visualizations are encouraged to prefer icon names over icon pixmaps if both are
++    // available."
++
++    let scaled_size = size * scale;
++    let icon_from_name: std::result::Result<gtk::gdk_pixbuf::Pixbuf, IconError> = (async {
++        // fetch icon name
++        let icon_name = sni.icon_name().await;
++        log::debug!("dbus: {} icon_name -> {:?}", sni.destination(), icon_name);
++        let icon_name = match icon_name {
++            Ok(s) if s.is_empty() => return Err(IconError::NotAvailable),
++            Ok(s) => s,
++            Err(e) => return Err(IconError::DBusIconName(e)),
++        };
++
++        // interpret it as an absolute path if we can
++        let icon_path = std::path::Path::new(&icon_name);
++        if icon_path.is_absolute() && icon_path.is_file() {
++            return gtk::gdk_pixbuf::Pixbuf::from_file_at_size(icon_path, scaled_size, scaled_size)
++                .map_err(|e| IconError::LoadIconFromFile { path: icon_name, source: e });
++        }
++
++        // otherwise, fetch icon theme and lookup using icon_from_name
++        let icon_theme_path = sni.icon_theme_path().await;
++        log::debug!("dbus: {} icon_theme_path -> {:?}", sni.destination(), icon_theme_path);
++        let icon_theme_path = match icon_theme_path {
++            Ok(p) if p.is_empty() => None,
++            Ok(p) => Some(p),
++            // treat property not existing as the same as it being empty i.e. to use the default
++            // system theme
++            Err(zbus::Error::FDO(e)) => match *e {
++                zbus::fdo::Error::UnknownProperty(_) | zbus::fdo::Error::InvalidArgs(_) => None,
++                // this error is reported by discord, blueman-applet
++                zbus::fdo::Error::Failed(msg) if msg == "error occurred in Get" => None,
++                _ => return Err(IconError::DBusTheme(zbus::Error::FDO(e))),
++            },
++            Err(e) => return Err(IconError::DBusTheme(e)),
++        };
++
++        let icon_theme_path: Option<&str> = match &icon_theme_path {
++            // this looks weird but this converts &String to &str
++            Some(s) => Some(s),
++            None => None,
++        };
++        icon_from_name(&icon_name, icon_theme_path, size, scale)
++    })
++    .await;
++    match icon_from_name {
++        Ok(p) => return Some(p),
++        Err(IconError::NotAvailable) => {} // try pixbuf
++        // log and continue
++        Err(e) => log::warn!("failed to get icon by name for {}: {}", sni.destination(), e),
++    };
++
++    let icon_pixmap = sni.icon_pixmap().await;
++    log::debug!("dbus: {} icon_pixmap -> {:?}", sni.destination(), icon_pixmap);
++    let icon_from_pixmaps = match icon_pixmap {
++        Ok(ps) => match icon_from_pixmaps(ps, scaled_size) {
++            Some(p) => Ok(p),
++            None => Err(IconError::NotAvailable),
++        },
++        Err(zbus::Error::FDO(e)) => match *e {
++            // property not existing is fine
++            zbus::fdo::Error::UnknownProperty(_) | zbus::fdo::Error::InvalidArgs(_) => Err(IconError::NotAvailable),
++
++            _ => Err(IconError::DBusPixmap(zbus::Error::FDO(e))),
++        },
++        Err(e) => Err(IconError::DBusPixmap(e)),
++    };
++    match icon_from_pixmaps {
++        Ok(p) => return Some(p),
++        Err(IconError::NotAvailable) => {}
++        Err(e) => log::warn!("failed to get icon pixmap for {}: {}", sni.destination(), e),
++    };
++
++    fallback_icon(size, scale).await
++}
+diff --git a/crates/notifier_host/src/item.rs b/crates/notifier_host/src/item.rs
+new file mode 100644
+index 0000000..59d91fa
+--- /dev/null
++++ b/crates/notifier_host/src/item.rs
+@@ -0,0 +1,104 @@
++use crate::*;
++
++use gtk::{self, prelude::*};
++
++/// Recognised values of org.freedesktop.StatusNotifierItem.Status
++///
++/// See
++/// <https://www.freedesktop.org/wiki/Specifications/StatusNotifierItem/StatusNotifierItem/#org.freedesktop.statusnotifieritem.status>
++/// for details.
++#[derive(Debug, Clone, Copy)]
++pub enum Status {
++    /// The item doesn't convey important information to the user, it can be considered an "idle"
++    /// status and is likely that visualizations will chose to hide it.
++    Passive,
++    /// The item is active, is more important that the item will be shown in some way to the user.
++    Active,
++    /// The item carries really important information for the user, such as battery charge running
++    /// out and is wants to incentive the direct user intervention. Visualizations should emphasize
++    /// in some way the items with NeedsAttention status.
++    NeedsAttention,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++#[non_exhaustive]
++pub struct ParseStatusError;
++
++impl std::str::FromStr for Status {
++    type Err = ParseStatusError;
++
++    fn from_str(s: &str) -> std::result::Result<Self, ParseStatusError> {
++        match s {
++            "Passive" => Ok(Status::Passive),
++            "Active" => Ok(Status::Active),
++            "NeedsAttention" => Ok(Status::NeedsAttention),
++            _ => Err(ParseStatusError),
++        }
++    }
++}
++
++/// Split a sevice name e.g. `:1.50:/org/ayatana/NotificationItem/nm_applet` into the address and
++/// path.
++///
++/// Original logic from <https://github.com/oknozor/stray/blob/main/stray/src/notifier_watcher/notifier_address.rs>
++fn split_service_name(service: &str) -> zbus::Result<(String, String)> {
++    if let Some((addr, path)) = service.split_once('/') {
++        Ok((addr.to_owned(), format!("/{}", path)))
++    } else if service.contains(':') {
++        // TODO why?
++        let addr = service.split(':').nth(1);
++        // Some StatusNotifierItems will not return an object path, in that case we fallback
++        // to the default path.
++        if let Some(addr) = addr {
++            Ok((addr.to_owned(), "/StatusNotifierItem".to_owned()))
++        } else {
++            Err(zbus::Error::Address(service.to_owned()))
++        }
++    } else {
++        Err(zbus::Error::Address(service.to_owned()))
++    }
++}
++
++pub struct Item {
++    pub sni: dbus::StatusNotifierItemProxy<'static>,
++    gtk_menu: Option<dbusmenu_gtk3::Menu>,
++}
++
++impl Item {
++    pub async fn from_address(con: &zbus::Connection, addr: &str) -> zbus::Result<Self> {
++        let (addr, path) = split_service_name(addr)?;
++        let sni = dbus::StatusNotifierItemProxy::builder(con).destination(addr)?.path(path)?.build().await?;
++
++        Ok(Self { sni, gtk_menu: None })
++    }
++
++    /// Get the current status of the item.
++    pub async fn status(&self) -> zbus::Result<Status> {
++        let status = self.sni.status().await?;
++        match status.parse() {
++            Ok(s) => Ok(s),
++            Err(_) => Err(zbus::Error::Failure(format!("Invalid status {:?}", status))),
++        }
++    }
++
++    pub async fn set_menu(&mut self) -> zbus::Result<()> {
++        let menu = self.sni.menu().await?;
++        self.gtk_menu = Some(dbusmenu_gtk3::Menu::new(self.sni.destination(), &menu));
++        Ok(())
++    }
++
++    pub async fn popup_menu(&self, widget: &gtk::EventBox, event: &gdk::EventButton, x: i32, y: i32) -> zbus::Result<()> {
++        if let Some(menu) = &self.gtk_menu {
++            menu.set_attach_widget(Some(widget));
++            menu.popup_at_pointer(event.downcast_ref::<gdk::Event>());
++            Ok(())
++        } else {
++            self.sni.context_menu(x, y).await
++        }
++    }
++
++    pub async fn icon(&self, size: i32, scale: i32) -> Option<gtk::gdk_pixbuf::Pixbuf> {
++        // see icon.rs
++        load_icon_from_sni(&self.sni, size, scale).await
++    }
++}
+diff --git a/crates/notifier_host/src/lib.rs b/crates/notifier_host/src/lib.rs
+new file mode 100644
+index 0000000..a5fe2dd
+--- /dev/null
++++ b/crates/notifier_host/src/lib.rs
+@@ -0,0 +1,17 @@
++pub mod dbus;
++
++mod host;
++pub use host::*;
++
++mod icon;
++pub use icon::*;
++
++mod item;
++pub use item::*;
++
++mod watcher;
++pub use watcher::*;
++
++pub mod export {
++    pub use zbus::export::ordered_stream;
++}
+diff --git a/crates/notifier_host/src/watcher.rs b/crates/notifier_host/src/watcher.rs
+new file mode 100644
+index 0000000..8e206ea
+--- /dev/null
++++ b/crates/notifier_host/src/watcher.rs
+@@ -0,0 +1,274 @@
++use zbus::{dbus_interface, export::ordered_stream::OrderedStreamExt, Interface};
++
++pub const WATCHER_BUS_NAME: &str = "org.kde.StatusNotifierWatcher";
++pub const WATCHER_OBJECT_NAME: &str = "/StatusNotifierWatcher";
++
++async fn parse_service<'a>(
++    service: &'a str,
++    hdr: zbus::MessageHeader<'_>,
++    con: &zbus::Connection,
++) -> zbus::fdo::Result<(zbus::names::UniqueName<'static>, &'a str)> {
++    if service.starts_with('/') {
++        // they sent us just the object path :(
++        if let Some(sender) = hdr.sender()? {
++            Ok((sender.to_owned(), service))
++        } else {
++            log::warn!("unknown sender");
++            Err(zbus::fdo::Error::InvalidArgs("Unknown bus address".into()))
++        }
++    } else {
++        let busname: zbus::names::BusName = match service.try_into() {
++            Ok(x) => x,
++            Err(e) => {
++                log::warn!("received invalid bus name {:?}: {}", service, e);
++                return Err(zbus::fdo::Error::InvalidArgs(e.to_string()));
++            }
++        };
++
++        if let zbus::names::BusName::Unique(unique) = busname {
++            Ok((unique.to_owned(), "/StatusNotifierItem"))
++        } else {
++            let dbus = zbus::fdo::DBusProxy::new(con).await?;
++            match dbus.get_name_owner(busname).await {
++                Ok(owner) => Ok((owner.into_inner(), "/StatusNotifierItem")),
++                Err(e) => {
++                    log::warn!("failed to get owner of {:?}: {}", service, e);
++                    Err(e)
++                }
++            }
++        }
++    }
++}
++
++/// Wait for a DBus service to exit
++async fn wait_for_service_exit(connection: zbus::Connection, service: zbus::names::BusName<'_>) -> zbus::fdo::Result<()> {
++    let dbus = zbus::fdo::DBusProxy::new(&connection).await?;
++    let mut owner_changes = dbus.receive_name_owner_changed_with_args(&[(0, &service)]).await?;
++
++    if !dbus.name_has_owner(service.as_ref()).await? {
++        return Ok(());
++    }
++
++    while let Some(sig) = owner_changes.next().await {
++        let args = sig.args()?;
++        if args.new_owner().is_none() {
++            break;
++        }
++    }
++
++    Ok(())
++}
++
++/// An instance of [`org.kde.StatusNotifierWatcher`].
++///
++/// [`org.kde.StatusNotifierWatcher`]: https://freedesktop.org/wiki/Specifications/StatusNotifierItem/StatusNotifierWatcher/
++#[derive(Debug, Default)]
++pub struct Watcher {
++    tasks: tokio::task::JoinSet<()>,
++
++    // NOTE Intentionally using std::sync::Mutex instead of tokio's async mutex, since we don't
++    // need to hold the mutex across an await.
++    //
++    // See <https://docs.rs/tokio/latest/tokio/sync/struct.Mutex.html#which-kind-of-mutex-should-you-use>
++    hosts: std::sync::Arc<std::sync::Mutex<std::collections::HashSet<String>>>,
++    items: std::sync::Arc<std::sync::Mutex<std::collections::HashSet<String>>>,
++}
++
++#[dbus_interface(name = "org.kde.StatusNotifierWatcher")]
++impl Watcher {
++    /// RegisterStatusNotifierHost method
++    async fn register_status_notifier_host(
++        &mut self,
++        service: &str,
++        #[zbus(header)] hdr: zbus::MessageHeader<'_>,
++        #[zbus(connection)] con: &zbus::Connection,
++        #[zbus(signal_context)] ctxt: zbus::SignalContext<'_>,
++    ) -> zbus::fdo::Result<()> {
++        let (service, _) = parse_service(service, hdr, con).await?;
++        log::info!("new host: {}", service);
++
++        let added_first = {
++            // scoped around locking of hosts
++            let mut hosts = self.hosts.lock().unwrap(); // unwrap: mutex poisoning is okay
++            if !hosts.insert(service.to_string()) {
++                // we're already tracking them
++                return Ok(());
++            }
++            hosts.len() == 1
++        };
++
++        if added_first {
++            self.is_status_notifier_host_registered_changed(&ctxt).await?;
++        }
++        Watcher::status_notifier_host_registered(&ctxt).await?;
++
++        self.tasks.spawn({
++            let hosts = self.hosts.clone();
++            let ctxt = ctxt.to_owned();
++            let con = con.to_owned();
++            async move {
++                if let Err(e) = wait_for_service_exit(con.clone(), service.as_ref().into()).await {
++                    log::error!("failed to wait for service exit: {}", e);
++                }
++                log::info!("lost host: {}", service);
++
++                let removed_last = {
++                    let mut hosts = hosts.lock().unwrap(); // unwrap: mutex poisoning is okay
++                    let did_remove = hosts.remove(service.as_str());
++                    did_remove && hosts.is_empty()
++                };
++
++                if removed_last {
++                    if let Err(e) = Watcher::is_status_notifier_host_registered_refresh(&ctxt).await {
++                        log::error!("failed to signal Watcher: {}", e);
++                    }
++                }
++                if let Err(e) = Watcher::status_notifier_host_unregistered(&ctxt).await {
++                    log::error!("failed to signal Watcher: {}", e);
++                }
++            }
++        });
++
++        Ok(())
++    }
++
++    /// StatusNotifierHostRegistered signal
++    #[dbus_interface(signal)]
++    async fn status_notifier_host_registered(ctxt: &zbus::SignalContext<'_>) -> zbus::Result<()>;
++
++    /// StatusNotifierHostUnregistered signal
++    #[dbus_interface(signal)]
++    async fn status_notifier_host_unregistered(ctxt: &zbus::SignalContext<'_>) -> zbus::Result<()>;
++
++    /// IsStatusNotifierHostRegistered property
++    #[dbus_interface(property)]
++    async fn is_status_notifier_host_registered(&self) -> bool {
++        let hosts = self.hosts.lock().unwrap(); // unwrap: mutex poisoning is okay
++        !hosts.is_empty()
++    }
++
++    // ------------------------------------------------------------------------
++
++    /// RegisterStatusNotifierItem method
++    async fn register_status_notifier_item(
++        &mut self,
++        service: &str,
++        #[zbus(header)] hdr: zbus::MessageHeader<'_>,
++        #[zbus(connection)] con: &zbus::Connection,
++        #[zbus(signal_context)] ctxt: zbus::SignalContext<'_>,
++    ) -> zbus::fdo::Result<()> {
++        let (service, objpath) = parse_service(service, hdr, con).await?;
++        let service = zbus::names::BusName::Unique(service);
++
++        let item = format!("{}{}", service, objpath);
++
++        {
++            let mut items = self.items.lock().unwrap(); // unwrap: mutex poisoning is okay
++            if !items.insert(item.clone()) {
++                // we're already tracking them
++                log::info!("new item: {} (duplicate)", item);
++                return Ok(());
++            }
++        }
++        log::info!("new item: {}", item);
++
++        self.registered_status_notifier_items_changed(&ctxt).await?;
++        Watcher::status_notifier_item_registered(&ctxt, item.as_ref()).await?;
++
++        self.tasks.spawn({
++            let items = self.items.clone();
++            let ctxt = ctxt.to_owned();
++            let con = con.to_owned();
++            async move {
++                if let Err(e) = wait_for_service_exit(con.clone(), service.as_ref()).await {
++                    log::error!("failed to wait for service exit: {}", e);
++                }
++                println!("gone item: {}", &item);
++
++                {
++                    let mut items = items.lock().unwrap(); // unwrap: mutex poisoning is okay
++                    items.remove(&item);
++                }
++
++                if let Err(e) = Watcher::registered_status_notifier_items_refresh(&ctxt).await {
++                    log::error!("failed to signal Watcher: {}", e);
++                }
++                if let Err(e) = Watcher::status_notifier_item_unregistered(&ctxt, item.as_ref()).await {
++                    log::error!("failed to signal Watcher: {}", e);
++                }
++            }
++        });
++
++        Ok(())
++    }
++
++    /// StatusNotifierItemRegistered signal
++    #[dbus_interface(signal)]
++    async fn status_notifier_item_registered(ctxt: &zbus::SignalContext<'_>, service: &str) -> zbus::Result<()>;
++
++    /// StatusNotifierItemUnregistered signal
++    #[dbus_interface(signal)]
++    async fn status_notifier_item_unregistered(ctxt: &zbus::SignalContext<'_>, service: &str) -> zbus::Result<()>;
++
++    /// RegisteredStatusNotifierItems property
++    #[dbus_interface(property)]
++    async fn registered_status_notifier_items(&self) -> Vec<String> {
++        let items = self.items.lock().unwrap(); // unwrap: mutex poisoning is okay
++        items.iter().cloned().collect()
++    }
++
++    // ------------------------------------------------------------------------
++
++    /// ProtocolVersion property
++    #[dbus_interface(property)]
++    fn protocol_version(&self) -> i32 {
++        0
++    }
++}
++
++impl Watcher {
++    /// Create a new Watcher.
++    pub fn new() -> Watcher {
++        Default::default()
++    }
++
++    /// Attach and run the Watcher on a connection.
++    pub async fn attach_to(self, con: &zbus::Connection) -> zbus::Result<()> {
++        if !con.object_server().at(WATCHER_OBJECT_NAME, self).await? {
++            // There's already something at this object
++            // TODO is there a more specific error
++            return Err(zbus::Error::Failure(format!("Connection already has an object at {}", WATCHER_OBJECT_NAME)));
++        }
++
++        // not AllowReplacement, not ReplaceExisting, not DoNotQueue
++        let flags: [zbus::fdo::RequestNameFlags; 0] = [];
++        match con.request_name_with_flags(WATCHER_BUS_NAME, flags.into_iter().collect()).await {
++            Ok(zbus::fdo::RequestNameReply::PrimaryOwner) => Ok(()),
++            Ok(_) | Err(zbus::Error::NameTaken) => Ok(()), // defer to existing
++            Err(e) => Err(e),
++        }
++    }
++
++    /// Equivalent to `is_status_notifier_host_registered_invalidate`, but without requiring
++    /// `self`.
++    async fn is_status_notifier_host_registered_refresh(ctxt: &zbus::SignalContext<'_>) -> zbus::Result<()> {
++        zbus::fdo::Properties::properties_changed(
++            ctxt,
++            Self::name(),
++            &std::collections::HashMap::new(),
++            &["IsStatusNotifierHostRegistered"],
++        )
++        .await
++    }
++
++    /// Equivalen to `registered_status_notifier_items_invalidate`, but without requiring `self`.
++    async fn registered_status_notifier_items_refresh(ctxt: &zbus::SignalContext<'_>) -> zbus::Result<()> {
++        zbus::fdo::Properties::properties_changed(
++            ctxt,
++            Self::name(),
++            &std::collections::HashMap::new(),
++            &["RegisteredStatusNotifierItems"],
++        )
++        .await
++    }
++}
+diff --git a/docs/src/eww.md b/docs/src/eww.md
+index f9c9385..ea57176 100644
+--- a/docs/src/eww.md
++++ b/docs/src/eww.md
+@@ -29,6 +29,7 @@ The following list of package names should work for arch linux:
+ - gtk-layer-shell (only on Wayland)
+ - pango (libpango)
+ - gdk-pixbuf2 (libgdk_pixbuf-2)
++- libdbusmenu-gtk3
+ - cairo (libcairo, libcairo-gobject)
+ - glib2 (libgio, libglib-2, libgobject-2)
+ - gcc-libs (libgcc)
+diff --git a/flake.lock b/flake.lock
+index 3cafe26..f7cd91c 100644
+--- a/flake.lock
++++ b/flake.lock
+@@ -3,11 +3,11 @@
+     "flake-compat": {
+       "flake": false,
+       "locked": {
+-        "lastModified": 1650374568,
+-        "narHash": "sha256-Z+s0J8/r907g149rllvwhb4pKi8Wam5ij0st8PwAh+E=",
++        "lastModified": 1673956053,
++        "narHash": "sha256-4gtG9iQuiKITOjNQQeQIpoIB6b16fm+504Ch3sNKLd8=",
+         "owner": "edolstra",
+         "repo": "flake-compat",
+-        "rev": "b4a34015c698c7793d592d66adbab377907a2be8",
++        "rev": "35bb57c0c8d8b62bbfd284272c928ceb64ddbde9",
+         "type": "github"
+       },
+       "original": {
+@@ -17,12 +17,15 @@
+       }
+     },
+     "flake-utils": {
++      "inputs": {
++        "systems": "systems"
++      },
+       "locked": {
+-        "lastModified": 1656928814,
+-        "narHash": "sha256-RIFfgBuKz6Hp89yRr7+NR5tzIAbn52h8vT6vXkYjZoM=",
++        "lastModified": 1681202837,
++        "narHash": "sha256-H+Rh19JDwRtpVPAWp64F+rlEtxUWBAQW28eAi3SRSzg=",
+         "owner": "numtide",
+         "repo": "flake-utils",
+-        "rev": "7e2a3b3dfd9af950a856d66b0a7d01e3c18aa249",
++        "rev": "cfacdce06f30d2b68473a46042957675eebb3401",
+         "type": "github"
+       },
+       "original": {
+@@ -33,11 +36,11 @@
+     },
+     "nixpkgs": {
+       "locked": {
+-        "lastModified": 1661353537,
+-        "narHash": "sha256-1E2IGPajOsrkR49mM5h55OtYnU0dGyre6gl60NXKITE=",
++        "lastModified": 1692463654,
++        "narHash": "sha256-F8hZmsQINI+S6UROM4jyxAMbQLtzE44pI8Nk6NtMdao=",
+         "owner": "nixos",
+         "repo": "nixpkgs",
+-        "rev": "0e304ff0d9db453a4b230e9386418fd974d5804a",
++        "rev": "ca3c9ac9f4cdd4bea19f592b32bb59b74ab7d783",
+         "type": "github"
+       },
+       "original": {
+@@ -62,11 +65,11 @@
+         ]
+       },
+       "locked": {
+-        "lastModified": 1661655464,
+-        "narHash": "sha256-by9Hb0mNVdiCR7TBvUHIgDb0QIv3znp8VMGh7Bl35VQ=",
++        "lastModified": 1692410823,
++        "narHash": "sha256-YM1QCenpghNqgleUmoCJUArTuMEBqScyQuhepA6JZaI=",
+         "owner": "oxalica",
+         "repo": "rust-overlay",
+-        "rev": "0c4c1432353e12b325d1472bea99e364871d2cb3",
++        "rev": "598b2f04ed252eb5808b108d7a10084c0c548753",
+         "type": "github"
+       },
+       "original": {
+@@ -74,6 +77,21 @@
+         "repo": "rust-overlay",
+         "type": "github"
+       }
++    },
++    "systems": {
++      "locked": {
++        "lastModified": 1681028828,
++        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
++        "owner": "nix-systems",
++        "repo": "default",
++        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
++        "type": "github"
++      },
++      "original": {
++        "owner": "nix-systems",
++        "repo": "default",
++        "type": "github"
++      }
+     }
+   },
+   "root": "root",
+diff --git a/flake.nix b/flake.nix
+index d097383..ab09e91 100644
+--- a/flake.nix
++++ b/flake.nix
+@@ -36,6 +36,8 @@
+             src = builtins.path { name = "eww"; path = prev.lib.cleanSource ./.; };
+             cargoDeps = rustPlatform.importCargoLock { lockFile = ./Cargo.lock; };
+             patches = [ ];
++            # remove this when nixpkgs includes it
++            buildInputs = old.buildInputs ++ [ final.libdbusmenu-gtk3 ];
+           });
+ 
+           eww-wayland = final.eww.override { withWayland = true; };
+@@ -61,6 +63,10 @@
+               rust
+               rust-analyzer-unwrapped
+               gcc
++              glib
++              gdk-pixbuf
++              librsvg
++              libdbusmenu-gtk3
+               gtk3
+               gtk-layer-shell
+               pkg-config
