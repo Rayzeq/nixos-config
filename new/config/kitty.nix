@@ -11,6 +11,8 @@
       "ctrl+w" = "close_tab";
       "ctrl+alt+left" = "previous_tab";
       "ctrl+alt+right" = "next_tab";
+      "ctrl+shift+left" = "move_tab_backward";
+      "ctrl+shift+right" = "move_tab_forward";
       "ctrl+s" = "show_scrollback";
     };
     settings = {
