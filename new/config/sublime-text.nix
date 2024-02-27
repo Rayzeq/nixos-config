@@ -278,7 +278,7 @@
         };
       };
       LSP-rust-analyzer.settings = {
-        command = [ "${pkgs.rust-analyzer}/bin/rust-analyzer" ];
+        command = [ "${unstable.rust-analyzer}/bin/rust-analyzer" ];
         settings.rust-analyzer = {
           assist.emitMustUse = true;
           cargo.features = "all";
