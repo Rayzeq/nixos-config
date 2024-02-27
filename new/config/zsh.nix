@@ -9,6 +9,7 @@
       enable = true;
       strategy = [ "history" "completion" ];
     };
+    atuin.enable = true;
     autojump.enable = true;
     autocomplete.enable = true;
     syntaxHighlighting = {
@@ -33,9 +34,6 @@
       # somehow zsh-autocomplete broke those ones
       "^[[H" = "beginning-of-line";
       "^[[F" = "end-of-line";
-      # disable zsh-autocomplete history
-      "\\e[A" = "up-line-or-history";
-      "\\e[B" = "down-line-or-history";
       # use tab to trigger and navigate completions
       "\\t" = ''menu-select "$terminfo[kcbt]" menu-select'';
       menuselect = {

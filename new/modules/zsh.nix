@@ -100,6 +100,12 @@ let
       package = mkPackageOption pkgs "zsh-autocomplete" { };
     };
   };
+  atuinOptions = types.submodule {
+    options = {
+      enable = mkEnableOption "atuin";
+      package = mkPackageOption pkgs "atuin" { };
+    };
+  };
   syntaxHighlightingOptions = types.submodule {
     options = {
       enable = mkEnableOption "zsh syntax highlighting";
@@ -192,17 +198,22 @@ in
       description = "Options related to commands history configuration.";
     };
 
+    # Plugins
+    autojump.enable = mkEnableOption "autojump";
     autosuggestions = mkOption {
       type = autosuggestionsOptions;
       default = { };
       description = "Options of zsh-autosuggestions";
     };
-
-    autojump.enable = mkEnableOption "autojump";
     autocomplete = mkOption {
       type = autocompleteOptions;
       default = { };
       description = "Options of zsh-autocomplete";
+    };
+    atuin = mkOption {
+      type = atuinOptions;
+      default = { };
+      description = "Options of atuin";
     };
 
     syntaxHighlighting = mkOption {
@@ -300,6 +311,10 @@ in
     };
 
     programs.autojump = mkIf cfg.autojump.enable {
+      enable = true;
+      enableZshIntegration = true;
+    };
+    programs.atuin = mkIf cfg.atuin.enable {
       enable = true;
       enableZshIntegration = true;
     };
