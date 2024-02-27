@@ -4,9 +4,28 @@
   `date +"%d %b %Y %T"`
 )
 
+(defpoll day
+  :interval "60s"
+  :initial 0
+  `date +"%d"`
+)
+(defpoll month
+  :interval "60s"
+  :initial 0
+  `date +"%m"`
+)
+(defpoll year
+  :interval "60s"
+  :initial 0
+  `date +"%Y"`
+)
+
 (defwidget clock []
   (popovered
     (calendar
+      :day day
+      :month month
+      :year year
       :show-details true
       :show-heading true
       :show-day-names true
