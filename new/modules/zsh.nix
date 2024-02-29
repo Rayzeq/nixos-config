@@ -104,6 +104,33 @@ let
     options = {
       enable = mkEnableOption "atuin";
       package = mkPackageOption pkgs "atuin" { };
+      settings = mkOption {
+        type = with types;
+          let
+            prim = oneOf [ bool int str ];
+            primOrPrimAttrs = either prim (attrsOf prim);
+            entry = either prim (listOf primOrPrimAttrs);
+            entryOrAttrsOf = t: either entry (attrsOf t);
+            entries = entryOrAttrsOf (entryOrAttrsOf entry);
+          in
+          attrsOf entries // { description = "Atuin configuration"; };
+        default = { };
+        example = literalExpression ''
+          {
+            auto_sync = true;
+            sync_frequency = "5m";
+            sync_address = "https://api.atuin.sh";
+            search_mode = "prefix";
+          }
+        '';
+        description = ''
+          Configuration written to
+          {file}`$XDG_CONFIG_HOME/atuin/config.toml`.
+
+          See <https://atuin.sh/docs/config/> for the full list
+          of options.
+        '';
+      };
     };
   };
   syntaxHighlightingOptions = types.submodule {
@@ -316,7 +343,9 @@ in
     };
     programs.atuin = mkIf cfg.atuin.enable {
       enable = true;
+      package = cfg.atuin.package;
       enableZshIntegration = true;
+      settings = cfg.atuin.settings;
     };
   };
 }

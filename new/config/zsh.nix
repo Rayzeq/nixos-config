@@ -9,7 +9,14 @@
       enable = true;
       strategy = [ "history" "completion" ];
     };
-    atuin.enable = true;
+    atuin = {
+      enable = true;
+      settings = {
+        update_check = false;
+        filter_mode = "session";
+        enter_accept = true;
+      };
+    };
     autojump.enable = true;
     autocomplete.enable = true;
     syntaxHighlighting = {
