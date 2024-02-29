@@ -191,6 +191,7 @@ in
     file
     piper
     htop
+    du-dust
   ];
 
   programs.gamemode.enable = true;
