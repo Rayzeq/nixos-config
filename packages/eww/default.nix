@@ -18,18 +18,17 @@ rustPlatform.buildRustPackage rec {
   src = pkgs.fetchFromGitHub {
     owner = "elkowar";
     repo = "eww";
-    rev = "387d344690903949121040f8a892f946e323c472";
-    hash = "sha256-HBBz1NDtj2TnDK5ghDLRrAOwHXDZlzclvVscYnmKGck=";
+    rev = "7bfd47eb8130f02f2a8f695c255df2f5302636b4";
+    hash = "sha256-CCwOEyCtn/y9IxhY64OTr1iDyPl2XjrF2u93Z2ex56E=";
   };
 
   cargoPatches = [
     ./custom-popover.patch
     ./string-truncation.patch
     ./tray3.patch
-    ./completions.patch
   ];
 
-  cargoHash = "sha256-B/wibyWbhztGnws4WFk+d9R6Ldxmc5BfoHo4763pFrQ=";
+  cargoHash = "sha256-RQhEAdUHVRGrKVgVZ4v6dSW6v1UbPmWHKI59/XGn/S8=";
 
   nativeBuildInputs = with pkgs; [ pkg-config wrapGAppsHook installShellFiles ];
 
