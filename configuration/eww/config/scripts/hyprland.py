@@ -127,7 +127,8 @@ for name, value in events():
     elif name == "createworkspace":
         workspaces.append(value)
     elif name == "destroyworkspace":
-        workspaces.remove(value)
+        if value in workspaces: # for some reason, this can be false
+            workspaces.remove(value)
     elif name == "activewindow":
         class_, title = value.split(",", maxsplit=1)
         active_window = title
