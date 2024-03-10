@@ -63,7 +63,6 @@ in lib.mkMerge [
               "eww open statusbar && ( nm-applet & blueman-applet & discord --start-minimized & )"
               "hyprpaper"
               "swaync"
-              "[workspace special silent;noanim] kitty"
             ];
             monitor = [ "e-DP1,1920x1080@60,0x0,1" ",preferred,auto,1" ];
 
@@ -95,6 +94,10 @@ in lib.mkMerge [
             };
             "device:synps/2-synaptics-touchpad" = {
               sensitivity = 0;
+            };
+
+            dwindle = {
+              special_scale_factor = 1;
             };
 
             gestures = {
@@ -136,6 +139,7 @@ in lib.mkMerge [
               "$mod, KP_Home, movetoworkspace, 7"
               "$mod, KP_Up, movetoworkspace, 8"
               "$mod, KP_Prior, movetoworkspace, 9"
+              "$mod + ALT_L, S, movetoworkspace, special"
 
               "$mod + ALT_L, LEFT, workspace, -1"
               "$mod + ALT_L, RIGHT, workspace, +1"
