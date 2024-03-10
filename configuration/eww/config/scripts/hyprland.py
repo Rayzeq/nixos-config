@@ -93,13 +93,13 @@ def format_window(title: str) -> str:
     return title
 
 
-def print_data(workspaces: list[str], active_workspace: str, active_window: str) -> None:
+def print_data(workspaces: list[str], active_workspace: str, active_window: str, special_active: bool) -> None:
     print(
         json.dumps(
             {
                 "workspaces": [
-                    {"id": workspace, "name": translate(int(workspace)), "active": workspace == active_workspace}
-                    for workspace in workspaces
+                    {"id": w, "name": "零" if w == "special" else translate(int(w)), "active": (w == active_workspace) or (w == "special" and special_active)}
+                    for w in workspaces
                 ],
                 "window": format_window(active_window),
             },
@@ -110,15 +110,16 @@ def print_data(workspaces: list[str], active_workspace: str, active_window: str)
 
 result = call("workspaces")
 workspaces = [
-    workspace["name"] for workspace in result if workspace["name"] != "special" and workspace["monitor"] == sys.argv[1]
+    workspace["name"] for workspace in result if workspace["monitor"] == sys.argv[1]
 ]
 result = call("activeworkspace")
 active_workspace = result["name"]
 result = call("activewindow")
 active_window = result.get("title", "")
+special_active = False
 
-workspaces.sort(key=int)
-print_data(workspaces, active_workspace, active_window)
+workspaces.sort(key=lambda x: -1 if x == "special" else int(x))
+print_data(workspaces, active_workspace, active_window, special_active)
 
 for name, value in events():
     updated = True
@@ -127,8 +128,13 @@ for name, value in events():
     elif name == "createworkspace":
         workspaces.append(value)
     elif name == "destroyworkspace":
-        if value in workspaces: # for some reason, this can be false
-            workspaces.remove(value)
+        workspaces.remove(value)
+    elif name == "activespecial":
+        name, monitor = value.split(",")
+        if name == '':
+            special_active = False
+        else:
+            special_active = True
     elif name == "activewindow":
         class_, title = value.split(",", maxsplit=1)
         active_window = title
@@ -136,5 +142,5 @@ for name, value in events():
         updated = False
 
     if updated:
-        workspaces.sort(key=int)
-        print_data(workspaces, active_workspace, active_window)
+        workspaces.sort(key=lambda x: -1 if x == "special" else int(x))
+        print_data(workspaces, active_workspace, active_window, special_active)
