@@ -94,7 +94,6 @@ in
     description = "Zacharie";
     extraGroups = [ "networkmanager" "wheel" "input" ];
     packages = with pkgs; [
-      barrier
       vlc
       obsidian
       python3
