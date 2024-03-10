@@ -255,6 +255,35 @@ in lib.mkMerge [
             }
           }
         '';
+        xdg.configFile."swaync/style.css".text = ''
+          .floating-notifications .notification,
+          .floating-notifications .notification-content {
+            box-shadow: none;
+          }
+
+          .floating-notifications .notification-default-action,
+          .floating-notifications .notification-action {
+            border: none;
+            background-color: rgba(0, 0, 0, 0.8);
+          }
+
+          .floating-notifications .notification-default-action:not(:only-child) {
+            border-bottom: 1px solid gray;
+          }
+
+          .floating-notifications .notification-action {
+            border-right: 1px solid gray;
+          }
+
+          .floating-notifications .notification-action:last-child {
+            border-right: none;
+          }
+
+          .floating-notifications .notification-action:hover {
+            color: black;
+            background: rgba(114, 211, 254, 0.9);
+          }
+        '';
       }
     ];
   }
