@@ -2,7 +2,14 @@
 
 # The unstable channel for some packages
 let
-  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+  unstable = import <nixos-unstable> {
+    config = {
+      allowUnfree = true;
+      permittedInsecurePackages = [
+        "nix-2.16.2" # needed by nixd
+      ];
+    };
+  };
 in
 {
   _module.args.unstable = unstable;
@@ -143,7 +150,7 @@ in
   nixpkgs.config.allowUnfree = true;
 
   nixpkgs.config.permittedInsecurePackages = [
-    "electron-25.9.0" # azure need this
+    "electron-25.9.0" # obsidian need this
   ];
 
   nixpkgs.overlays = [
