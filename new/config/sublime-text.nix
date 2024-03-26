@@ -40,6 +40,27 @@
         command = "bh_key";
         args.plugin.command = "bh_modules.foldbracket";
       }
+      # Select text between brackets
+      {
+        no_outside_adj = null;
+        keys = [
+          "ctrl+shift+5"
+        ];
+        command = "bh_key";
+        args =
+          {
+            lines = true;
+            plugin = {
+              command = "bh_modules.bracketselect";
+            };
+          };
+      }
+      {
+        keys = [
+          "ctrl+alt+5"
+        ];
+        command = "swap_brackets";
+      }
       {
         keys = [ "ctrl+=" ];
         command = "reset_font_size";
