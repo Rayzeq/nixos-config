@@ -184,7 +184,7 @@
               "BLE"
               "FBT"
               "B"
-              "A"
+              # "A" # allow any form of builtin shadowing
               "COM"
               #"CPY"
               "C4"
@@ -289,8 +289,6 @@
               "EXE005"
               # Allow private member access
               "SLF001"
-              # Allow builtin shadowing
-              "A003"
             ];
           };
           # Black config
