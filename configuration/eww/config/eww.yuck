@@ -8,7 +8,6 @@
 (include "./time.yuck")
 
 (defwindow statusbar
-  :monitor 0
   :monitor '["<primary>", "eDP-1", 0]'
   :geometry (geometry
     :x "0px"

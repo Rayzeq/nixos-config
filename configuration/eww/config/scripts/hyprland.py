@@ -21,7 +21,11 @@ def events() -> Generator[tuple[str, str], None, None]:
 
     while True:
         event = socket.readline().strip()
-        name, value = event.split(">>")
+        try:
+            name, value = event.split(">>", maxsplit=1)
+        except ValueErr:
+            print("TOO MANY SPLIT", event, file=sys.stderr)
+            exit()
         yield name, value
 
     socket.close()
