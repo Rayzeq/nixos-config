@@ -15,6 +15,6 @@
   ];
   events = [
     { event = "lock"; command = "${unstable.swaylock-effects}/bin/swaylock -f"; }
-    { event = "before-sleep"; command = "${pkgs.systemd}/bin/loginctl lock-session"; }
+    { event = "before-sleep"; command = "${unstable.swaylock-effects}/bin/swaylock -f"; }
   ];
 }
