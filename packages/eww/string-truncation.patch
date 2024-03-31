@@ -1,20 +1,20 @@
 diff --git a/Cargo.lock b/Cargo.lock
-index 55fef71..9d18059 100644
+index 8e3af35..8baf72e 100644
 --- a/Cargo.lock
 +++ b/Cargo.lock
-@@ -646,6 +646,7 @@ dependencies = [
-  "nix 0.27.1",
+@@ -951,6 +951,7 @@ dependencies = [
   "notify",
   "once_cell",
+  "ordered-stream",
 + "pango",
   "pretty_env_logger",
   "regex",
   "serde",
 diff --git a/crates/eww/Cargo.toml b/crates/eww/Cargo.toml
-index 554fd86..6697939 100644
+index 2aa461a..a5b62d9 100644
 --- a/crates/eww/Cargo.toml
 +++ b/crates/eww/Cargo.toml
-@@ -22,6 +22,7 @@ yuck.workspace = true
+@@ -23,6 +23,7 @@ notifier_host.workspace = true
  
  gtk = "0.17.1"
  gdk = "0.17.1"
@@ -23,10 +23,10 @@ index 554fd86..6697939 100644
  glib-macros = "0.17.8"
  
 diff --git a/crates/eww/src/widgets/widget_definitions.rs b/crates/eww/src/widgets/widget_definitions.rs
-index a390c0d..bfa982b 100644
+index a1d9014..5566296 100644
 --- a/crates/eww/src/widgets/widget_definitions.rs
 +++ b/crates/eww/src/widgets/widget_definitions.rs
-@@ -873,37 +873,26 @@ fn build_gtk_label(bargs: &mut BuilderArgs) -> Result<gtk::Label> {
+@@ -875,37 +875,26 @@ fn build_gtk_label(bargs: &mut BuilderArgs) -> Result<gtk::Label> {
  
      def_widget!(bargs, _g, gtk_widget, {
          // @prop text - the text to display

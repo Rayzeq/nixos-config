@@ -1,5 +1,5 @@
 diff --git a/crates/eww/src/widgets/widget_definitions.rs b/crates/eww/src/widgets/widget_definitions.rs
-index a390c0d..68bf727 100644
+index a1d9014..dafcb64 100644
 --- a/crates/eww/src/widgets/widget_definitions.rs
 +++ b/crates/eww/src/widgets/widget_definitions.rs
 @@ -8,7 +8,7 @@ use crate::{
@@ -19,7 +19,7 @@ index a390c0d..68bf727 100644
      WIDGET_NAME_EVENTBOX,
      WIDGET_NAME_TOOLTIP,
      WIDGET_NAME_CIRCULAR_PROGRESS,
-@@ -88,6 +89,7 @@ pub const BUILTIN_WIDGET_NAMES: &[&str] = &[
+@@ -89,6 +90,7 @@ pub const BUILTIN_WIDGET_NAMES: &[&str] = &[
  pub(super) fn widget_use_to_gtk_widget(bargs: &mut BuilderArgs) -> Result<gtk::Widget> {
      let gtk_widget = match bargs.widget_use.name.as_str() {
          WIDGET_NAME_BOX => build_gtk_box(bargs)?.upcast(),
@@ -27,7 +27,7 @@ index a390c0d..68bf727 100644
          WIDGET_NAME_CENTERBOX => build_center_box(bargs)?.upcast(),
          WIDGET_NAME_EVENTBOX => build_gtk_event_box(bargs)?.upcast(),
          WIDGET_NAME_TOOLTIP => build_tooltip(bargs)?.upcast(),
-@@ -630,6 +632,116 @@ fn build_tooltip(bargs: &mut BuilderArgs) -> Result<gtk::Box> {
+@@ -632,6 +634,116 @@ fn build_tooltip(bargs: &mut BuilderArgs) -> Result<gtk::Box> {
      }
  }
  
