@@ -142,6 +142,11 @@ for name, value in events():
     elif name == "activewindow":
         class_, title = value.split(",", maxsplit=1)
         active_window = title
+    elif name == "openwindow":
+        _, _, _, title = value.split(",", maxsplit=3)
+        if title == "Update - Sublime Text":
+            # capture_output=True to prevent hyprctl from printing things
+            subprocess.run(["hyprctl", "dispatch", "closewindow", f"title:^{title}$"], capture_output=True)
     else:
         updated = False
 
