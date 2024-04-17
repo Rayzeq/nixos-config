@@ -60,7 +60,7 @@ in lib.mkMerge [
           settings = {
             exec-once = [
               "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
-              "eww open statusbar && ( nm-applet & blueman-applet & discord --start-minimized & )"
+              "eww open statusbar && ( nm-applet & blueman-applet & discord --enable-features=UseOzonePlatform --ozone-platform=wayland --start-minimized & )"
               "hyprpaper"
               "swaync"
             ];
@@ -127,7 +127,7 @@ in lib.mkMerge [
               "$mod, S, exec, subl"
               "$mod + SHIFT, S, exec, kitty sudo -EH subl"
               "$mod, E, exec, dolphin"
-              "$mod, D, exec, discord"
+              "$mod, D, exec, discord --enable-features=UseOzonePlatform --ozone-platform=wayland"
               "$mod, F, exec, firefox"
 
               "$mod, W, togglefloating"
