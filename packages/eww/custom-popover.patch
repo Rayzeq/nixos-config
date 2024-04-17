@@ -1,5 +1,5 @@
 diff --git a/crates/eww/src/widgets/widget_definitions.rs b/crates/eww/src/widgets/widget_definitions.rs
-index a1d9014..dafcb64 100644
+index 16aae7d..7b105fd 100644
 --- a/crates/eww/src/widgets/widget_definitions.rs
 +++ b/crates/eww/src/widgets/widget_definitions.rs
 @@ -8,7 +8,7 @@ use crate::{
@@ -27,7 +27,7 @@ index a1d9014..dafcb64 100644
          WIDGET_NAME_CENTERBOX => build_center_box(bargs)?.upcast(),
          WIDGET_NAME_EVENTBOX => build_gtk_event_box(bargs)?.upcast(),
          WIDGET_NAME_TOOLTIP => build_tooltip(bargs)?.upcast(),
-@@ -632,6 +634,116 @@ fn build_tooltip(bargs: &mut BuilderArgs) -> Result<gtk::Box> {
+@@ -651,6 +653,117 @@ fn build_tooltip(bargs: &mut BuilderArgs) -> Result<gtk::Box> {
      }
  }
  
@@ -75,6 +75,7 @@ index a1d9014..dafcb64 100644
 +                popover_protector.connect_button_press_event(|_, _| { gtk::Inhibit(true) })
 +            );
 +            popover_protector.add(&popover_content);
++            popover_protector.show();
 +
 +            let popover_window = gtk::Window::new(gtk::WindowType::Popup);
 +            popover_window.add_events(gdk::EventMask::BUTTON_PRESS_MASK);
@@ -112,7 +113,7 @@ index a1d9014..dafcb64 100644
 +                            None,
 +                        );
 +
-+                        popover_window.show_all();
++                        popover_window.show();
 +                        popover_window.grab_add();
 +                    }
 +                    gtk::Inhibit(false)

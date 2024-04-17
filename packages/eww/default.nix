@@ -18,13 +18,12 @@ rustPlatform.buildRustPackage rec {
   src = pkgs.fetchFromGitHub {
     owner = "elkowar";
     repo = "eww";
-    rev = "149727ce1f7dd4f461ab1d61d560546f3d1f32a1";
-    hash = "sha256-DkJBMFUG8GLCoZ5yEXRDb4iWQjH+V6hrB4QQuRrn2F8=";
+    rev = "1e37f53e99016aa2cd725d7050788bb5d4fcc76a";
+    hash = "sha256-dm4bufwlVDUE4ndsR6cAPur75hvlVRzIxbMKJCizutg=";
   };
 
   cargoPatches = [
     ./custom-popover.patch
-    ./string-truncation.patch
   ];
 
   cargoHash = "sha256-zFzfGK31JoToJ5qupOu3d58IlrRmDMjc9pTKzmO680g=";
