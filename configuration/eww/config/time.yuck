@@ -6,12 +6,12 @@
 
 (defpoll day
   :interval "60s"
-  :initial 0
+  :initial 1
   `date +"%d"`
 )
 (defpoll month
   :interval "60s"
-  :initial 0
+  :initial 1
   `date +"%m"`
 )
 (defpoll year

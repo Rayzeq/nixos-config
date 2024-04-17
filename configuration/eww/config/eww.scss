@@ -185,7 +185,7 @@ calendar {
 	&.button {
 		color: gray;
 
-		&:insensitive {
+		&:disabled {
 			color: gray;
 		}
 
@@ -207,7 +207,7 @@ calendar {
 	}
 
 	// day numbers of another month
-	&:inconsistent {
+	&:indeterminate {
 		color: rgb(80, 80, 80);
 	}
 
