@@ -125,6 +125,11 @@ special_active = False
 workspaces.sort(key=lambda x: -1 if x == "special" else int(x))
 print_data(workspaces, active_workspace, active_window, special_active)
 
+AUTO_KILL = [
+    "Update - Sublime Text",
+    "Update - Sublime Merge"
+]
+
 for name, value in events():
     updated = True
     if name == "workspace":
@@ -144,7 +149,7 @@ for name, value in events():
         active_window = title
     elif name == "openwindow":
         _, _, _, title = value.split(",", maxsplit=3)
-        if title == "Update - Sublime Text":
+        if title in AUTO_KILL:
             # capture_output=True to prevent hyprctl from printing things
             subprocess.run(["hyprctl", "dispatch", "closewindow", f"title:^{title}$"], capture_output=True)
     else:
