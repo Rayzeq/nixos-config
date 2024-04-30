@@ -2,6 +2,11 @@
   enable = true;
 
   timeouts = [
+    {
+      timeout = 295;
+      command = "${pkgs.brightnessctl}/bin/brightnessctl set 50%-";
+      resumeCommand = "${pkgs.brightnessctl}/bin/brightnessctl set +50%";
+    }
     { timeout = 300; command = "${pkgs.systemd}/bin/loginctl lock-session"; }
     {
       timeout = 600;
