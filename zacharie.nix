@@ -1,12 +1,6 @@
 { config, pkgs, unstable, ... }:
-let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz";
-in
 {
-  imports = [
-    (import "${home-manager}/nixos")
-    ./hyprland/user.nix
-  ];
+  imports = [ ./hyprland/user.nix ];
 
   home-manager.users.root = {
     _module.args.unstable = unstable;

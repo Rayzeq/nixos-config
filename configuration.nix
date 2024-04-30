@@ -13,7 +13,7 @@ let
 in
 {
   _module.args.unstable = unstable;
-  imports = [ ./hardware-configuration.nix ./zacharie.nix ./hyprland/system.nix ./tuigreet.nix ];
+  imports = [ <home-manager/nixos> ./hardware-configuration.nix ./zacharie.nix ./hyprland/system.nix ./tuigreet.nix ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
