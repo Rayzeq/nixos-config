@@ -134,7 +134,7 @@
     :class "track"
     :onclick "playerctl play-pause"
     (label
-      :limit-width 150
+      :truncate true
       :text "${mpris_status == "Playing" ? "󰏤" : "󰐊"}  ${mpris_artist == "" ? "${mpris_tile}" : "${mpris_tile} - ${mpris_tile}"}"
     )
   )

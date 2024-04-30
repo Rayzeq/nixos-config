@@ -26,6 +26,7 @@
   (label
     :class "window"
     :visible {hyprland.window != ""}
+    :truncate true
     :markup {hyprland.window}
   )
 )
