@@ -56,6 +56,7 @@ in lib.mkMerge [
         services.cliphist.enable = true;
         wayland.windowManager.hyprland = {
           enable = true;
+          package = unstable.hyprland;
 
           settings = {
             exec-once = [
@@ -92,7 +93,8 @@ in lib.mkMerge [
                 natural_scroll = "yes";
               };
             };
-            "device:synps/2-synaptics-touchpad" = {
+            device = {
+              name = "synps/2-synaptics-touchpad";
               sensitivity = 0;
             };
 
