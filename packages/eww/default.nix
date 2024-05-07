@@ -1,14 +1,14 @@
-{ pkgs, lib }:
-with import <nixpkgs>
-{
-  overlays = [
-    (import (fetchTarball "https://github.com/oxalica/rust-overlay/archive/master.tar.gz"))
-  ];
-};
+{ ... }:
 let
-  rustPlatform = makeRustPlatform {
-    cargo = rust-bin.stable.latest.minimal;
-    rustc = rust-bin.stable.latest.minimal;
+  pkgs = import <nixpkgs>
+    {
+      overlays = [
+        (import (fetchTarball "https://github.com/oxalica/rust-overlay/archive/master.tar.gz"))
+      ];
+    };
+  rustPlatform = pkgs.makeRustPlatform {
+    cargo = pkgs.rust-bin.stable.latest.minimal;
+    rustc = pkgs.rust-bin.stable.latest.minimal;
   };
 in
 rustPlatform.buildRustPackage rec {

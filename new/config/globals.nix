@@ -1,4 +1,4 @@
-{ pkgs, self, ... }: rec {
+{ pkgs, ... }: {
   font = {
     sans = {
       package = pkgs.noto-fonts;

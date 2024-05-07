@@ -1,4 +1,4 @@
-{ pkgs, unstable, globals, ... }:
+{ pkgs, unstable, ... }:
 let
   config = import ../configuration/swayidle.nix {
     inherit pkgs unstable;

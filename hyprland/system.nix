@@ -1,4 +1,4 @@
-{ config, pkgs, stdenv, lib, ... }:
+{ pkgs, ... }:
 {
   nixpkgs.overlays = [
     (final: prev: {

@@ -1,4 +1,4 @@
-{ pkgs, unstable, globals, ... }: {
+{ globals, ... }: {
   bettermanager.kitty = {
     enable = true;
     font = globals.font.monospace;

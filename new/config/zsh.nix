@@ -1,4 +1,4 @@
-{ pkgs, unstable, globals, ... }: {
+{ ... }: {
   bettermanager.zsh = {
     enable = true;
 

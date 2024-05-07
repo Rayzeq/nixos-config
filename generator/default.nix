@@ -31,9 +31,9 @@ in
       ;
       services = lib.mkMerge (builtins.catAttrs "services" inputs);
       programs = lib.mkMerge (builtins.catAttrs "programs" inputs);
-    }] ++ (
-      (builtins.map (input: removeAttrs input [ "packages" "python-packages" "services" "programs" "system" ]) inputs)
-    )
+    }] ++
+    (builtins.map (input: removeAttrs input [ "packages" "python-packages" "services" "programs" "system" ]) inputs)
+
   );
   system = lib.mkMerge ((builtins.catAttrs "system" inputs) ++ [{
     fonts.packages = [ globals.font.package ];

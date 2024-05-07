@@ -1,4 +1,4 @@
-{ pkgs, self, ... }: rec {
+{ pkgs, ... }: {
   font = {
     package = pkgs.fira-code;
     family = "Fira Code";

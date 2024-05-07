@@ -156,19 +156,19 @@ in
 
   nixpkgs.overlays = [
     (self: super: {
-      vencord = unstable.vencord.overrideAttrs (oldAttrs: rec {
+      vencord = unstable.vencord.overrideAttrs (oldAttrs: {
         patches = (oldAttrs.patches or [ ]) ++ [ ./mudaebot.patch ];
       });
     })
     (self: super: {
-      wpa_supplicant = super.wpa_supplicant.overrideAttrs (oldAttrs: rec {
+      wpa_supplicant = super.wpa_supplicant.overrideAttrs (oldAttrs: {
         extraConfig = oldAttrs.extraConfig + ''
           CONFIG_WEP=y
         '';
       });
     })
     (self: super: {
-      trashy = super.trashy.overrideAttrs (oldAttrs: rec {
+      trashy = super.trashy.overrideAttrs (oldAttrs: {
         preFixup = ''
           installShellCompletion --cmd trash \
             --bash <($out/bin/trash completions bash) \
