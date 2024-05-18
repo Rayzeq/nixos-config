@@ -107,11 +107,6 @@ in
       python3
       unstable.mission-center
       gimp-with-plugins
-      ((opera.overrideAttrs (old: {
-        postFixup = ''
-          patchelf --add-needed ${pkgs.libGL}/lib/libGL.so.1 $out/usr/lib/x86_64-linux-gnu/opera/opera
-        '';
-      })).override { proprietaryCodecs = true; })
       (discord.override { withOpenASAR = true; withVencord = true; })
 
       mangohud
@@ -126,23 +121,6 @@ in
       steam-run
       # IUT
       openfortivpn
-      (azuredatastudio.overrideAttrs (old: {
-        nativeBuildInputs = old.nativeBuildInputs ++ [ wrapGAppsHook ];
-        postInstall = ''
-          fix_sqltoolsservice()
-          {
-            patchelf --add-needed "${pkgs.libGL}/lib/libGL.so.1" "${old.sqltoolsservicePath}/$1"
-            patchelf --add-needed "${pkgs.libsecret}/lib/libsecret-1.so.0" "${old.sqltoolsservicePath}/$1"
-          }
-
-          fix_sqltoolsservice MicrosoftSqlToolsServiceLayer
-          fix_sqltoolsservice MicrosoftSqlToolsCredentials
-          fix_sqltoolsservice SqlToolsResourceProviderService
-
-          patchelf --add-needed "${pkgs.libGL}/lib/libGL.so.1" "$out/azuredatastudio/azuredatastudio"
-          patchelf --add-needed "${pkgs.libsecret}/lib/libsecret-1.so.0" "$out/azuredatastudio/azuredatastudio"
-        '';
-      }))
     ];
   };
   environment.etc."ppp/options".text = "ipcp-accept-remote";
