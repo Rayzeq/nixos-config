@@ -16,7 +16,7 @@ def call(command: str) -> Any:
 
 def events() -> Generator[tuple[str, str], None, None]:
     sock = sockmod.socket(sockmod.AF_UNIX, sockmod.SOCK_STREAM)
-    sock.connect(f"/tmp/hypr/{os.environ['HYPRLAND_INSTANCE_SIGNATURE']}/.socket2.sock")
+    sock.connect(f"{os.environ['XDG_RUNTIME_DIR']}/hypr/{os.environ['HYPRLAND_INSTANCE_SIGNATURE']}/.socket2.sock")
     socket = sock.makefile()
 
     while True:
@@ -148,10 +148,13 @@ for name, value in events():
         class_, title = value.split(",", maxsplit=1)
         active_window = title
     elif name == "openwindow":
-        _, _, _, title = value.split(",", maxsplit=3)
+        address, _, class_, title = value.split(",", maxsplit=3)
         if title in AUTO_KILL:
             # capture_output=True to prevent hyprctl from printing things
             subprocess.run(["hyprctl", "dispatch", "closewindow", f"title:^{title}$"], capture_output=True)
+        if class_ == "sublime_text" and title == "":
+            # capture_output=True to prevent hyprctl from printing things
+            subprocess.run(["hyprctl", "dispatch", "closewindow", f"address:^{address}$"], capture_output=True)
     else:
         updated = False
 

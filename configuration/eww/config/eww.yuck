@@ -6,6 +6,7 @@
 (include "./pulseaudio.yuck")
 (include "./network.yuck")
 (include "./time.yuck")
+(include "./bluetooth.yuck")
 
 (defwindow statusbar
   :monitor '["<primary>", "eDP-1", 0]'
@@ -38,6 +39,7 @@
         :class "tray"
         :icon-size 18
       )
+      (bluetooth)
     )
     (clock)
     (box

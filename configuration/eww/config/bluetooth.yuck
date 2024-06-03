@@ -1,0 +1,98 @@
+(defvar bluegirl "/mnt/Storage/Projects/bluegirl/target/debug/bluegirl")
+
+(deflisten bluedata
+  :initial '{"icon":"","class":"","adapters":[],"devices":[]}'
+  "/mnt/Storage/Projects/bluegirl/target/debug/bluegirl watch"
+)
+
+(defwidget bluetooth []
+  (box
+    :class "bluetooth"
+    :visible true ;{bluedata.class == "connected"}
+    :space-evenly false
+    (button
+      :class "icon ${bluedata.class}"
+      :onclick "blueman-manager &"
+      (label
+        :text {bluedata.icon}
+      )
+    )
+    (for device in {bluedata.devices}
+      (popovered
+        (box
+          :class "device"
+          :orientation "v"
+          :space-evenly false
+          (label :text {device.name})
+          (box
+            :orientation "h"
+            :space-evenly false
+            (label
+              :class "bonded-icon"
+              :visible {device.bonded}
+              :text "󰆓"
+              :tooltip "Bonded"
+            )
+            ; TODO: check all properties when connected
+            ; TODO: RSSI for signal strenght
+            ; TODO: is org.bluez.Battery1 present when connected ?
+            (label
+              :class "connected-icon"
+              :visible {device.connected}
+              :text "⇅"
+              :tooltip "Connected"
+            )
+            (label
+              :class "paired-icon"
+              :visible {device.paired}
+              :text "󰌋"
+              :tooltip "Paired"
+            )
+            (button
+              :visible {device.trusted}
+              :onclick "${bluegirl} untrust ${device.adapter} ${device.address}"
+              (label
+                :class "trusted-icon"
+                :text "󰕥"
+                :tooltip "Trusted"
+              )
+            )
+            (button
+              :visible {!device.trusted}
+              :onclick "${bluegirl} trust ${device.adapter} ${device.address}"
+              (label
+                :class "not-trusted-icon"
+                :text "󰒘"
+                :tooltip "Not trusted"
+              )
+            )
+            (button
+              :visible {device.blocked}
+              :onclick "${bluegirl} unblock ${device.adapter} ${device.address}"
+              (label
+                :class "blocked-icon"
+                :text ""
+                :tooltip "Blocked"
+              )
+            )
+            (button
+              :visible {!device.blocked}
+              :onclick "${bluegirl} block ${device.adapter} ${device.address}"
+              (label
+                :class "not-blocked-icon"
+                :text ""
+                :tooltip "Not blocked"
+              )
+            )
+          )
+        )
+        (eventbox
+          (label
+            :visible true ;{device.connected}
+            :text {device.icon}
+          )
+        )
+      )
+    )
+  )
+)

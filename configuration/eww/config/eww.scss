@@ -37,7 +37,8 @@
 .cpu,
 .power,
 .audio,
-.powerbtn {
+.powerbtn,
+.statusbar>box>.bluetooth {
 	margin: 1px 3px;
 	border-radius: 20px;
 	padding: 0.25rem 0.75rem;
@@ -172,6 +173,59 @@ tooltip {
 		}
 	}
 }
+
+.bluetooth {
+	.icon {
+		margin-right: 4px;
+		border-right: 1px solid #404040;
+		padding-right: 6px;
+	}
+
+	box {
+		label {
+			padding-right: 7px;
+		}
+
+		&:last-child label {
+			padding-right: 1px;
+		}
+	}
+
+}
+
+.device {
+	margin-bottom: 5px;
+	border-radius: 15px;
+	padding: 10px;
+
+	background-color: rgba(0, 0, 0, 0.8);
+
+	.connected-icon,
+	.bonded-icon,
+	.paired-icon,
+	.trusted-icon,
+	.not-trusted-icon,
+	.blocked-icon,
+	.not-blocked-icon {
+		margin: 5px;
+		font-size: 25px;
+	}
+
+	.bonded-icon {
+		color: purple;
+	}
+
+	.trusted-icon,
+	.not-blocked-icon {
+		color: green;
+	}
+
+	.not-trusted-icon,
+	.blocked-icon {
+		color: red;
+	}
+}
+
 
 calendar {
 	border-radius: 10px;

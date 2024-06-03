@@ -10,7 +10,7 @@
   "playerctl -F metadata artist"
 )
 
-(deflisten mpris_tile
+(deflisten mpris_title
   :initial ""
   "playerctl -F metadata title"
 )
@@ -135,7 +135,7 @@
     :onclick "playerctl play-pause"
     (label
       :truncate true
-      :text "${mpris_status == "Playing" ? "󰏤" : "󰐊"}  ${mpris_artist == "" ? "${mpris_tile}" : "${mpris_tile} - ${mpris_tile}"}"
+      :text "${mpris_status == "Playing" ? "󰏤" : "󰐊"}  ${mpris_artist == "" ? "${mpris_title}" : "${mpris_title} - ${mpris_artist}"}"
     )
   )
 )
