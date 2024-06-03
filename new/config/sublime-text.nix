@@ -89,12 +89,14 @@
         command = "open_terminal";
       }
     ];
-    build-systems."Python - Terminus" = {
-      target = "terminus_open";
-      cancel = "terminus_cancel_build";
-      shell_cmd = ''python3 "''${file_path}/''${file_name}"; read -p "Press any key to continue..."'';
-      working_dir = "$folder";
-      selector = "source.python";
+    build-systems = {
+      "Python - Terminus" = {
+        target = "terminus_open";
+        cancel = "terminus_cancel_build";
+        shell_cmd = ''python3 "''${file_path}/''${file_name}"; read -p "Press any key to continue..."'';
+        working_dir = "$folder";
+        selector = "source.python";
+      };
     };
     plugins = {
       ANSIescape = { };
@@ -336,19 +338,6 @@
         };
       };
       LSP-typescript = { };
-      LSP-jdtls.settings.settings.java = {
-        jdt.ls.java.home = "${pkgs.jdk21}";
-        codeGeneration = {
-          generateComments = true;
-          toString.codeStyle = "STRING_FORMAT";
-        };
-        foldingRange.enabled = true;
-        format.onType.enabled = true;
-        implementationsCodeLens.enabled = true;
-        referencesCodeLens.enabled = true;
-        saveActions.organizeImports = true;
-        signatureHelp.description.enabled = true;
-      };
       Debugger = { };
       Nix = { };
       SublimeRandomCrap = {
