@@ -362,6 +362,7 @@
         settings.extensions = [ "hbs" ];
       };
       SCSS = { };
+      FileIcons = { };
     };
   };
 }
