@@ -287,7 +287,7 @@ in
 
       autocd = cfg.autocd;
       history = cfg.history;
-      enableAutosuggestions = cfg.autosuggestions.enable;
+      autosuggestion.enable = cfg.autosuggestions.enable;
       syntaxHighlighting = cfg.syntaxHighlighting;
 
       oh-my-zsh = mkIf cfg.oh-my-zsh.enable {

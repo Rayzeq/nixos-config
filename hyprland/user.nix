@@ -48,7 +48,7 @@ in lib.mkMerge [
 
         qt = {
           enable = true;
-          platformTheme = "kde";
+          platformTheme.name = "kde";
           style.name = "Breeze";
         };
 
@@ -76,7 +76,8 @@ in lib.mkMerge [
             };
 
             misc = {
-              force_default_wallpaper = 0;
+              disable_hyprland_logo = true;
+              disable_splash_rendering = true;
               focus_on_activate = true;
             };
 

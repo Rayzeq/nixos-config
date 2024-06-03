@@ -64,9 +64,9 @@ in
   '';
 
   # Configure keymap in X11
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "fr";
-    xkbVariant = "oss";
+    variant = "oss";
   };
 
   hardware.opengl.driSupport32Bit = true;
