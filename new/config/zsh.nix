@@ -66,8 +66,6 @@
       unilim-smb-rm = "sudo umount ~/Downloads/iut && trash ~/Downloads/iut";
       system-update = "sudo zsh -c \"nix-channel --update nixos-unstable && nix-channel --update home-manager && nixos-rebuild switch --upgrade\"";
       nixos-cleanup = "nix-collect-garbage -d; sudo zsh -c \"nix-collect-garbage -d && nixos-rebuild boot\"";
-      kathara = "sudo -EH steam-run /home/zacharie/Downloads/kathara/usr/bin/kathara";
-      kathara_start = "sudogui steam-run /home/zacharie/Downloads/kathara/usr/bin/kathara lstart --terminal-emu /home/zacharie/Downloads/kathara/usr/bin/term.sh";
     };
   };
 }
