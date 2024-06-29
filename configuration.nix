@@ -59,12 +59,6 @@ in
     HibernateDelaySec=1h
   '';
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "fr";
-    variant = "oss";
-  };
-
   hardware.opengl.driSupport32Bit = true;
 
   # Configure console keymap
