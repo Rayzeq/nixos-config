@@ -72,6 +72,12 @@ in
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  # Auto-discovery of printers
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -98,6 +104,7 @@ in
     description = "Zacharie";
     extraGroups = [ "networkmanager" "wheel" "input" ];
     packages = with pkgs; [
+      simple-scan
       vlc
       obsidian
       python3
