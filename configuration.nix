@@ -46,13 +46,9 @@ in
     LC_TIME = "fr_FR.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.xserver.excludePackages = with pkgs; [ xterm ];
-
   # Enable the KDE Plasma Desktop Environment.
-  services.xserver.desktopManager.plasma5.enable = true;
-  environment.plasma5.excludePackages = with pkgs.libsForQt5; [ elisa konsole ];
+  services.desktopManager.plasma6.enable = true;
+  environment.plasma6.excludePackages = with pkgs.libsForQt5; [ elisa konsole ];
 
   services.logind.extraConfig = ''
     HandleLidSwitch=hibernate
