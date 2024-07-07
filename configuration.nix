@@ -28,6 +28,9 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.tmp.cleanOnBoot = true;
   boot.kernel.sysctl."kernel.sysrq" = 502;
+  boot.blacklistedKernelModules = [
+    "hid_logitech_hidpp"
+  ];
 
   # Firmware updates
   services.fwupd.enable = true;
