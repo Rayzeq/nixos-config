@@ -17,7 +17,7 @@ in lib.mkMerge [
         home.pointerCursor = {
           gtk.enable = true;
           x11.enable = true;
-          package = pkgs.libsForQt5.breeze-qt5;
+          package = pkgs.kdePackages.breeze;
           name = "breeze_cursors";
           size = 24;
         };
@@ -34,7 +34,7 @@ in lib.mkMerge [
             size = 24;
           };
           iconTheme = {
-            package = pkgs.libsForQt5.breeze-icons;
+            package = pkgs.kdePackages.breeze-icons;
             name = "breeze-dark";
           };
 
@@ -60,7 +60,7 @@ in lib.mkMerge [
 
           settings = {
             exec-once = [
-              "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
+              "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
               "eww open statusbar && ( nm-applet & blueman-applet & discord --enable-features=UseOzonePlatform --ozone-platform=wayland --start-minimized & )"
               "hyprpaper"
               "swaync"

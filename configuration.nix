@@ -48,7 +48,7 @@ in
 
   # Enable the KDE Plasma Desktop Environment.
   services.desktopManager.plasma6.enable = true;
-  environment.plasma6.excludePackages = with pkgs.libsForQt5; [ elisa konsole ];
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [ elisa konsole ];
 
   services.logind.extraConfig = ''
     HandleLidSwitch=hibernate
@@ -168,7 +168,7 @@ in
     lsd
     bat
     ripgrep
-    libsForQt5.kcalc
+    kdePackages.kcalc
     unrar
     man-pages
     file

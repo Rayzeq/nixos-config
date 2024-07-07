@@ -29,7 +29,7 @@
     rofi-wayland
     grimblast
     swaynotificationcenter
-    libsForQt5.polkit-kde-agent
+    kdePackages.polkit-kde-agent-1
     wl-clipboard
     blueman
     brightnessctl
