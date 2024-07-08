@@ -64,7 +64,7 @@
       unilim = "sudo openfortivpn u-vpn.unilim.fr -u dubrulle3 -p @Zacharie36";
       unilim-smb = "mkdir -p ~/Downloads/iut && sudo mount -t cifs -o username=dubrulle3,password='@Zacharie36',domain=AD,uid=1000,gid=100,addr=164.81.13.212,nounix,serverino,mapposix,rsize=1048576,wsize=1048576,echo_interval=5 '//SMB-02.ad.unilim.fr/pedago-iut/INFO' ~/Downloads/iut";
       unilim-smb-rm = "sudo umount ~/Downloads/iut && trash ~/Downloads/iut";
-      system-update = "sudo zsh -c \"nix-channel --update nixos-unstable && nix-channel --update home-manager && nixos-rebuild switch --upgrade\"";
+      system-update = "sudo zsh -c \"nix-channel --update home-manager && nixos-rebuild switch --upgrade\"";
       nixos-cleanup = "nix-collect-garbage -d; sudo zsh -c \"nix-collect-garbage -d && nixos-rebuild boot\"";
     };
   };

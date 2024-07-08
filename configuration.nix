@@ -2,7 +2,7 @@
 
 # The unstable channel for some packages
 let
-  unstable = import <nixos-unstable> {
+  unstable = import <nixos> {
     config = {
       allowUnfree = true;
       permittedInsecurePackages = [
@@ -59,7 +59,7 @@ in
     HibernateDelaySec=1h
   '';
 
-  hardware.opengl.driSupport32Bit = true;
+  hardware.graphics.enable32Bit = true;
 
   # Configure console keymap
   console.keyMap = "fr";
