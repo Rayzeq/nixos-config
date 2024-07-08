@@ -117,6 +117,9 @@ in
       # Rust
       rustup
       clang
+      # Build essentials
+      gnumake
+      gdb
 
       # Useful
       steam-run
