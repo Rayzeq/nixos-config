@@ -19,6 +19,8 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.tmp.cleanOnBoot = true;
+  # Firmware updates
+  services.fwupd.enable = true;
 
   networking.hostName = "zacharie-ThinkPad";
 
