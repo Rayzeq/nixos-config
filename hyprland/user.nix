@@ -203,7 +203,7 @@ in lib.mkMerge [
           };
         };
 
-        services.blueman-applet.enable = true;
+        # services.blueman-applet.enable = true;
 
         # The default config, without the examples which break everything
         xdg.configFile."swaync/config.json".text = ''
