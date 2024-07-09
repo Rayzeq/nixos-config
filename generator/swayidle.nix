@@ -1,7 +1,7 @@
-{ pkgs, unstable, ... }:
+{ pkgs, ... }:
 let
   config = import ../configuration/swayidle.nix {
-    inherit pkgs unstable;
+    inherit pkgs;
   };
 in
 if config.enable then {

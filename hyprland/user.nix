@@ -1,6 +1,8 @@
-{ pkgs, unstable, lib, home-manager, ... }:
-let combinedConfig = import ../generator/default.nix { inherit pkgs unstable lib; };
-in lib.mkMerge [
+{ pkgs, lib, ... }:
+let
+  combinedConfig = import ../generator/default.nix { inherit pkgs lib; };
+in
+lib.mkMerge [
   combinedConfig.system
   {
     home-manager.users.zacharie = { config, ... }: lib.mkMerge [
@@ -56,7 +58,7 @@ in lib.mkMerge [
         services.cliphist.enable = true;
         wayland.windowManager.hyprland = {
           enable = true;
-          package = unstable.hyprland;
+          package = pkgs.hyprland;
 
           settings = {
             exec-once = [
@@ -196,10 +198,10 @@ in lib.mkMerge [
             usegeoclue = false;
           };
           darkModeScripts = {
-            wallpaper = import ./darkman/dark.sh { inherit pkgs unstable config; };
+            wallpaper = import ./darkman/dark.sh { inherit pkgs config; };
           };
           lightModeScripts = {
-            wallpaper = import ./darkman/light.sh { inherit pkgs unstable config; };
+            wallpaper = import ./darkman/light.sh { inherit pkgs config; };
           };
         };
 

@@ -1,11 +1,11 @@
-{ unstable, lib, globals, ... }:
+{ pkgs, lib, globals, ... }:
 let
   config = import ../configuration/hyprpaper.nix {
     inherit globals;
   };
 in
 if config.enable then {
-  packages = [ unstable.hyprpaper ];
+  packages = [ pkgs.hyprpaper ];
 
   xdg.configFile."hypr/hyprpaper.conf".text = (lib.concatStrings
     (builtins.map
@@ -22,7 +22,7 @@ if config.enable then {
     };
 
     Service = {
-      ExecStart = "${unstable.hyprpaper}/bin/hyprpaper";
+      ExecStart = "${pkgs.hyprpaper}/bin/hyprpaper";
       Restart = "on-failure";
     };
 

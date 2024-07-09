@@ -1,4 +1,4 @@
-{ pkgs, unstable, globals, ... }: {
+{ pkgs, globals, ... }: {
   bettermanager.sublime-text = {
     enable = true;
 
@@ -118,7 +118,7 @@
         default_clients = { };
         clients.nixd = {
           enabled = true;
-          command = [ "${unstable.nixd}/bin/nixd" ];
+          command = [ "${pkgs.nixd}/bin/nixd" ];
           selector = "source.nix";
         };
       };
@@ -298,7 +298,7 @@
         };
       };
       LSP-rust-analyzer.settings = {
-        command = [ "${unstable.rust-analyzer}/bin/rust-analyzer" ];
+        command = [ "${pkgs.rust-analyzer}/bin/rust-analyzer" ];
         settings.rust-analyzer = {
           assist.emitMustUse = true;
           cargo.features = "all";

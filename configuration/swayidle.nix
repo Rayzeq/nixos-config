@@ -1,4 +1,4 @@
-{ pkgs, unstable, ... }: {
+{ pkgs, ... }: {
   enable = true;
 
   timeouts = [
@@ -19,7 +19,7 @@
     }
   ];
   events = [
-    { event = "lock"; command = "${unstable.swaylock-effects}/bin/swaylock -f"; }
-    { event = "before-sleep"; command = "${unstable.swaylock-effects}/bin/swaylock -f"; }
+    { event = "lock"; command = "${pkgs.swaylock-effects}/bin/swaylock -f"; }
+    { event = "before-sleep"; command = "${pkgs.swaylock-effects}/bin/swaylock -f"; }
   ];
 }

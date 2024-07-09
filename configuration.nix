@@ -1,19 +1,39 @@
 { config, pkgs, ... }:
-
-# The unstable channel for some packages
-let
-  unstable = import <nixos> {
-    config = {
-      allowUnfree = true;
-      permittedInsecurePackages = [
-        "nix-2.16.2" # needed by nixd
-      ];
-    };
-  };
-in
 {
-  _module.args.unstable = unstable;
   imports = [ <home-manager/nixos> ./hardware-configuration.nix ./zacharie.nix ./hyprland/system.nix ./tuigreet.nix ];
+
+  nixpkgs.config = {
+    allowUnfree = true;
+    permittedInsecurePackages = [
+      "nix-2.16.2" # needed by nixd
+      "electron-25.9.0" # needed by obsidian
+    ];
+  };
+  nixpkgs.overlays = [
+    (final: prev: {
+      vencord = prev.vencord.overrideAttrs (oldAttrs: {
+        patches = (oldAttrs.patches or [ ]) ++ [ ./mudaebot.patch ];
+      });
+      discord = prev.discord.override {
+        withOpenASAR = true;
+        withVencord = true;
+      };
+      wpa_supplicant = prev.wpa_supplicant.overrideAttrs (oldAttrs: {
+        extraConfig = oldAttrs.extraConfig + ''
+          CONFIG_WEP=y
+        '';
+      });
+      # probably not necessary anymore
+      trashy = prev.trashy.overrideAttrs (oldAttrs: {
+        preFixup = ''
+          installShellCompletion --cmd trash \
+            --bash <($out/bin/trash completions bash) \
+            --fish <($out/bin/trash completions fish) \
+            --zsh <($out/bin/trash completions zsh | grep -v ">trashy") \
+        '';
+      });
+    })
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -106,9 +126,9 @@ in
       vlc
       obsidian
       python3
-      unstable.mission-center
+      mission-center
       gimp-with-plugins
-      (discord.override { withOpenASAR = true; withVencord = true; })
+      discord
 
       mangohud
       gamemode
@@ -128,38 +148,6 @@ in
     ];
   };
   environment.etc."ppp/options".text = "ipcp-accept-remote";
-
-  # Allow unfree packages (like Sublime Merge)
-  nixpkgs.config.allowUnfree = true;
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-25.9.0" # obsidian need this
-  ];
-
-  nixpkgs.overlays = [
-    (self: super: {
-      vencord = unstable.vencord.overrideAttrs (oldAttrs: {
-        patches = (oldAttrs.patches or [ ]) ++ [ ./mudaebot.patch ];
-      });
-    })
-    (self: super: {
-      wpa_supplicant = super.wpa_supplicant.overrideAttrs (oldAttrs: {
-        extraConfig = oldAttrs.extraConfig + ''
-          CONFIG_WEP=y
-        '';
-      });
-    })
-    (self: super: {
-      trashy = super.trashy.overrideAttrs (oldAttrs: {
-        preFixup = ''
-          installShellCompletion --cmd trash \
-            --bash <($out/bin/trash completions bash) \
-            --fish <($out/bin/trash completions fish) \
-            --zsh <($out/bin/trash completions zsh | grep -v ">trashy") \
-        '';
-      });
-    })
-  ];
 
   programs.firefox.enable = true;
   programs.nix-ld.enable = true;

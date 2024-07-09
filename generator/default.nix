@@ -1,4 +1,4 @@
-{ pkgs, unstable, lib, ... }:
+{ pkgs, lib, ... }:
 let
   utils = import ./utils.nix;
   globals = import ../configuration/globals.nix { inherit pkgs; self = globalsFinal; };
@@ -15,7 +15,7 @@ let
   );
   inputFuncs = builtins.map (path: import ./${path}) inputFiles;
   inputs = builtins.map
-    (func: func { inherit pkgs unstable lib; globals = globalsFinal; })
+    (func: func { inherit pkgs lib; globals = globalsFinal; })
     inputFuncs;
 in
 {
