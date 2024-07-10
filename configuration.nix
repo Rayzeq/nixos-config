@@ -23,15 +23,6 @@
           CONFIG_WEP=y
         '';
       });
-      # probably not necessary anymore
-      trashy = prev.trashy.overrideAttrs (oldAttrs: {
-        preFixup = ''
-          installShellCompletion --cmd trash \
-            --bash <($out/bin/trash completions bash) \
-            --fish <($out/bin/trash completions fish) \
-            --zsh <($out/bin/trash completions zsh | grep -v ">trashy") \
-        '';
-      });
     })
   ];
 
