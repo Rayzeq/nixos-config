@@ -58,7 +58,6 @@ lib.mkMerge [
         services.cliphist.enable = true;
         wayland.windowManager.hyprland = {
           enable = true;
-          package = pkgs.hyprland;
 
           settings = {
             exec-once = [
@@ -191,7 +190,6 @@ lib.mkMerge [
 
         services.darkman = {
           enable = true;
-          package = pkgs.darkman;
           settings = {
             lat = 46.6;
             lng = 1.6;

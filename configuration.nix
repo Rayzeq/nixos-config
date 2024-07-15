@@ -2,13 +2,7 @@
 {
   imports = [ <home-manager/nixos> ./hardware-configuration.nix ./zacharie.nix ./hyprland/system.nix ./tuigreet.nix ];
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    permittedInsecurePackages = [
-      "nix-2.16.2" # needed by nixd
-      "electron-25.9.0" # needed by obsidian
-    ];
-  };
+  nixpkgs.config.allowUnfree = true;
   nixpkgs.overlays = [
     (final: prev: {
       vencord = prev.vencord.overrideAttrs (oldAttrs: {
