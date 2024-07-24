@@ -106,7 +106,7 @@
   users.users.zacharie = {
     isNormalUser = true;
     description = "Zacharie";
-    extraGroups = [ "networkmanager" "wheel" "input" ];
+    extraGroups = [ "networkmanager" "wheel" "input" "dialout" ];
     packages = with pkgs; [
       simple-scan
       vlc
