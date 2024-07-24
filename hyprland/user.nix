@@ -166,6 +166,8 @@ lib.mkMerge [
 
               ", XF86AudioPause, exec, playerctl -a pause"
               ", XF86AudioPlay, exec, playerctl -a play"
+              ", XF86AudioNext, exec, playerctl next"
+              ", XF86AudioPrev, exec, playerctl previous"
             ];
             bindr = [
               "$mod, SUPER_L, exec, pkill -x rofi || rofi -show drun -theme \"~/.config/rofi/launcher.rasi\""
