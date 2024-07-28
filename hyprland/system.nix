@@ -10,7 +10,6 @@
     kdePackages.polkit-kde-agent-1
     wl-clipboard
     blueman
-    brightnessctl
     darkman
     networkmanagerapplet
   ];
