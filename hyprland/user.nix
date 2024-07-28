@@ -65,6 +65,7 @@ lib.mkMerge [
               "eww open statusbar && ( nm-applet & blueman-applet & discord --enable-features=UseOzonePlatform --ozone-platform=wayland --start-minimized & )"
               "hyprpaper"
               "swaync"
+              "${pkgs.wayland-pipewire-idle-inhibit}/bin/wayland-pipewire-idle-inhibit"
             ];
             monitor = [ "e-DP1,1920x1080@60,0x0,1" ",preferred,auto,1" ];
 
