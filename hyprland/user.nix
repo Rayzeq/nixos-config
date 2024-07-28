@@ -165,8 +165,8 @@ lib.mkMerge [
               # the doc say we shouldn't call dpms directly from a keybind, so I used hyprctl
               "$mod, F12, exec, hyprctl dispatch dpms on"
 
-              ", XF86AudioPause, exec, playerctl -a pause"
-              ", XF86AudioPlay, exec, playerctl -a play"
+              ", XF86AudioPause, exec, playerctl pause"
+              ", XF86AudioPlay, exec, playerctl play"
               ", XF86AudioNext, exec, playerctl next"
               ", XF86AudioPrev, exec, playerctl previous"
             ];
