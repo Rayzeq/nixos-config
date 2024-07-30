@@ -165,10 +165,10 @@ lib.mkMerge [
               # the doc say we shouldn't call dpms directly from a keybind, so I used hyprctl
               "$mod, F12, exec, hyprctl dispatch dpms on"
 
-              ", XF86AudioPause, exec, playerctl pause"
-              ", XF86AudioPlay, exec, playerctl play"
-              ", XF86AudioNext, exec, playerctl next"
-              ", XF86AudioPrev, exec, playerctl previous"
+              ", XF86AudioPause, exec, ${pkgs.playerctl}/bin/playerctl pause"
+              ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play"
+              ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
+              ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
             ];
             bindr = [
               "$mod, SUPER_L, exec, pkill -x rofi || rofi -show drun -theme \"~/.config/rofi/launcher.rasi\""
