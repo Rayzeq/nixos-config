@@ -137,6 +137,7 @@ lib.mkMerge [
 
               "$mod, W, togglefloating"
               "$mod, PRIOR, fullscreen, 1"
+              "$mod + SHIFT, PRIOR, fullscreen, 0"
               "$mod, KP_End, movetoworkspace, 1"
               "$mod, KP_Down, movetoworkspace, 2"
               "$mod, KP_Next, movetoworkspace, 3"
