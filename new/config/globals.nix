@@ -18,7 +18,10 @@
       fallbacks = [
         # We install Meslo LGS NerdFont so apps will use it as a
         # fallback for NerdFont icons
-        pkgs.meslo-lgs-nf
+        {
+          name = "MesloLGS NF";
+          package = pkgs.meslo-lgs-nf;
+        }
       ];
     };
   };

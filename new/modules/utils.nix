@@ -5,53 +5,76 @@ with lib; {
       (name: value: { inherit name value; })
       attrset
   );
-  types.font = {
-    package = mkOption {
-      type = types.nullOr types.package;
-      default = null;
-      example = literalExpression "pkgs.fira-code";
-      description = ''
-        Package providing the font. This package will be installed
-        to your profile. If `null` then the font
-        is assumed to already be available in your profile.
-      '';
+  types = rec {
+    font_fallback = {
+      name = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        example = "MesloLGS NF";
+        description = ''
+          The family name of the font within the package.
+        '';
+      };
+      package = mkOption {
+        type = types.nullOr types.package;
+        default = null;
+        example = literalExpression "pkgs.fira-code";
+        description = ''
+          Package providing the font. This package will be installed
+          to your profile. If `null` then the font
+          is assumed to already be available in your profile.
+        '';
+      };
     };
+    font = {
+      package = mkOption {
+        type = types.nullOr types.package;
+        default = null;
+        example = literalExpression "pkgs.fira-code";
+        description = ''
+          Package providing the font. This package will be installed
+          to your profile. If `null` then the font
+          is assumed to already be available in your profile.
+        '';
+      };
 
-    fallbacks = mkOption {
-      type = types.listOf types.package;
-      default = [ ];
-      example = literalExpression "[ pkgs.meslo-lgs-nf ]";
-      description = ''
-        Other fonts to install to use as fallback for glyphs not available
-        in the font you specified.
-      '';
-    };
+      fallbacks = mkOption {
+        type = types.listOf (types.submodule {
+          options = font_fallback;
+        });
+        default = [ ];
+        description = ''
+          Other fonts to install to use as fallback for glyphs not available
+          in the font you specified.
+        '';
+      };
 
-    name = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      example = "Fira Code";
-      description = ''
-        The family name of the font within the package.
-      '';
-    };
+      name = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        example = "Fira Code";
+        description = ''
+          The family name of the font within the package.
+        '';
+      };
 
-    size = mkOption {
-      type = types.nullOr types.number;
-      default = null;
-      example = "8";
-      description = ''
-        The size of the font.
-      '';
-    };
+      size = mkOption {
+        type = types.nullOr types.number;
+        default = null;
+        example = "8";
+        description = ''
+          The size of the font.
+        '';
+      };
 
-    features = mkOption {
-      type = types.listOf types.str;
-      default = [ ];
-      example = ''[ "subpixel_antialias" "ss03" "ss05" ]'';
-      description = ''
-        The font features to enable.
-      '';
+      features = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        example = ''[ "subpixel_antialias" "ss03" "ss05" ]'';
+        description = ''
+          The font features to enable.
+        '';
+      };
     };
   };
 }

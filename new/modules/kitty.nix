@@ -43,7 +43,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = cfg.font.fallbacks;
+    home.packages = map (full_font: full_font.package) cfg.font.fallbacks;
     programs.kitty = {
       enable = true;
       package = cfg.package;

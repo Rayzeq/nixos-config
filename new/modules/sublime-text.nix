@@ -88,7 +88,9 @@ in
       cfg.package
       # nixd is broken, so we need to add this package globally
       pkgs.nixpkgs-fmt
-    ] ++ cfg.font.fallbacks ++ optional (cfg.font.package != null) cfg.font.package;
+    ] ++ (
+      map (full_font: full_font.package) cfg.font.fallbacks
+    ) ++ optional (cfg.font.package != null) cfg.font.package;
     nixpkgs.config = {
       allowUnfree = true;
       permittedInsecurePackages = [
