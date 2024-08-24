@@ -114,11 +114,17 @@
       python3
       mission-center
       gimp-with-plugins
+      inkscape-with-extensions
+      blender
       discord
 
       mangohud
       gamemode
       prismlauncher
+      modrinth-app
+      heroic
+      wineWowPackages.waylandFull
+      winetricks
 
       # Rust
       rustup
