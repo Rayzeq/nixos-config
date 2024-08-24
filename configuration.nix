@@ -122,6 +122,7 @@
 
       # Rust
       rustup
+      cargo-generate
       clang
       # Build essentials
       gnumake
@@ -156,6 +157,7 @@
     piper
     htop
     du-dust
+    zip
   ];
 
   programs.gamemode.enable = true;
