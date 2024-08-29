@@ -139,6 +139,8 @@
         settings.html.format = {
           indentHandlebars = true;
           templating = true;
+
+          wrapAttributes = "preserve";
         };
       };
       LSP-json.settings = { };
