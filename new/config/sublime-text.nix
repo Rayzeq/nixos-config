@@ -108,13 +108,16 @@
         global_node_modules_path = "${pkgs.nodePackages.live-server}/lib/node_modules";
       };
       LSP.settings = {
+        inhibit_word_completions = true;
         lsp_format_on_save = true;
+        lsp_format_on_paste = true;
         lsp_code_actions_on_save.source = {
           fixAll = true;
           addMissingImports = true;
           organizeImports = true;
         };
         show_inlay_hints = true;
+        semantic_highlighting = true;
         default_clients = { };
         clients.nixd = {
           enabled = true;
