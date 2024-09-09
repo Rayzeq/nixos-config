@@ -130,10 +130,6 @@
         binary = "custom";
         initializationOptions.custom_command = [ "${pkgs.clang-tools}/bin/clangd" ];
       };
-      LSP-copilot.settings = {
-        command = [ "${pkgs.nodejs}/bin/node" "\${server_path}" "--stdio" ];
-        settings.hook_to_auto_complete_command = true;
-      };
       LSP-css = { };
       LSP-html.settings = {
         settings.html.format = {
