@@ -120,7 +120,6 @@
 
       mangohud
       gamemode
-      prismlauncher
       modrinth-app
       heroic
       wineWowPackages.waylandFull
