@@ -19,6 +19,16 @@
           withVencord = true;
         };
         varlink-syntax = (import ./packages/varlink-syntax.nix { inherit pkgs; });
+        zsh-autocomplete = prev.zsh-autocomplete.overrideAttrs (oldAttrs: rec {
+          version = "23.07.13";
+
+          src = prev.fetchFromGitHub {
+            owner = "marlonrichert";
+            repo = "zsh-autocomplete";
+            rev = version;
+            sha256 = "sha256-0NW0TI//qFpUA2Hdx6NaYdQIIUpRSd0Y4NhwBbdssCs=";
+          };
+        });
       })
     ];
   };
