@@ -2,7 +2,6 @@
 with lib;
 let
   cfg = config.bettermanager.zsh;
-  utils = import ./utils.nix { inherit lib; };
 
   historyOptions = types.submodule {
     options = {
