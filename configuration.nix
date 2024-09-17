@@ -2,23 +2,30 @@
 {
   imports = [ <home-manager/nixos> ./hardware-configuration.nix ./zacharie.nix ./hyprland/system.nix ./tuigreet.nix ];
 
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays = [
-    (final: prev: {
-      vencord = prev.vencord.overrideAttrs (oldAttrs: {
-        patches = (oldAttrs.patches or [ ]) ++ [ ./mudaebot.patch ];
-      });
-      discord = prev.discord.override {
-        withOpenASAR = true;
-        withVencord = true;
-      };
-      wpa_supplicant = prev.wpa_supplicant.overrideAttrs (oldAttrs: {
-        extraConfig = oldAttrs.extraConfig + ''
-          CONFIG_WEP=y
-        '';
-      });
-    })
-  ];
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      permittedInsecurePackages = [
+        "openssl-1.1.1w"
+      ];
+    };
+    overlays = [
+      (final: prev: {
+        vencord = prev.vencord.overrideAttrs (oldAttrs: {
+          patches = (oldAttrs.patches or [ ]) ++ [ ./mudaebot.patch ];
+        });
+        discord = prev.discord.override {
+          withOpenASAR = true;
+          withVencord = true;
+        };
+        wpa_supplicant = prev.wpa_supplicant.overrideAttrs (oldAttrs: {
+          extraConfig = oldAttrs.extraConfig + ''
+            CONFIG_WEP=y
+          '';
+        });
+      })
+    ];
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;

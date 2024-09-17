@@ -1,6 +1,7 @@
 { ... }:
 {
   imports = [ ./hyprland/user.nix ];
+  home-manager.useGlobalPkgs = true;
 
   home-manager.users.root = {
     imports = [ ./new ];

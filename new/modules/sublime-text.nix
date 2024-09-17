@@ -91,13 +91,6 @@ in
     ] ++ (
       map (full_font: full_font.package) cfg.font.fallbacks
     ) ++ optional (cfg.font.package != null) cfg.font.package;
-    nixpkgs.config = {
-      allowUnfree = true;
-      permittedInsecurePackages = [
-        "openssl-1.1.1w"
-      ];
-    };
-
     xdg.configFile = {
       "${configDirectory}/Preferences.sublime-settings".source = jsonFormat.generate "sublime-text-settings" (
         optionalAttrs (cfg.font.name != null)
