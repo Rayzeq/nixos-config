@@ -124,6 +124,7 @@
       inkscape-with-extensions
       blender
       discord
+      gnome-boxes
 
       mangohud
       gamemode
@@ -179,7 +180,20 @@
   environment.shells = with pkgs; [ zsh ];
 
   virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "zacharie" ];
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm;
+      ovmf = {
+        enable = true;
+        packages = [ pkgs.OVMFFull.fd ];
+      };
+    };
+  };
+  users.extraGroups = {
+    vboxusers.members = [ "zacharie" ];
+    libvirtd.members = [ "zacharie" ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
