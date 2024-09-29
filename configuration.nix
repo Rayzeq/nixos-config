@@ -142,8 +142,6 @@
 
       # Useful
       steam-run
-      # IUT
-      openfortivpn
     ];
   };
   environment.etc."ppp/options".text = "ipcp-accept-remote";
