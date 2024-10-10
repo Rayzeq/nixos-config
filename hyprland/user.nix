@@ -134,6 +134,7 @@ lib.mkMerge [
               "$mod, E, exec, dolphin"
               "$mod, D, exec, discord --enable-features=UseOzonePlatform --ozone-platform=wayland"
               "$mod, F, exec, firefox"
+              "$mod + SHIFT, F, exec, firefox -private-window"
 
               "$mod, W, togglefloating"
               "$mod, PRIOR, fullscreen, 1"
