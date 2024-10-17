@@ -359,6 +359,7 @@
         };
       };
       LSP-typescript = { };
+      LSP-intelephense = { };
       Debugger = { };
       Nix = { };
       SublimeRandomCrap = {
