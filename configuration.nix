@@ -18,11 +18,6 @@
           withOpenASAR = true;
           withVencord = true;
         };
-        wpa_supplicant = prev.wpa_supplicant.overrideAttrs (oldAttrs: {
-          extraConfig = oldAttrs.extraConfig + ''
-            CONFIG_WEP=y
-          '';
-        });
       })
     ];
   };
