@@ -72,6 +72,12 @@
     HibernateDelaySec=1h
   '';
 
+  security.pam.services = {
+    swaylock.u2fAuth = true;
+    login.u2fAuth = true;
+    sudo.u2fAuth = true;
+  };
+
   hardware.graphics.enable32Bit = true;
 
   # Configure console keymap
