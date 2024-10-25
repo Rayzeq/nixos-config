@@ -66,6 +66,7 @@
   services.logind.extraConfig = ''
     HandleLidSwitch=hibernate
     HandleLidSwitchExternalPower=hibernate
+    HandlePowerKey=ignore
   '';
 
   systemd.sleep.extraConfig = ''
