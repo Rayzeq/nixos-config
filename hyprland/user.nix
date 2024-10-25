@@ -128,9 +128,11 @@ lib.mkMerge [
               "$mod + SHIFT, MULTI_KEY, exec, grimblast copy screen"
               "$mod, V, exec, ${config.home.homeDirectory}/${config.xdg.configFile."rofi/clipboard.sh".target}"
 
-              "$mod, K, exec, kitty"
               "$mod, S, exec, subl"
               "$mod + SHIFT, S, exec, kitty sudo -EH subl"
+              "$mod + CONTROL_L, S, exec, subl --new-window"
+
+              "$mod, K, exec, kitty"
               "$mod, E, exec, dolphin"
               "$mod, D, exec, discord --enable-features=UseOzonePlatform --ozone-platform=wayland"
               "$mod, F, exec, firefox"
