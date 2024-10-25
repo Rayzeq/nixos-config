@@ -186,9 +186,7 @@ lib.mkMerge [
 
             layerrule = [
               "ignorezero, rofi"
-              "ignorezero, waybar"
               "blur, rofi"
-              "blur, waybar"
             ];
           };
         };
