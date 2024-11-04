@@ -54,6 +54,10 @@ in
       type = jsonFormat.type;
       default = { };
     };
+    syntaxes = mkOption {
+      type = types.attrsOf types.path;
+      default = { };
+    };
     plugins = mkOption {
       type = types.attrsOf pluginOptions;
       description = ''
@@ -126,6 +130,12 @@ in
       })
       { }
       (attrNames cfg.build-systems)
+    ) // (foldl'
+      (all: name: all // {
+        "${configDirectory}/${name}.sublime-syntax".source = getAttr name cfg.syntaxes;
+      })
+      { }
+      (attrNames cfg.syntaxes)
     );
   };
 }

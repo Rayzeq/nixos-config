@@ -18,6 +18,7 @@
           withOpenASAR = true;
           withVencord = true;
         };
+        varlink-syntax = (import ./packages/varlink-syntax.nix { inherit pkgs; });
       })
     ];
   };
