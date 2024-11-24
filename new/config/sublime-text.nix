@@ -172,7 +172,7 @@
           # Ruff config
           ruff = {
             enabled = true;
-            lineLength = 120;
+            formatEnabled = true;
             select = [
               "F"
               "E"
@@ -294,11 +294,11 @@
               "EXE005"
               # Allow private member access
               "SLF001"
+              # Allow untyped `self` and `cls` (already deprecated lints)
+              "ANN101"
+              "ANN102"
             ];
           };
-          # Black config
-          pylsp_black.enabled = true;
-          black.line_length = 120;
         };
       };
       LSP-rust-analyzer.settings = {
