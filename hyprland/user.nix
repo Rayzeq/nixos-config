@@ -150,11 +150,11 @@ lib.mkMerge [
               "$mod, KP_Home, movetoworkspace, 7"
               "$mod, KP_Up, movetoworkspace, 8"
               "$mod, KP_Prior, movetoworkspace, 9"
-              "$mod + ALT_L, Q, movetoworkspace, special"
+              "$mod + ALT_L, X, movetoworkspace, special"
 
               "$mod + ALT_L, LEFT, workspace, -1"
               "$mod + ALT_L, RIGHT, workspace, +1"
-              "$mod, Q, togglespecialworkspace"
+              "$mod, X, togglespecialworkspace"
 
               ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_SINK@ toggle"
               ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_SOURCE@ toggle"
