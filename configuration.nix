@@ -188,7 +188,6 @@
       jetbrains.idea-community
       docker
       docker-compose
-      azuredatastudio
     ];
   };
   environment.etc."ppp/options".text = "ipcp-accept-remote";
