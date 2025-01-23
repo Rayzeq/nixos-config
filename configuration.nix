@@ -166,7 +166,6 @@
   };
   environment.etc."ppp/options".text = "ipcp-accept-remote";
 
-  programs.firefox.enable = true;
   programs.nix-ld.enable = true;
 
   environment.systemPackages = with pkgs; [
