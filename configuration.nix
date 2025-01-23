@@ -8,6 +8,7 @@
       permittedInsecurePackages = [
         "openssl-1.1.1w"
       ];
+      android_sdk.accept_license = true;
     };
     overlays = [
       (final: prev: {
@@ -188,6 +189,7 @@
       jetbrains.idea-community
       docker
       docker-compose
+      android-studio
     ];
   };
   environment.etc."ppp/options".text = "ipcp-accept-remote";
