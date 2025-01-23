@@ -64,6 +64,22 @@
   services.desktopManager.plasma6.enable = true;
   environment.plasma6.excludePackages = with pkgs.kdePackages; [ elisa konsole ];
 
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [ xdg-desktop-portal-hyprland xdg-desktop-portal-kde ];
+    config = {
+      hyprland = {
+        default = [
+          "hyprland"
+          "kde"
+        ];
+        "org.freedesktop.impl.portal.Settings" = [
+          "darkman"
+        ];
+      };
+    };
+  };
+
   services.logind.extraConfig = ''
     HandleLidSwitch=hibernate
     HandleLidSwitchExternalPower=hibernate
