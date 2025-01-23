@@ -137,7 +137,6 @@
       vlc
       obsidian
       python3
-      mission-center
       gimp-with-plugins
       inkscape-with-extensions
       blender
