@@ -125,6 +125,7 @@ lib.mkMerge [
               "$mod, L, exec, pkill -x wlogout || wlogout -p layer-shell"
               "$mod, F4, killactive"
               "$mod, MULTI_KEY, exec, grimblast copy area"
+              "$mod + CONTROL_L, MULTI_KEY, exec, grimblast --freeze copy area"
               "$mod + SHIFT, MULTI_KEY, exec, grimblast copy screen"
               "$mod, V, exec, ${config.home.homeDirectory}/${config.xdg.configFile."rofi/clipboard.sh".target}"
 
