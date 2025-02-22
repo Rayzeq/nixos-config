@@ -147,7 +147,7 @@
       gamemode
       modrinth-app
       heroic
-      wineWowPackages.waylandFull
+      wineWowPackages.full
       winetricks
 
       # Rust
