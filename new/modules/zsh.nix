@@ -132,6 +132,16 @@ let
       };
     };
   };
+  direnvOptions = types.submodule {
+    options = {
+      enable = mkEnableOption "direnv";
+      package = mkPackageOption pkgs "direnv" { };
+      nix-direnv = {
+        enable = mkEnableOption "nix-direnv";
+        package = mkPackageOption pkgs "nix-direnv" { };
+      };
+    };
+  };
   syntaxHighlightingOptions = types.submodule {
     options = {
       enable = mkEnableOption "zsh syntax highlighting";
@@ -241,6 +251,11 @@ in
       default = { };
       description = "Options of atuin";
     };
+    direnv = mkOption {
+      type = direnvOptions;
+      default = { };
+      description = "Options of direnv";
+    };
 
     syntaxHighlighting = mkOption {
       type = syntaxHighlightingOptions;
@@ -345,6 +360,16 @@ in
       package = cfg.atuin.package;
       enableZshIntegration = true;
       settings = cfg.atuin.settings;
+    };
+    programs.direnv = mkIf cfg.direnv.enable {
+      enable = true;
+      package = cfg.direnv.package;
+      enableZshIntegration = true;
+
+      nix-direnv = mkIf cfg.direnv.nix-direnv.enable {
+        enable = true;
+        package = cfg.direnv.nix-direnv.package;
+      };
     };
   };
 }
