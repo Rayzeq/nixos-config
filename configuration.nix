@@ -11,7 +11,16 @@
     };
     overlays = [
       (final: prev: {
-        vencord = prev.vencord.overrideAttrs (oldAttrs: {
+        vencord = prev.vencord.overrideAttrs (oldAttrs: rec {
+          version = "1f6720318354e026fe24ed3e76935ec9e42d5193";
+
+          src = prev.fetchFromGitHub {
+            owner = "Vendicated";
+            repo = "Vencord";
+            rev = version;
+            hash = "sha256-Szweth0AVabzI336SSHKTTET+0T77TMkexuIUukg9KY=";
+          };
+
           patches = (oldAttrs.patches or [ ]) ++ [ ./mudaebot.patch ];
         });
         discord = prev.discord.override {
