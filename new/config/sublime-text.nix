@@ -328,11 +328,12 @@
             "-W"
             "clippy::todo"
             "-W"
-            "clippy::expect_used"
+            "clippy::clone_on_ref_ptr"
+            "-W"
+            "clippy::unwrap_used"
+
             "-A"
-            "clippy::cast_lossless"
-            "-A"
-            "clippy::redundant_else"
+            "clippy::missing_errors_doc"
             # Annoying clippy :)
             #"-W", "clippy::all"
             #"-W", "clippy::restriction"
