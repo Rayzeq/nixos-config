@@ -28,7 +28,7 @@
       nix-direnv.enable = true;
 
       hide_env_diff = true;
-      log_format = "\\E[2mdirenv: %s\\E[0m";
+      log_format = ''$(printf "\033[2mdirenv: %%s\033[0m")'';
     };
     oh-my-zsh = {
       enable = true;
