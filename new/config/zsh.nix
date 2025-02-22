@@ -23,6 +23,13 @@
       enable = true;
       highlighters = [ "brackets" ];
     };
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+
+      hide_env_diff = true;
+      log_format = "\\E[2mdirenv: %s\\E[0m";
+    };
     oh-my-zsh = {
       enable = true;
       plugins = [ "command-not-found" "colored-man-pages" "git" "python" "rust" "sublime" ];

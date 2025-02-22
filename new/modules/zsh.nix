@@ -140,6 +140,19 @@ let
         enable = mkEnableOption "nix-direnv";
         package = mkPackageOption pkgs "nix-direnv" { };
       };
+
+      hide_env_diff = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Set to true to hide the diff of the environment variables when loading the .envrc
+        '';
+      };
+      log_format = mkOption {
+        type = types.str;
+        default = "direnv: %s";
+        description = '''';
+      };
     };
   };
   syntaxHighlightingOptions = types.submodule {
@@ -336,6 +349,7 @@ in
         fi
       '';
       initExtra = concatStringsSep "\n" ([
+        ''export DIRENV_LOG_FORMAT="${cfg.direnv.log_format}"''
         (optionalString cfg.autosuggestions.enable ''
           ZSH_AUTOSUGGEST_STRATEGY=(${concatStringsSep " " cfg.autosuggestions.strategy})
         '')
@@ -365,6 +379,7 @@ in
       enable = true;
       package = cfg.direnv.package;
       enableZshIntegration = true;
+      config.global.hide_env_diff = cfg.direnv.hide_env_diff;
 
       nix-direnv = mkIf cfg.direnv.nix-direnv.enable {
         enable = true;
