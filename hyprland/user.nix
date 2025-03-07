@@ -151,6 +151,8 @@ lib.mkMerge [
               "$mod, KP_Home, movetoworkspace, 7"
               "$mod, KP_Up, movetoworkspace, 8"
               "$mod, KP_Prior, movetoworkspace, 9"
+              "$mod + ALT_L + CONTROL_L, LEFT, movetoworkspace, -1"
+              "$mod + ALT_L + CONTROL_L, RIGHT, movetoworkspace, +1"
               "$mod + ALT_L, X, movetoworkspace, special"
 
               "$mod + ALT_L, LEFT, workspace, -1"
