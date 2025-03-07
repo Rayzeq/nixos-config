@@ -98,6 +98,20 @@
         selector = "source.python";
       };
     };
+    snippets = {
+      nix-shell = {
+        content = ''
+          { pkgs ? import <nixpkgs> {} }:
+          pkgs.mkShell {
+            nativeBuildInputs = with pkgs.buildPackages; [
+              $1
+            ];
+          }
+        '';
+        tabTrigger = "shell";
+        scope = "source.nix";
+      };
+    };
     syntaxes = {
       Varlink = "${pkgs.varlink-syntax}/varlink.sublime-syntax";
     };
