@@ -32,6 +32,42 @@ let
       };
     };
   });
+  snippetOptions = types.submodule ({ config, ... }: {
+    options = {
+      content = mkOption {
+        type = types.str;
+        example = ''
+          Hello, ''${1:this} is a ''${2:snippet}.
+        '';
+        description = ''
+          The content of the snippet.
+        '';
+      };
+      tabTrigger = mkOption {
+        type = types.str;
+        default = "";
+        example = "hello";
+        description = ''
+          The word that will make the completion appear in the autocompletion.
+        '';
+      };
+      scope = mkOption {
+        type = types.str;
+        default = "";
+        example = "source.python";
+        description = ''
+          The language scope where the snippet is active.
+        '';
+      };
+      description = mkOption {
+        type = types.str;
+        default = "";
+        description = ''
+          A description of the snippet.
+        '';
+      };
+    };
+  });
 in
 {
   options.bettermanager.sublime-text = {
@@ -85,6 +121,12 @@ in
         };
       '';
     };
+    snippets = mkOption {
+      type = types.attrsOf snippetOptions;
+      description = ''
+        A list of snippets
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
@@ -136,6 +178,19 @@ in
       })
       { }
       (attrNames cfg.syntaxes)
+    ) // (foldl'
+      (all: name: all // {
+        "${configDirectory}/${name}.sublime-snippet".text = "
+          <snippet>
+            <content><![CDATA[${(getAttr name cfg.snippets).content}]]></content>
+            <tabTrigger>${(getAttr name cfg.snippets).tabTrigger}</tabTrigger>
+            <scope>${(getAttr name cfg.snippets).scope}</scope>
+            <description>${(getAttr name cfg.snippets).description}</description>
+          </snippet>
+        ";
+      })
+      { }
+      (attrNames cfg.snippets)
     );
   };
 }
