@@ -1,6 +1,6 @@
 { lib, pkgs, config, ... }:
-with lib;
 let
+  inherit (lib) mkEnableOption mkOption mkPackageOption mkIf;
   cfg = config.sublime-merge;
   configDirectory = "sublime-merge/Packages/User/";
   jsonFormat = pkgs.formats.json { };

@@ -1,6 +1,6 @@
 { lib, pkgs, config, ... }:
-with lib;
 let
+  inherit (lib) types mkEnableOption mkOption mkPackageOption mkIf;
   cfg = config.firefox;
 
   dohOptions = types.submodule {

@@ -1,6 +1,7 @@
 { lib, pkgs, config, ... }:
-with lib;
 let
+  inherit (lib) types mkEnableOption mkOption mkPackageOption mkIf literalExpression
+    optional optionalAttrs filter getAttr foldl' attrNames attrValues;
   cfg = config.sublime-text;
 
   configDirectory = "sublime-text/Packages/User/";

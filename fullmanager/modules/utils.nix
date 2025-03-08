@@ -1,5 +1,8 @@
 { lib, ... }:
-with lib; {
+let
+  inherit (lib) types mkOption literalExpression;
+in
+{
   attrItems = attrset: builtins.attrValues (
     builtins.mapAttrs
       (name: value: { inherit name value; })

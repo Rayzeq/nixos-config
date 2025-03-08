@@ -1,6 +1,6 @@
 { lib, pkgs, config, ... }:
-with lib;
 let
+  inherit (lib) types mkEnableOption mkOption mkPackageOption mkIf literalExpression;
   cfg = config.kitty;
   utils = import ./utils.nix { inherit lib; };
 in
