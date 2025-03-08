@@ -1,11 +1,11 @@
 { lib, pkgs, config, ... }:
 with lib;
 let
-  cfg = config.bettermanager.kitty;
+  cfg = config.kitty;
   utils = import ./utils.nix { inherit lib; };
 in
 {
-  options.bettermanager.kitty = {
+  options.kitty = {
     enable = mkEnableOption "Kitty";
     package = mkPackageOption pkgs "kitty" { };
 
@@ -43,8 +43,8 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = map (full_font: full_font.package) cfg.font.fallbacks;
-    programs.kitty = {
+    hm.home.packages = map (full_font: full_font.package) cfg.font.fallbacks;
+    hm.programs.kitty = {
       enable = true;
       package = cfg.package;
       # Unfortunatly font features doesn't seem to work with Fira Code

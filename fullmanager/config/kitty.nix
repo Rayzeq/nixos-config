@@ -1,5 +1,5 @@
 { globals, ... }: {
-  bettermanager.kitty = {
+  kitty = {
     enable = true;
     font = globals.font.monospace;
     keybindings = {
@@ -30,4 +30,3 @@
     };
   };
 }
-
