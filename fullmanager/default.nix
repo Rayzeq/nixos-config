@@ -1,7 +1,8 @@
 { lib, pkgs, ... }:
-with lib;
-with builtins;
 let
+  inherit (lib) evalModules mkOption;
+  customTypes = import ./types.nix { inherit lib; };
+
   globals = import ./config/globals.nix { inherit pkgs; self = globalsFinal; };
   globalsFinal = globals;
 
@@ -13,13 +14,13 @@ let
       {
         options = {
           system = mkOption {
-            type = types.attrsOf types.anything;
+            type = customTypes.anythingWithLists;
             default = { };
             description = "Options to forward to NixOS";
           };
 
           hm = mkOption {
-            type = types.attrsOf types.anything;
+            type = customTypes.anythingWithLists;
             default = { };
             description = "Options to forward to Home Manager";
           };
