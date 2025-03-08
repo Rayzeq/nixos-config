@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  imports = [ <home-manager/nixos> ./hardware-configuration.nix ./zacharie.nix ./hyprland/system.nix ./tuigreet.nix ];
+  imports = [ <home-manager/nixos> ./hardware-configuration.nix ./zacharie.nix ./hyprland/system.nix ./tuigreet.nix ./fullmanager ];
 
   nixpkgs = {
     config = {
