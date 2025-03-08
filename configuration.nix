@@ -135,7 +135,6 @@
     packages = with pkgs; [
       simple-scan
       vlc
-      obsidian
       python3
       gimp-with-plugins
       inkscape-with-extensions
