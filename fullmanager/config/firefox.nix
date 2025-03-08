@@ -1,5 +1,5 @@
 { ... }: {
-  bettermanager.firefox = {
+  firefox = {
     enable = true;
 
     restore-session = true;

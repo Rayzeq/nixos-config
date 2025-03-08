@@ -1,11 +1,12 @@
 { lib, pkgs, config, ... }:
 with lib;
 let
-  cfg = config.bettermanager.sublime-text;
+  cfg = config.sublime-text;
+
   configDirectory = "sublime-text/Packages/User/";
   jsonFormat = pkgs.formats.json { };
   utils = import ./utils.nix { inherit lib; };
-  pluginOptions = types.submodule ({ config, ... }: {
+  pluginOptions = types.submodule ({ ... }: {
     options = {
       managed = mkOption {
         type = types.bool;
@@ -32,7 +33,7 @@ let
       };
     };
   });
-  snippetOptions = types.submodule ({ config, ... }: {
+  snippetOptions = types.submodule ({ ... }: {
     options = {
       content = mkOption {
         type = types.str;
@@ -70,7 +71,7 @@ let
   });
 in
 {
-  options.bettermanager.sublime-text = {
+  options.sublime-text = {
     enable = mkEnableOption "Sublime Text 4";
     package = mkPackageOption pkgs "sublime4" { };
 
@@ -130,14 +131,14 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [
+    hm.home.packages = [
       cfg.package
       # nixd is broken, so we need to add this package globally
       pkgs.nixpkgs-fmt
     ] ++ (
       map (full_font: full_font.package) cfg.font.fallbacks
     ) ++ optional (cfg.font.package != null) cfg.font.package;
-    xdg.configFile = {
+    hm.xdg.configFile = {
       "${configDirectory}/Preferences.sublime-settings".source = jsonFormat.generate "sublime-text-settings" (
         optionalAttrs (cfg.font.name != null)
           {
@@ -165,7 +166,7 @@ in
         "${configDirectory}/${name}.sublime-settings".source = jsonFormat.generate "sublime-text-settings-${name}" value.settings;
       })
       { }
-      (filter ({ name, value }: value.settings != { }) (utils.attrItems cfg.plugins))
+      (filter ({ value, ... }: value.settings != { }) (utils.attrItems cfg.plugins))
     ) // (foldl'
       (all: name: all // {
         "${configDirectory}/${name}.sublime-build".source = jsonFormat.generate "sublime-text-build-${name}" (getAttr name cfg.build-systems);

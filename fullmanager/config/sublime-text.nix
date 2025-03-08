@@ -1,5 +1,5 @@
 { pkgs, globals, ... }: {
-  bettermanager.sublime-text = {
+  sublime-text = {
     enable = true;
 
     settings = {

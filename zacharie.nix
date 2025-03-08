@@ -4,12 +4,10 @@
   home-manager.useGlobalPkgs = true;
 
   home-manager.users.root = {
-    imports = [ ./new ];
     home.stateVersion = "23.05";
   };
 
   home-manager.users.zacharie = {
-    imports = [ ./new ];
     home.stateVersion = "23.05";
 
     programs.git = {

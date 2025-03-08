@@ -1,5 +1,5 @@
 { ... }: {
-  bettermanager.sublime-merge = {
+  sublime-merge = {
     enable = true;
 
     settings = {

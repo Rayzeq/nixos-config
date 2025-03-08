@@ -1,12 +1,12 @@
 { lib, pkgs, config, ... }:
 with lib;
 let
-  cfg = config.bettermanager.sublime-merge;
+  cfg = config.sublime-merge;
   configDirectory = "sublime-merge/Packages/User/";
   jsonFormat = pkgs.formats.json { };
 in
 {
-  options.bettermanager.sublime-merge = {
+  options.sublime-merge = {
     enable = mkEnableOption "Sublime Merge";
     package = mkPackageOption pkgs "sublime-merge" { };
 
@@ -20,8 +20,8 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ cfg.package ];
-    xdg.configFile = {
+    hm.home.packages = [ cfg.package ];
+    hm.xdg.configFile = {
       "${configDirectory}/Preferences.sublime-settings".source = jsonFormat.generate "sublime-merge-settings" cfg.settings;
     };
   };

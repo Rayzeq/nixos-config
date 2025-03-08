@@ -1,5 +1,5 @@
 { ... }: {
-  bettermanager.zsh = {
+  zsh = {
     enable = true;
 
     autocd = true;

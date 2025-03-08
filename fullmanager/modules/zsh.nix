@@ -1,7 +1,7 @@
 { lib, pkgs, config, ... }:
 with lib;
 let
-  cfg = config.bettermanager.zsh;
+  cfg = config.zsh;
 
   historyOptions = types.submodule {
     options = {
@@ -228,7 +228,7 @@ let
   };
 in
 {
-  options.bettermanager.zsh = {
+  options.zsh = {
     enable = mkEnableOption "Zsh";
     package = mkPackageOption pkgs "zsh" { };
 
@@ -308,7 +308,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    programs.zsh = {
+    hm.programs.zsh = {
       enable = true;
       package = cfg.package;
 
@@ -365,17 +365,17 @@ in
       );
     };
 
-    programs.autojump = mkIf cfg.autojump.enable {
+    hm.programs.autojump = mkIf cfg.autojump.enable {
       enable = true;
       enableZshIntegration = true;
     };
-    programs.atuin = mkIf cfg.atuin.enable {
+    hm.programs.atuin = mkIf cfg.atuin.enable {
       enable = true;
       package = cfg.atuin.package;
       enableZshIntegration = true;
       settings = cfg.atuin.settings;
     };
-    programs.direnv = mkIf cfg.direnv.enable {
+    hm.programs.direnv = mkIf cfg.direnv.enable {
       enable = true;
       package = cfg.direnv.package;
       enableZshIntegration = true;
