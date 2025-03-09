@@ -1,7 +1,7 @@
 { ... }: {
   imports = [
     ./firefox.nix
-    ./fontconfig.nix
+    ./font.nix
     ./kitty.nix
     ./sublime-merge.nix
     ./sublime-text.nix

@@ -1,4 +1,4 @@
-{ pkgs, globals, ... }: {
+{ pkgs, config, ... }: {
   sublime-text = {
     enable = true;
 
@@ -12,7 +12,7 @@
       relative_line_numbers = true;
       index_files = true;
     };
-    font = globals.font.monospace;
+    font = builtins.head config.font.monospace;
     keymap = [
       {
         keys = [ "ctrl+alt+up" ];

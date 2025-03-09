@@ -1,12 +1,18 @@
 { lib, pkgs, config, ... }:
 let
   inherit (lib) types mkEnableOption mkOption mkPackageOption mkIf literalExpression
-    optional optionalAttrs filter getAttr foldl' attrNames attrValues;
+    optionalAttrs filter getAttr foldl' attrNames attrValues;
   cfg = config.sublime-text;
 
   configDirectory = "sublime-text/Packages/User/";
   jsonFormat = pkgs.formats.json { };
-  utils = import ./utils.nix { inherit lib; };
+  fontType = (import ./types.nix { inherit lib; }).font;
+  attrItems = attrset: builtins.attrValues (
+    builtins.mapAttrs
+      (name: value: { inherit name value; })
+      attrset
+  );
+
   pluginOptions = types.submodule ({ ... }: {
     options = {
       managed = mkOption {
@@ -83,7 +89,10 @@ in
         Sublime Text's user settings.
       '';
     };
-    font = utils.types.font;
+    font = mkOption {
+      type = types.nullOr fontType;
+      default = null;
+    };
     keymap = mkOption {
       type = jsonFormat.type;
       default = [ ];
@@ -136,21 +145,15 @@ in
       cfg.package
       # nixd is broken, so we need to add this package globally
       pkgs.nixpkgs-fmt
-    ] ++ (
-      map (full_font: full_font.package) cfg.font.fallbacks
-    ) ++ optional (cfg.font.package != null) cfg.font.package;
+    ];
     hm.xdg.configFile = {
       "${configDirectory}/Preferences.sublime-settings".source = jsonFormat.generate "sublime-text-settings" (
-        optionalAttrs (cfg.font.name != null)
+        optionalAttrs (cfg.font != null)
           {
             font_face = cfg.font.name;
-          } //
-        optionalAttrs (cfg.font.size != null)
-          {
-            font_size = cfg.font.size;
+            font_options = cfg.font.features;
           } //
         {
-          font_options = cfg.font.features;
           sublime_merge_path = "${pkgs.sublime-merge}/bin/sublime_merge";
         } //
         cfg.settings
@@ -167,7 +170,7 @@ in
         "${configDirectory}/${name}.sublime-settings".source = jsonFormat.generate "sublime-text-settings-${name}" value.settings;
       })
       { }
-      (filter ({ value, ... }: value.settings != { }) (utils.attrItems cfg.plugins))
+      (filter ({ value, ... }: value.settings != { }) (attrItems cfg.plugins))
     ) // (foldl'
       (all: name: all // {
         "${configDirectory}/${name}.sublime-build".source = jsonFormat.generate "sublime-text-build-${name}" (getAttr name cfg.build-systems);

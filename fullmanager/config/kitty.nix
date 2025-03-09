@@ -1,7 +1,7 @@
-{ globals, ... }: {
+{ config, ... }: {
   kitty = {
     enable = true;
-    font = globals.font.monospace;
+    font = builtins.head config.font.monospace;
     keybindings = {
       "ctrl+c" = "combine : copy_or_interrupt : clear_selection";
       "ctrl+v" = "paste_from_clipboard";
