@@ -16,6 +16,12 @@ lib.mkMerge [
         xdg.configFile."rofi/launcher.rasi".source = ./rofi/launcher.rasi;
         xdg.configFile."rofi/clipboard.rasi".source = ./rofi/clipboard.rasi;
 
+        # This is a workaround and should be removed if the underlying issue is fixed
+        # According to https://discuss.kde.org/t/dolphin-doesnt-show-a-single-app-in-the-open-with-menu/14799/12
+        # applications.menu is the old name, and plasma-applications.menu is the new name
+        # but plasma seems to still use the old name
+        xdg.configFile."menus/applications.menu".source = "${pkgs.kdePackages.plasma-workspace}/etc/xdg/menus/plasma-applications.menu";
+
         home.pointerCursor = {
           gtk.enable = true;
           x11.enable = true;
@@ -51,7 +57,11 @@ lib.mkMerge [
         qt = {
           enable = true;
           platformTheme.name = "kde6";
-          style.name = "Breeze";
+          style = {
+            name = "Breeze";
+            # Needed because `style.name = "Breeze"` imports the kde5 breeze
+            package = pkgs.kdePackages.breeze;
+          };
         };
 
         services.playerctld.enable = true;
