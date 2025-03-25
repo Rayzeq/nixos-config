@@ -28,6 +28,7 @@
           withVencord = true;
         };
         varlink-syntax = (import ./packages/varlink-syntax.nix { inherit pkgs; });
+        modrinth-app-unwrapped = prev.callPackage ./packages/modrinth-app/unwrapped.nix { };
         zsh-autocomplete = prev.zsh-autocomplete.overrideAttrs (oldAttrs: rec {
           version = "23.07.13";
 
