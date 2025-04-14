@@ -185,7 +185,7 @@ lib.mkMerge [
               "$mod, mouse:273, resizewindow"
             ];
 
-            windowrulev2 = [
+            windowrule = [
               "idleinhibit fullscreen, class:.*"
             ];
 
