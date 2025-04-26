@@ -14,13 +14,13 @@ let
       {
         options = {
           system = mkOption {
-            type = customTypes.anythingWithLists;
+            type = customTypes.deferMerge;
             default = { };
             description = "Options to forward to NixOS";
           };
 
           hm = mkOption {
-            type = customTypes.anythingWithLists;
+            type = customTypes.deferMerge;
             default = { };
             description = "Options to forward to Home Manager";
           };
@@ -32,7 +32,11 @@ let
   };
 in
 {
-  config = (fullmanager.config.system or { }) // {
-    home-manager.sharedModules = [ fullmanager.config.hm or { } ];
-  };
+  config = lib.mkMerge [
+    (fullmanager.config.system or { })
+    {
+      home-manager.users.root = fullmanager.config.hm or { };
+      home-manager.users.zacharie = fullmanager.config.hm or { };
+    }
+  ];
 }
