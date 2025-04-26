@@ -344,26 +344,28 @@ in
 
       shellAliases = cfg.aliases;
 
-      initExtraFirst = optionalString (cfg.oh-my-zsh.p10k.enable && cfg.oh-my-zsh.p10k.instant-prompt) ''
-        if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-          source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-        fi
-      '';
-      initExtra = concatStringsSep "\n" ([
-        ''export DIRENV_LOG_FORMAT="${cfg.direnv.log_format}"''
-        (optionalString cfg.autosuggestions.enable ''
-          ZSH_AUTOSUGGEST_STRATEGY=(${concatStringsSep " " cfg.autosuggestions.strategy})
-        '')
-      ] ++ mapAttrsToList
-        (key: action:
-          if builtins.typeOf action == "string" then
-            "bindkey '${key}' ${action}"
-          else
-            let keymap = key; keybinds = action; in
-            concatStringsSep "\n" (mapAttrsToList (key: action: "bindkey -M ${keymap} '${key}' ${action}") keybinds)
-        )
-        cfg.keybinds
-      );
+      initContent = lib.mkMerge [
+        (lib.mkBefore (optionalString (cfg.oh-my-zsh.p10k.enable && cfg.oh-my-zsh.p10k.instant-prompt) ''
+          if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+            source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+          fi
+        ''))
+        (concatStringsSep "\n" ([
+          ''export DIRENV_LOG_FORMAT="${cfg.direnv.log_format}"''
+          (optionalString cfg.autosuggestions.enable ''
+            ZSH_AUTOSUGGEST_STRATEGY=(${concatStringsSep " " cfg.autosuggestions.strategy})
+          '')
+        ] ++ mapAttrsToList
+          (key: action:
+            if builtins.typeOf action == "string" then
+              "bindkey '${key}' ${action}"
+            else
+              let keymap = key; keybinds = action; in
+              concatStringsSep "\n" (mapAttrsToList (key: action: "bindkey -M ${keymap} '${key}' ${action}") keybinds)
+          )
+          cfg.keybinds
+        ))
+      ];
     };
 
     hm.programs.autojump = mkIf cfg.autojump.enable {
