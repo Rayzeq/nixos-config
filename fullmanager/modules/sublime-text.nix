@@ -1,7 +1,18 @@
 { lib, pkgs, config, ... }:
 let
-  inherit (lib) types mkEnableOption mkOption mkPackageOption mkIf literalExpression
-    optionalAttrs filter getAttr foldl' attrNames attrValues;
+  inherit (lib)
+    types
+    mkEnableOption
+    mkOption
+    mkPackageOption
+    mkIf
+    literalExpression
+    optionalAttrs
+    filter
+    getAttr
+    foldl'
+    attrNames
+    attrValues;
   cfg = config.sublime-text;
 
   configDirectory = "sublime-text/Packages/User/";
@@ -141,20 +152,15 @@ in
   };
 
   config = mkIf cfg.enable {
-    hm.home.packages = [
-      cfg.package
-    ];
+    hm.home.packages = [ cfg.package ];
     hm.xdg.configFile = {
       "${configDirectory}/Preferences.sublime-settings".source = jsonFormat.generate "sublime-text-settings" (
-        optionalAttrs (cfg.font != null)
-          {
-            font_face = cfg.font.name;
-            font_options = cfg.font.features;
-          } //
-        {
+        (optionalAttrs (cfg.font != null) {
+          font_face = cfg.font.name;
+          font_options = cfg.font.features;
+        }) // {
           sublime_merge_path = "${pkgs.sublime-merge}/bin/sublime_merge";
-        } //
-        cfg.settings
+        } // cfg.settings
       );
       "${configDirectory}/Default (Linux).sublime-keymap".source = jsonFormat.generate "sublime-text-keymap" cfg.keymap;
       "${configDirectory}/Package Control.sublime-settings".source = jsonFormat.generate "sublime-text-package-control" {

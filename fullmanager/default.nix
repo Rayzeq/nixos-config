@@ -7,9 +7,7 @@ let
   globalsFinal = globals;
 
   fullmanager = evalModules {
-    specialArgs = {
-      inherit pkgs lib globals;
-    };
+    specialArgs = { inherit pkgs lib globals; };
     modules = [
       {
         options = {

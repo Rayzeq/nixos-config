@@ -42,22 +42,15 @@
       # Select text between brackets
       {
         no_outside_adj = null;
-        keys = [
-          "ctrl+shift+5"
-        ];
+        keys = [ "ctrl+shift+5" ];
         command = "bh_key";
-        args =
-          {
-            lines = true;
-            plugin = {
-              command = "bh_modules.bracketselect";
-            };
-          };
+        args = {
+          lines = true;
+          plugin.command = "bh_modules.bracketselect";
+        };
       }
       {
-        keys = [
-          "ctrl+alt+5"
-        ];
+        keys = [ "ctrl+alt+5" ];
         command = "swap_brackets";
       }
       {
@@ -67,12 +60,10 @@
       {
         keys = [ "f2" ];
         command = "lsp_symbol_rename";
-        context = [
-          {
-            key = "lsp.session_with_capability";
-            operand = "renameProvider";
-          }
-        ];
+        context = [{
+          key = "lsp.session_with_capability";
+          operand = "renameProvider";
+        }];
       }
       {
         keys = [ "ctrl+alt+left" ];
@@ -83,34 +74,28 @@
         command = "next_view";
       }
       {
-        keys = [
-          "ctrl+shift+k"
-        ];
+        keys = [ "ctrl+shift+k" ];
         command = "open_terminal";
       }
     ];
-    build-systems = {
-      "Python - Terminus" = {
-        target = "terminus_open";
-        cancel = "terminus_cancel_build";
-        shell_cmd = ''python3 "''${file_path}/''${file_name}"; read -p "Press any key to continue..."'';
-        working_dir = "$folder";
-        selector = "source.python";
-      };
+    build-systems."Python - Terminus" = {
+      target = "terminus_open";
+      cancel = "terminus_cancel_build";
+      shell_cmd = ''python3 "''${file_path}/''${file_name}"; read -p "Press any key to continue..."'';
+      working_dir = "$folder";
+      selector = "source.python";
     };
-    snippets = {
-      nix-shell = {
-        content = ''
-          { pkgs ? import <nixpkgs> {} }:
-          pkgs.mkShell {
-            nativeBuildInputs = with pkgs.buildPackages; [
-              $1
-            ];
-          }
-        '';
-        tabTrigger = "shell";
-        scope = "source.nix";
-      };
+    snippets.nix-shell = {
+      content = ''
+        { pkgs ? import <nixpkgs> {} }:
+        pkgs.mkShell {
+          nativeBuildInputs = with pkgs.buildPackages; [
+            $1
+          ];
+        }
+      '';
+      tabTrigger = "shell";
+      scope = "source.nix";
     };
     plugins = {
       ANSIescape = { };
@@ -154,9 +139,7 @@
         };
       };
       LSP-json.settings = { };
-      LSP-marksman.settings = {
-        command = [ "${pkgs.marksman}/bin/marksman" ];
-      };
+      LSP-marksman.settings.command = [ "${pkgs.marksman}/bin/marksman" ];
       LSP-pylsp.settings = {
         env = {
           PYTHONPATH = "\${sublime_py_files_dir}\${pathsep}\${packages}:/home/zacharie/.nix-profile/lib/python3.11/site-packages/";
@@ -326,12 +309,10 @@
             "clippy::cargo"
             "-W"
             "clippy::nursery"
-            #"-W"
-            #"missing_docs"
-            #"-W"
-            # "clippy::missing_docs_in_private_items"
-            #"-W", "clippy::std_instead_of_core"
-            #"-W", "clippy::std_instead_of_alloc"
+            #"-W" "missing_docs"
+            #"-W" "clippy::missing_docs_in_private_items"
+            #"-W" "clippy::std_instead_of_core"
+            #"-W" "clippy::std_instead_of_alloc"
             "-W"
             "clippy::alloc_instead_of_core"
             "-W"
@@ -346,23 +327,21 @@
             "-A"
             "clippy::missing_errors_doc"
             # Annoying clippy :)
-            #"-W", "clippy::all"
-            #"-W", "clippy::restriction"
-            #"-A", "clippy::implicit_return"
-            #"-A", "clippy::question_mark_used"
-            #"-A", "clippy::exhaustive_structs"
-            #"-A", "clippy::missing_inline_in_public_items"
+            #"-W" "clippy::all"
+            #"-W" "clippy::restriction"
+            #"-A" "clippy::implicit_return"
+            #"-A" "clippy::question_mark_used"
+            #"-A" "clippy::exhaustive_structs"
+            #"-A" "clippy::missing_inline_in_public_items"
           ];
         };
       };
       LSP-typescript = { };
       Debugger = { };
       Nix = { };
-      SublimeRandomCrap = {
-        repository = "https://github.com/facelessuser/SublimeRandomCrap";
-      };
+      SublimeRandomCrap.repository = "https://github.com/facelessuser/SublimeRandomCrap";
       Terminus = { };
-      Terminal.settings = { terminal = "kitty"; };
+      Terminal.settings.terminal = "kitty";
       TOML = { };
       HTML = {
         managed = false;
