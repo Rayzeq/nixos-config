@@ -143,8 +143,6 @@ in
   config = mkIf cfg.enable {
     hm.home.packages = [
       cfg.package
-      # nixd is broken, so we need to add this package globally
-      pkgs.nixpkgs-fmt
     ];
     hm.xdg.configFile = {
       "${configDirectory}/Preferences.sublime-settings".source = jsonFormat.generate "sublime-text-settings" (

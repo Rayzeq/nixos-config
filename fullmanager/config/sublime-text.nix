@@ -139,7 +139,7 @@
           enabled = true;
           command = [ "${pkgs.nixd}/bin/nixd" ];
           selector = "source.nix";
-          settings.nixd.formatting.command = [ "nixpkgs-fmt" ];
+          settings.nixd.formatting.command = [ "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt" ];
         };
       };
       LSP-bash = { };
