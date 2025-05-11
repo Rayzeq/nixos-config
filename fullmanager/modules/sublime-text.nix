@@ -15,7 +15,8 @@ let
     attrValues;
   cfg = config.sublime-text;
 
-  configDirectory = "sublime-text/Packages/User/";
+  configDirectory = "sublime-text/Packages";
+  userConfigDirectory = "${configDirectory}/User";
   jsonFormat = pkgs.formats.json { };
   fontType = (import ./types.nix { inherit lib; }).font;
   attrItems = attrset: builtins.attrValues (
@@ -47,6 +48,13 @@ let
         default = { };
         description = ''
           The plugin's settings.
+        '';
+      };
+      overrides = mkOption {
+        type = types.attrsOf types.path;
+        default = { };
+        description = ''
+          Files to override in a plugin.
         '';
       };
     };
@@ -154,7 +162,7 @@ in
   config = mkIf cfg.enable {
     hm.home.packages = [ cfg.package ];
     hm.xdg.configFile = {
-      "${configDirectory}/Preferences.sublime-settings".source = jsonFormat.generate "sublime-text-settings" (
+      "${userConfigDirectory}/Preferences.sublime-settings".source = jsonFormat.generate "sublime-text-settings" (
         (optionalAttrs (cfg.font != null) {
           font_face = cfg.font.name;
           font_options = cfg.font.features;
@@ -162,8 +170,8 @@ in
           sublime_merge_path = "${pkgs.sublime-merge}/bin/sublime_merge";
         } // cfg.settings
       );
-      "${configDirectory}/Default (Linux).sublime-keymap".source = jsonFormat.generate "sublime-text-keymap" cfg.keymap;
-      "${configDirectory}/Package Control.sublime-settings".source = jsonFormat.generate "sublime-text-package-control" {
+      "${userConfigDirectory}/Default (Linux).sublime-keymap".source = jsonFormat.generate "sublime-text-keymap" cfg.keymap;
+      "${userConfigDirectory}/Package Control.sublime-settings".source = jsonFormat.generate "sublime-text-package-control" {
         bootstrapped = true;
         in_process_packages = [ ];
         installed_packages = (filter (plugin_name: (getAttr plugin_name cfg.plugins).managed) (attrNames cfg.plugins)) ++ [ "Package Control" ];
@@ -171,25 +179,35 @@ in
       };
     } // (foldl'
       (all: { name, value }: all // {
-        "${configDirectory}/${name}.sublime-settings".source = jsonFormat.generate "sublime-text-settings-${name}" value.settings;
+        "${userConfigDirectory}/${name}.sublime-settings".source = jsonFormat.generate "sublime-text-settings-${name}" value.settings;
       })
       { }
       (filter ({ value, ... }: value.settings != { }) (attrItems cfg.plugins))
     ) // (foldl'
+      (all: { name, value }:
+        let packageName = name; in all // (foldl'
+          (all: { name, value }: all // {
+            "${configDirectory}/${packageName}/${name}".source = value;
+          })
+          { }
+          (attrItems value.overrides)))
+      { }
+      (filter ({ value, ... }: value.overrides != { }) (attrItems cfg.plugins))
+    ) // (foldl'
       (all: name: all // {
-        "${configDirectory}/${name}.sublime-build".source = jsonFormat.generate "sublime-text-build-${name}" (getAttr name cfg.build-systems);
+        "${userConfigDirectory}/${name}.sublime-build".source = jsonFormat.generate "sublime-text-build-${name}" (getAttr name cfg.build-systems);
       })
       { }
       (attrNames cfg.build-systems)
     ) // (foldl'
       (all: name: all // {
-        "${configDirectory}/${name}.sublime-syntax".source = getAttr name cfg.syntaxes;
+        "${userConfigDirectory}/${name}.sublime-syntax".source = getAttr name cfg.syntaxes;
       })
       { }
       (attrNames cfg.syntaxes)
     ) // (foldl'
       (all: name: all // {
-        "${configDirectory}/${name}.sublime-snippet".text = "
+        "${userConfigDirectory}/${name}.sublime-snippet".text = "
           <snippet>
             <content><![CDATA[${(getAttr name cfg.snippets).content}]]></content>
             <tabTrigger>${(getAttr name cfg.snippets).tabTrigger}</tabTrigger>

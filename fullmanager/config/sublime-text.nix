@@ -343,12 +343,20 @@
       Terminus = { };
       Terminal.settings.terminal = "kitty";
       TOML = { };
+      SCSS = { };
+      FileIcons = { };
       HTML = {
         managed = false;
         settings.extensions = [ "hbs" ];
       };
-      SCSS = { };
-      FileIcons = { };
+      JavaScript = {
+        managed = false;
+        overrides."Fold.tmPreferences" = ./sublime-text/JS_Fold.tmPreferences;
+      };
+      Rust = {
+        managed = false;
+        overrides."Fold.tmPreferences" = ./sublime-text/Rust_Fold.tmPreferences;
+      };
     };
   };
 }
