@@ -112,9 +112,6 @@
         scope = "source.nix";
       };
     };
-    syntaxes = {
-      Varlink = "${pkgs.varlink-syntax}/varlink.sublime-syntax";
-    };
     plugins = {
       ANSIescape = { };
       AutoFoldCode = { };
