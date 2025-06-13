@@ -155,6 +155,8 @@
       # Build essentials
       gnumake
       gdb
+      # Other
+      jetbrains.idea-community
 
       # Useful
       steam-run
