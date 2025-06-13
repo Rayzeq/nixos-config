@@ -102,10 +102,6 @@
       AutoFoldCode = { };
       BracketHighlighter = { };
       DoxyDoxygen = { };
-      LiveServer.settings = {
-        node_executable_path = "${pkgs.nodejs}/bin/node";
-        global_node_modules_path = "${pkgs.nodePackages.live-server}/lib/node_modules";
-      };
       LSP.settings = {
         inhibit_word_completions = true;
         lsp_format_on_save = true;
