@@ -140,6 +140,7 @@ lib.mkMerge [
               "$mod + SHIFT, F, exec, firefox -private-window"
 
               "$mod, W, togglefloating"
+              "$mod, X, pin"
               "$mod, PRIOR, fullscreen, 1"
               "$mod + SHIFT, PRIOR, fullscreen, 0"
               "$mod, KP_End, movetoworkspace, 1"
@@ -153,11 +154,9 @@ lib.mkMerge [
               "$mod, KP_Prior, movetoworkspace, 9"
               "$mod + ALT_L + CONTROL_L, LEFT, movetoworkspace, -1"
               "$mod + ALT_L + CONTROL_L, RIGHT, movetoworkspace, +1"
-              "$mod + ALT_L, X, movetoworkspace, special"
 
               "$mod + ALT_L, LEFT, workspace, -1"
               "$mod + ALT_L, RIGHT, workspace, +1"
-              "$mod, X, togglespecialworkspace"
 
               ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_SINK@ toggle"
               ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_SOURCE@ toggle"
