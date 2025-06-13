@@ -332,7 +332,12 @@
           ];
         };
       };
-      LSP-typescript = { };
+      LSP-typescript.settings.settings.typescript.inlayHints = {
+        includeInlayFunctionParameterTypeHints = true;
+        includeInlayFunctionLikeReturnTypeHints = true;
+        includeInlayParameterNameHints = "literals";
+        includeInlayVariableTypeHints = true;
+      };
       Debugger = { };
       Nix = { };
       SublimeRandomCrap.repository = "https://github.com/facelessuser/SublimeRandomCrap";
