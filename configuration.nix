@@ -135,7 +135,7 @@
       simple-scan
       vlc
       python3
-      gimp-with-plugins
+      gimp3-with-plugins
       inkscape-with-extensions
       blender
       discord
