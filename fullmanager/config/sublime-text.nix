@@ -11,6 +11,7 @@
       ignored_packages = [ "Vintage" ];
       relative_line_numbers = true;
       index_files = true;
+      "disable_plugin_host_3.3" = true;
     };
     font = builtins.head config.font.monospace;
     keymap = [
@@ -343,7 +344,6 @@
       SublimeRandomCrap.repository = "https://github.com/facelessuser/SublimeRandomCrap";
       Terminus = { };
       Terminal.settings.terminal = "kitty";
-      TOML = { };
       SCSS = { };
       FileIcons = { };
       HTML = {
