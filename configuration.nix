@@ -216,6 +216,7 @@
     vboxusers.members = [ "zacharie" ];
     libvirtd.members = [ "zacharie" ];
   };
+  systemd.coredump.extraConfig = "Storage=none";
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
