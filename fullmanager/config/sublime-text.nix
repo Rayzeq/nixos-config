@@ -332,11 +332,16 @@
           ];
         };
       };
-      LSP-typescript.settings.settings.typescript.inlayHints = {
-        includeInlayFunctionParameterTypeHints = true;
-        includeInlayFunctionLikeReturnTypeHints = true;
-        includeInlayParameterNameHints = "literals";
-        includeInlayVariableTypeHints = true;
+      LSP-typescript.settings.settings.typescript = {
+        format = {
+          semicolons = "insert";
+        };
+        inlayHints = {
+          includeInlayFunctionParameterTypeHints = true;
+          includeInlayFunctionLikeReturnTypeHints = true;
+          includeInlayParameterNameHints = "literals";
+          includeInlayVariableTypeHints = true;
+        };
       };
       Debugger = { };
       Nix = { };
