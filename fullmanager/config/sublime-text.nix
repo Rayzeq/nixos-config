@@ -296,7 +296,6 @@
         command = [ "${pkgs.rust-analyzer}/bin/rust-analyzer" ];
         settings.rust-analyzer = {
           assist.emitMustUse = true;
-          cargo.features = "all";
           check.command = "clippy";
           check.extraArgs = [
             "--"
