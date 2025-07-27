@@ -348,7 +348,7 @@
       SublimeRandomCrap.repository = "https://github.com/facelessuser/SublimeRandomCrap";
       Terminus = { };
       Terminal.settings.terminal = "kitty";
-      SCSS = { };
+      Sass = { };
       FileIcons = { };
       HTML = {
         managed = false;
