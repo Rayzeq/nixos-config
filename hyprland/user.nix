@@ -115,7 +115,8 @@ lib.mkMerge [
             decoration = {
               rounding = 10;
               blur = {
-                size = 3;
+                size = 10;
+                passes = 2;
               };
             };
 
