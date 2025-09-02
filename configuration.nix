@@ -79,11 +79,11 @@
     };
   };
 
-  services.logind.extraConfig = ''
-    HandleLidSwitch=hibernate
-    HandleLidSwitchExternalPower=hibernate
-    HandlePowerKey=ignore
-  '';
+  services.logind.settings.Login = {
+    HandleLidSwitch = "hibernate";
+    HandleLidSwitchExternalPower = "hibernate";
+    HandlePowerKey = "ignore";
+  };
 
   systemd.sleep.extraConfig = ''
     HibernateDelaySec=1h
@@ -200,6 +200,7 @@
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
   environment.shells = with pkgs; [ zsh ];
+  programs.command-not-found.enable = true;
 
   virtualisation.virtualbox.host.enable = true;
   virtualisation.libvirtd = {

@@ -50,7 +50,7 @@ lib.mkMerge [
 
         qt = {
           enable = true;
-          platformTheme.name = "kde6";
+          platformTheme.name = "kde";
           style.name = "Breeze";
         };
 
