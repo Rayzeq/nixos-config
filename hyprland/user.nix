@@ -204,10 +204,10 @@ lib.mkMerge [
             usegeoclue = false;
           };
           darkModeScripts = {
-            wallpaper = import ./darkman/dark.sh { inherit pkgs config; };
+            switch = import ./darkman/dark.sh { inherit pkgs config; };
           };
           lightModeScripts = {
-            wallpaper = import ./darkman/light.sh { inherit pkgs config; };
+            switch = import ./darkman/light.sh { inherit pkgs config; };
           };
         };
 
