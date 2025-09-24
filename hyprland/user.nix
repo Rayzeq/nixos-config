@@ -105,8 +105,10 @@ lib.mkMerge [
               special_scale_factor = 1;
             };
 
+            gesture = [
+              "3,horizontal,workspace"
+            ];
             gestures = {
-              workspace_swipe = true;
               workspace_swipe_cancel_ratio = 0.3;
               workspace_swipe_direction_lock = false;
               workspace_swipe_forever = true;
