@@ -4,7 +4,7 @@
   programs.hyprland.enable = true;
   environment.systemPackages = with pkgs; [
     pavucontrol
-    rofi-wayland
+    rofi
     grimblast
     swaynotificationcenter
     kdePackages.polkit-kde-agent-1
