@@ -63,22 +63,6 @@
   services.desktopManager.plasma6.enable = true;
   environment.plasma6.excludePackages = with pkgs.kdePackages; [ elisa konsole kate akregator spectacle ];
 
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-hyprland kdePackages.xdg-desktop-portal-kde ];
-    config = {
-      hyprland = {
-        default = [
-          "hyprland"
-          "kde"
-        ];
-        "org.freedesktop.impl.portal.Settings" = [
-          "darkman"
-        ];
-      };
-    };
-  };
-
   services.logind.settings.Login = {
     HandleLidSwitch = "hibernate";
     HandleLidSwitchExternalPower = "hibernate";
