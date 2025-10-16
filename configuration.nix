@@ -205,13 +205,7 @@
   virtualisation.virtualbox.host.enable = true;
   virtualisation.libvirtd = {
     enable = true;
-    qemu = {
-      package = pkgs.qemu_kvm;
-      ovmf = {
-        enable = true;
-        packages = [ pkgs.OVMFFull.fd ];
-      };
-    };
+    qemu.package = pkgs.qemu_kvm;
   };
   users.extraGroups = {
     vboxusers.members = [ "zacharie" ];
