@@ -61,7 +61,6 @@
       mv = "mv -b -i";
       ls = "lsd";
       cat = "bat";
-      ssh = "kitten ssh";
       grep = "rg";
       sudogui = "sudo -EH";
       # force scrollback clear on kitty
