@@ -167,7 +167,7 @@
     file
     piper
     htop
-    du-dust
+    dust
     zip
   ];
 
