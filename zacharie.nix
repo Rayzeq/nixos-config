@@ -12,10 +12,14 @@
 
     programs.git = {
       enable = true;
-      userName = "Zacharie Dubrulle";
-      userEmail = "dubrullezacharie@gmail.com";
-      aliases = {
-        forget = "!git rm -r --cached . && git add . && :";
+      settings = {
+        user = {
+          name = "Zacharie Dubrulle";
+          email = "dubrullezacharie@gmail.com";
+        };
+        alias = {
+          forget = "!git rm -r --cached . && git add . && :";
+        };
       };
     };
   };
