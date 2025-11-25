@@ -15,6 +15,7 @@
         update_check = false;
         filter_mode = "session";
         enter_accept = true;
+        inline_height = 0;
       };
     };
     autojump.enable = true;
