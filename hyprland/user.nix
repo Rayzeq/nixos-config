@@ -204,6 +204,7 @@ lib.mkMerge [
 
             windowrule = [
               "idleinhibit fullscreen, class:.*"
+              "float, class:org.freedesktop.impl.portal.desktop.kde"
             ];
 
             layerrule = [
