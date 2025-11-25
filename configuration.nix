@@ -126,7 +126,6 @@
       gnome-boxes
 
       mangohud
-      gamemode
       modrinth-app
       heroic
       wineWowPackages.full
