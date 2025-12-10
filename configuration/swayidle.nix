@@ -18,8 +18,8 @@
       command = "${pkgs.systemd}/bin/systemctl suspend-then-hibernate";
     }
   ];
-  events = [
-    { event = "lock"; command = "${pkgs.swaylock-effects}/bin/swaylock -f"; }
-    { event = "before-sleep"; command = "${pkgs.swaylock-effects}/bin/swaylock -f"; }
-  ];
+  events = {
+    lock = "${pkgs.swaylock-effects}/bin/swaylock -f";
+    before-sleep = "${pkgs.swaylock-effects}/bin/swaylock -f";
+  };
 }
