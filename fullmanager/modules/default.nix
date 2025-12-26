@@ -6,5 +6,7 @@
     ./sublime-merge.nix
     ./sublime-text.nix
     ./zsh.nix
+    ./hyprpaper.nix
+    ./xdg.nix
   ];
 }

@@ -1,7 +1,7 @@
 { globals, ... }: {
   enable = true;
 
-  image = globals.dataFile."wallpapers/light.png".target;
+  image = globals.dataFile."wallpapers/light2.png".target;
   effect-blur = "7x5";
   effect-vignette = "0.5:0.5";
 

@@ -6,12 +6,7 @@
   latitude = 46.6;
   longitude = 1.6;
 
-  dataFile."wallpapers/light.png".source = ./wallpapers/light.png;
-  dataFile."wallpapers/dark.png".source = ./wallpapers/dark.png;
-  dataFile."wallpapers/current.png" = {
-    source = ./wallpapers/light.png;
-    force = true;
-  };
+  dataFile."wallpapers/light2.png".source = ../fullmanager/config/wallpapers/light.png;
 
   theme = {
     background-color = "rgba(0, 0, 0, 0.8)";
