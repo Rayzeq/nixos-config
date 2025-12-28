@@ -10,5 +10,6 @@
     ./xdg.nix
     ./swayidle.nix
     ./wlsunset.nix
+    ./swaylock.nix
   ];
 }

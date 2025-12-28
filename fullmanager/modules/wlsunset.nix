@@ -32,6 +32,7 @@ in
   config = mkIf cfg.enable {
     hm.services.wlsunset = {
       enable = true;
+      package = cfg.package;
       latitude = cfg.latitude;
       longitude = cfg.longitude;
     };
