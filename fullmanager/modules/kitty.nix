@@ -1,9 +1,14 @@
 { lib, pkgs, config, ... }:
 let
-  inherit (lib) types mkEnableOption mkOption mkPackageOption mkIf literalExpression;
+  inherit (lib) types mkOption mkIf;
   inherit (builtins) concatStringsSep;
   cfg = config.kitty;
   fontType = (import ./types.nix { inherit lib; }).font;
+
+  kittyOptions = (import <home-manager/modules/programs/kitty.nix> {
+    inherit lib pkgs;
+    config = { };
+  }).options.programs.kitty;
 
   postscriptNames = pkgs.runCommand "get-postscript-names" { }
     ''
@@ -16,61 +21,32 @@ let
 in
 {
   options.kitty = {
-    enable = mkEnableOption "Kitty";
-    package = mkPackageOption pkgs "kitty" { };
+    enable = kittyOptions.enable;
+    package = kittyOptions.package;
 
     font = mkOption {
       type = types.nullOr fontType;
       default = null;
     };
 
-    keybindings = mkOption {
-      type = types.attrsOf types.str;
-      default = { };
-      description = "Mapping of keybindings to actions.";
-      example = literalExpression ''
-        {
-          "ctrl+c" = "copy_or_interrupt";
-          "ctrl+f>2" = "set_font_size 20";
-        }
-      '';
-    };
-
-    settings = mkOption {
-      type = types.attrsOf (types.either types.str (types.either types.bool types.int));
-      default = { };
-      example = literalExpression ''
-        {
-          scrollback_lines = 10000;
-          enable_audio_bell = false;
-          update_check_interval = 0;
-        }
-      '';
-      description = ''
-        Configuration written to
-        {file}`$XDG_CONFIG_HOME/kitty/kitty.conf`. See
-        <https://sw.kovidgoyal.net/kitty/conf.html>
-        for the documentation.
-      '';
-    };
+    settings = kittyOptions.settings;
+    keybindings = kittyOptions.keybindings;
   };
 
-  config = mkIf cfg.enable {
-    hm.programs.kitty = {
-      enable = true;
-      package = cfg.package;
-      # Unfortunatly font features doesn't seem to work with Fira Code
-      font = {
-        package = cfg.font.package;
-        name = cfg.font.name;
-      };
-      settings = cfg.settings;
-      keybindings = cfg.keybindings;
-      extraConfig = concatStringsSep "\n" (map
-        (name:
-          "font_features ${name} ${concatStringsSep " " (map (feature: "+${feature}") cfg.font.features)}"
-        )
-        namesList);
+  config.hm.programs.kitty = mkIf cfg.enable {
+    enable = cfg.enable;
+    package = cfg.package;
+    # Unfortunatly font features doesn't seem to work with Fira Code
+    font = {
+      package = cfg.font.package;
+      name = cfg.font.name;
     };
+    settings = cfg.settings;
+    keybindings = cfg.keybindings;
+    extraConfig = concatStringsSep "\n" (map
+      (name:
+        "font_features ${name} ${concatStringsSep " " (map (feature: "+${feature}") cfg.font.features)}"
+      )
+      namesList);
   };
 }

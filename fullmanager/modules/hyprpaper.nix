@@ -1,12 +1,17 @@
 { lib, pkgs, config, ... }:
 let
-  inherit (lib) mkOption mkEnableOption mkPackageOption mkIf types literalExpression;
+  inherit (lib) mkOption mkIf types literalExpression;
   cfg = config.hyprpaper;
+
+  hyprpaperOptions = (import <home-manager/modules/services/hyprpaper.nix> {
+    inherit lib pkgs;
+    config = { };
+  }).options.services.hyprpaper;
 in
 {
   options.hyprpaper = {
-    enable = mkEnableOption "Hyprpaper, Hyprland's wallpaper daemon";
-    package = mkPackageOption pkgs "hyprpaper" { nullable = true; };
+    enable = hyprpaperOptions.enable;
+    package = hyprpaperOptions.package;
 
     preload = mkOption {
       type = with types; listOf str;
@@ -34,14 +39,12 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    hm.services.hyprpaper = {
-      enable = true;
-      package = cfg.package;
-      settings = {
-        preload = cfg.preload;
-        wallpaper = builtins.attrValues (builtins.mapAttrs (monitor: wallpaper: "${monitor},${wallpaper}") cfg.wallpaper);
-      };
+  config.hm.services.hyprpaper = mkIf cfg.enable {
+    enable = cfg.enable;
+    package = cfg.package;
+    settings = {
+      preload = cfg.preload;
+      wallpaper = builtins.attrValues (builtins.mapAttrs (monitor: wallpaper: "${monitor},${wallpaper}") cfg.wallpaper);
     };
   };
 }

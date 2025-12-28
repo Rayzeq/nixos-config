@@ -1,40 +1,20 @@
 { lib, pkgs, config, ... }:
 let
-  inherit (lib) mkOption mkEnableOption mkPackageOption mkIf types;
   cfg = config.wlsunset;
+
+  wlsunsetOptions = (import <home-manager/modules/services/wlsunset.nix> {
+    inherit lib pkgs;
+    config = { };
+  }).options.services.wlsunset;
 in
 {
   options.wlsunset = {
-    enable = mkEnableOption "wlsunset";
-    package = mkPackageOption pkgs "wlsunset" { };
+    enable = wlsunsetOptions.enable;
+    package = wlsunsetOptions.package;
 
-    latitude = mkOption {
-      type = with types; nullOr (either str (either float int));
-      default = null;
-      example = -74.3;
-      description = ''
-        Your current latitude, between `-90.0` and
-        `90.0`.
-      '';
-    };
-
-    longitude = mkOption {
-      type = with types; nullOr (either str (either float int));
-      default = null;
-      example = 12.5;
-      description = ''
-        Your current longitude, between `-180.0` and
-        `180.0`.
-      '';
-    };
+    latitude = wlsunsetOptions.latitude;
+    longitude = wlsunsetOptions.longitude;
   };
 
-  config = mkIf cfg.enable {
-    hm.services.wlsunset = {
-      enable = true;
-      package = cfg.package;
-      latitude = cfg.latitude;
-      longitude = cfg.longitude;
-    };
-  };
+  config.hm.services.wlsunset = lib.mkIf cfg.enable cfg;
 }

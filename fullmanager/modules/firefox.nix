@@ -80,38 +80,36 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    hm.programs.firefox = {
-      enable = true;
-      package = cfg.package;
-      profiles.default = {
-        name = "default";
-        path = "oyht42mb.default";
+  config.hm.programs.firefox = mkIf cfg.enable {
+    enable = cfg.enable;
+    package = cfg.package;
+    profiles.default = {
+      name = "default";
+      path = "oyht42mb.default";
 
-        # See:
-        # https://searchfox.org/mozilla-release/source/modules/libpref/init/all.js
-        # https://searchfox.org/mozilla-release/source/browser/app/profile/firefox.js
-        # https://searchfox.org/mozilla-central/source/modules/libpref/init/StaticPrefList.yaml
-        settings = {
-          # DoH first, fallback to unsecure DNS
-          "network.trr.mode" = 2;
-          "network.trr.uri" = cfg.dns-over-https.provider;
-          # Used by Firefox to differenciate between the default providers it offers and a user-given provider
-          "network.trr.custom_uri" = cfg.dns-over-https.provider;
-          "network.trr.display_fallback_warning" = cfg.dns-over-https.fallback-warning;
-        } // {
-          # 3 is restore, 1 is homepage (Firefox default)
-          "browser.startup.page" = if cfg.restore-session then 3 else 1;
-          "browser.tabs.inTitlebar" = if cfg.custom-titlebar then 1 else 0;
+      # See:
+      # https://searchfox.org/mozilla-release/source/modules/libpref/init/all.js
+      # https://searchfox.org/mozilla-release/source/browser/app/profile/firefox.js
+      # https://searchfox.org/mozilla-central/source/modules/libpref/init/StaticPrefList.yaml
+      settings = {
+        # DoH first, fallback to unsecure DNS
+        "network.trr.mode" = 2;
+        "network.trr.uri" = cfg.dns-over-https.provider;
+        # Used by Firefox to differenciate between the default providers it offers and a user-given provider
+        "network.trr.custom_uri" = cfg.dns-over-https.provider;
+        "network.trr.display_fallback_warning" = cfg.dns-over-https.fallback-warning;
+      } // {
+        # 3 is restore, 1 is homepage (Firefox default)
+        "browser.startup.page" = if cfg.restore-session then 3 else 1;
+        "browser.tabs.inTitlebar" = if cfg.custom-titlebar then 1 else 0;
 
-          # 1 is force enable, 2 is automatic (usually enabled only in flatpaks and snaps)
-          "widget.use-xdg-desktop-portal.file-picker" = if cfg.xdg-portals.file-picker then 1 else 2;
-          "widget.use-xdg-desktop-portal.mime-handler" = if cfg.xdg-portals.mime-handler then 1 else 2;
-          "widget.use-xdg-desktop-portal.native-messaging" = if cfg.xdg-portals.native-messaging then 1 else 2;
-          "widget.use-xdg-desktop-portal.settings" = if cfg.xdg-portals.settings then 1 else 2;
-          "widget.use-xdg-desktop-portal.location" = if cfg.xdg-portals.location then 1 else 2;
-          "widget.use-xdg-desktop-portal.open-uri" = if cfg.xdg-portals.open-uri then 1 else 2;
-        };
+        # 1 is force enable, 2 is automatic (usually enabled only in flatpaks and snaps)
+        "widget.use-xdg-desktop-portal.file-picker" = if cfg.xdg-portals.file-picker then 1 else 2;
+        "widget.use-xdg-desktop-portal.mime-handler" = if cfg.xdg-portals.mime-handler then 1 else 2;
+        "widget.use-xdg-desktop-portal.native-messaging" = if cfg.xdg-portals.native-messaging then 1 else 2;
+        "widget.use-xdg-desktop-portal.settings" = if cfg.xdg-portals.settings then 1 else 2;
+        "widget.use-xdg-desktop-portal.location" = if cfg.xdg-portals.location then 1 else 2;
+        "widget.use-xdg-desktop-portal.open-uri" = if cfg.xdg-portals.open-uri then 1 else 2;
       };
     };
   };

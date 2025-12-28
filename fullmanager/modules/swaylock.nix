@@ -1,42 +1,23 @@
 { lib, pkgs, config, ... }:
 let
-  inherit (lib) mkOption mkEnableOption mkPackageOption mkIf types;
   cfg = config.swaylock;
+
+  swaylockOptions = (import <home-manager/modules/programs/swaylock.nix> {
+    inherit lib pkgs;
+    config = { };
+  }).options.programs.swaylock;
 in
 {
   options.swaylock = {
-    enable = mkEnableOption "swaylock";
-    package = mkPackageOption pkgs "swaylock" { };
+    enable = swaylockOptions.enable;
+    package = swaylockOptions.package;
 
-    settings = mkOption {
-      type =
-        with types;
-        attrsOf (oneOf [
-          bool
-          float
-          int
-          path
-          str
-        ]);
-      default = { };
-      description = ''
-        Default arguments to {command}`swaylock`. An empty set
-        disables configuration generation.
-      '';
-      example = {
-        color = "808080";
-        font-size = 24;
-        indicator-idle-visible = false;
-        indicator-radius = 100;
-        line-color = "ffffff";
-        show-failed-attempts = true;
-      };
-    };
+    settings = swaylockOptions.settings;
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     hm.programs.swaylock = {
-      enable = true;
+      enable = cfg.enable;
       package = cfg.package;
       settings = cfg.settings;
     };
