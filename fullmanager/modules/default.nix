@@ -9,5 +9,6 @@
     ./hyprpaper.nix
     ./xdg.nix
     ./swayidle.nix
+    ./wlsunset.nix
   ];
 }

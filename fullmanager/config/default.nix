@@ -8,5 +8,6 @@
     ./zsh.nix
     ./hyprpaper.nix
     ./swayidle.nix
+    ./wlsunset.nix
   ];
 }

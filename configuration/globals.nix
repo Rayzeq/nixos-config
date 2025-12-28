@@ -3,8 +3,6 @@
     package = pkgs.fira-code;
     family = "Fira Code";
   };
-  latitude = 46.6;
-  longitude = 1.6;
 
   dataFile."wallpapers/light2.png".source = ../fullmanager/config/wallpapers/light.png;
 
