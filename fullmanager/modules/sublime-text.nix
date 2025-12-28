@@ -7,7 +7,8 @@ let
     mkPackageOption
     mkIf
     literalExpression
-    optionalAttrs
+    optionalAttrs;
+  inherit (builtins)
     filter
     getAttr
     foldl'

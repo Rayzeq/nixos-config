@@ -1,6 +1,7 @@
 { lib, pkgs, config, ... }:
 let
-  inherit (lib) types mkEnableOption mkOption mkPackageOption mkIf literalExpression concatStringsSep;
+  inherit (lib) types mkEnableOption mkOption mkPackageOption mkIf literalExpression;
+  inherit (builtins) concatStringsSep;
   cfg = config.kitty;
   fontType = (import ./types.nix { inherit lib; }).font;
 

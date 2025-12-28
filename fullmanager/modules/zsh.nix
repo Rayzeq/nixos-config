@@ -1,7 +1,8 @@
 { lib, pkgs, config, ... }:
 let
   inherit (lib) types mkEnableOption mkOption mkPackageOption mkIf literalExpression
-    optionalString concatStringsSep mapAttrsToList;
+    optionalString mapAttrsToList;
+  inherit (builtins) concatStringsSep;
   cfg = config.zsh;
 
   historyOptions = types.submodule {

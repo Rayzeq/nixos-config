@@ -1,6 +1,6 @@
 { lib, config, ... }:
 let
-  inherit (lib) mkOption mkIf types;
+  inherit (lib) mkOption types;
   cfg = config.xdg;
 
   fileType = types.submodule ({ name, ... }: {

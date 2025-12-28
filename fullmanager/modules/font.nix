@@ -1,6 +1,7 @@
 { lib, config, ... }:
 let
-  inherit (lib) types mkOption attrValues concatStringsSep;
+  inherit (lib) types mkOption;
+  inherit (builtins) attrValues concatStringsSep;
   cfg = config.font;
 
   fontType = (import ./types.nix { inherit lib; }).font;
