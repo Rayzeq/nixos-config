@@ -72,7 +72,6 @@
         exec-once = [
           "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
           "eww open statusbar && ( nm-applet & blueman-applet & discord --enable-features=UseOzonePlatform --ozone-platform=wayland --start-minimized & )"
-          "hyprpaper"
           "${pkgs.wayland-pipewire-idle-inhibit}/bin/wayland-pipewire-idle-inhibit"
         ];
         monitor = [ "e-DP1,1920x1080@60,0x0,1" ",preferred,auto,1" ];
@@ -214,7 +213,5 @@
         switch = import ./darkman/light.sh { inherit pkgs config; };
       };
     };
-
-    # services.blueman-applet.enable = true;
   };
 }
