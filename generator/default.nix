@@ -2,35 +2,26 @@
 let
   utils = import ./utils.nix;
   globals = import ../configuration/globals.nix { inherit pkgs; self = globalsFinal; };
-  globalsFinal = globals // {
-    dataFile = (builtins.mapAttrs
-      (name: value: value // { target = "/home/zacharie/.local/share/${name}"; })
-      globals.dataFile
-    );
-  };
+  globalsFinal = globals;
   inputFiles = builtins.catAttrs "name" (
     builtins.filter
       ({ name, value }: name != "default.nix" && name != "utils.nix")
       (utils.attrItems (builtins.readDir ./.))
   );
-  inputFuncs = builtins.map (path: import ./${path}) inputFiles;
-  inputs = builtins.map
+  inputFuncs = map (path: import ./${path}) inputFiles;
+  inputs = map
     (func: func { inherit pkgs lib; globals = globalsFinal; })
     inputFuncs;
 in
 {
   user = lib.mkMerge (
     [{
-      xdg.dataFile = globals.dataFile;
-
       home.packages = (builtins.concatLists (builtins.catAttrs "packages" inputs));
       services = lib.mkMerge (builtins.catAttrs "services" inputs);
       programs = lib.mkMerge (builtins.catAttrs "programs" inputs);
     }] ++
-    (builtins.map (input: removeAttrs input [ "packages" "services" "programs" "system" ]) inputs)
+    (map (input: removeAttrs input [ "packages" "services" "programs" "system" ]) inputs)
 
   );
-  system = lib.mkMerge ((builtins.catAttrs "system" inputs) ++ [{
-    fonts.packages = [ globals.font.package ];
-  }]);
+  system = lib.mkMerge ((builtins.catAttrs "system" inputs) ++ [{ }]);
 }
