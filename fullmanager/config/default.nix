@@ -10,5 +10,6 @@
     ./swayidle.nix
     ./wlsunset.nix
     ./swaylock.nix
+    ./wlogout
   ];
 }
