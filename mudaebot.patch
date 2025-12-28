@@ -1,8 +1,8 @@
-diff --git a/src/userplugins/MudaeBot/index.ts b/src/userplugins/MudaeBot/index.ts
+diff --git a/src/userplugins/MudaeBot.ts b/src/userplugins/MudaeBot.ts
 new file mode 100644
-index 0000000..7589ff5
+MudaeBot 0000000..7589ff5
 --- /dev/null
-+++ b/src/userplugins/MudaeBot/index.ts
++++ b/src/userplugins/MudaeBot.ts
 @@ -0,0 +1,93 @@
 +import { definePluginSettings } from "@api/Settings";
 +import { sendMessage } from "@utils/discord";
