@@ -204,14 +204,5 @@
         ];
       };
     };
-
-    services.darkman = {
-      darkModeScripts = {
-        switch = import ./darkman/dark.sh { inherit pkgs config; };
-      };
-      lightModeScripts = {
-        switch = import ./darkman/light.sh { inherit pkgs config; };
-      };
-    };
   };
 }
