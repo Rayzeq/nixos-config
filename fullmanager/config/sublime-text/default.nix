@@ -356,11 +356,11 @@
       };
       JavaScript = {
         managed = false;
-        overrides."Fold.tmPreferences" = ./sublime-text/JS_Fold.tmPreferences;
+        overrides."Fold.tmPreferences" = ./JS_Fold.tmPreferences;
       };
       Rust = {
         managed = false;
-        overrides."Fold.tmPreferences" = ./sublime-text/Rust_Fold.tmPreferences;
+        overrides."Fold.tmPreferences" = ./Rust_Fold.tmPreferences;
       };
     };
   };

@@ -4,7 +4,7 @@
     ./font.nix
     ./kitty.nix
     ./sublime-merge.nix
-    ./sublime-text.nix
+    ./sublime-text
     ./zsh.nix
     ./hyprpaper.nix
     ./swayidle.nix
