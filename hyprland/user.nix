@@ -73,7 +73,6 @@
           "${pkgs.kdePackages.polkit-kde-agent-1}/libexec/polkit-kde-authentication-agent-1"
           "eww open statusbar && ( nm-applet & blueman-applet & discord --enable-features=UseOzonePlatform --ozone-platform=wayland --start-minimized & )"
           "hyprpaper"
-          "swaync"
           "${pkgs.wayland-pipewire-idle-inhibit}/bin/wayland-pipewire-idle-inhibit"
         ];
         monitor = [ "e-DP1,1920x1080@60,0x0,1" ",preferred,auto,1" ];
@@ -217,90 +216,5 @@
     };
 
     # services.blueman-applet.enable = true;
-
-    # The default config, without the examples which break everything
-    xdg.configFile."swaync/config.json".text = ''
-      {
-        "$schema": "${pkgs.swaynotificationcenter}/etc/xdg/swaync/configSchema.json",
-        "positionX": "right",
-        "positionY": "top",
-        "layer": "overlay",
-        "control-center-layer": "top",
-        "layer-shell": true,
-        "cssPriority": "application",
-        "control-center-margin-top": 0,
-        "control-center-margin-bottom": 0,
-        "control-center-margin-right": 0,
-        "control-center-margin-left": 0,
-        "notification-2fa-action": true,
-        "notification-inline-replies": true,
-        "notification-icon-size": 64,
-        "notification-body-image-height": 100,
-        "notification-body-image-width": 200,
-        "timeout": 10,
-        "timeout-low": 5,
-        "timeout-critical": 0,
-        "fit-to-screen": true,
-        "control-center-width": 500,
-        "control-center-height": 600,
-        "notification-window-width": 500,
-        "keyboard-shortcuts": true,
-        "image-visibility": "when-available",
-        "transition-time": 200,
-        "hide-on-clear": false,
-        "hide-on-action": true,
-        "script-fail-notify": true,
-        "widgets": [
-          "inhibitors",
-          "title",
-          "dnd",
-          "notifications"
-        ],
-        "widget-config": {
-          "inhibitors": {
-            "text": "Inhibitors",
-            "button-text": "Clear All",
-            "clear-all-button": true
-          },
-          "title": {
-            "text": "Notifications",
-            "clear-all-button": true,
-            "button-text": "Clear All"
-          },
-          "dnd": {
-            "text": "Do Not Disturb"
-          }
-        }
-      }
-    '';
-    xdg.configFile."swaync/style.css".text = ''
-      .floating-notifications .notification,
-      .floating-notifications .notification-content {
-        box-shadow: none;
-      }
-
-      .floating-notifications .notification-default-action,
-      .floating-notifications .notification-action {
-        border: none;
-        background-color: rgba(0, 0, 0, 0.8);
-      }
-
-      .floating-notifications .notification-default-action:not(:only-child) {
-        border-bottom: 1px solid gray;
-      }
-
-      .floating-notifications .notification-action {
-        border-right: 1px solid gray;
-      }
-
-      .floating-notifications .notification-action:last-child {
-        border-right: none;
-      }
-
-      .floating-notifications .notification-action:hover {
-        color: black;
-        background: rgba(114, 211, 254, 0.9);
-      }
-    '';
   };
 }

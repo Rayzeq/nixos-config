@@ -13,5 +13,6 @@
     ./wlogout
     ./darkman.nix
     ./git.nix
+    ./swaync.nix
   ];
 }
