@@ -208,12 +208,6 @@
     };
 
     services.darkman = {
-      enable = true;
-      settings = {
-        lat = 46.6;
-        lng = 1.6;
-        usegeoclue = false;
-      };
       darkModeScripts = {
         switch = import ./darkman/dark.sh { inherit pkgs config; };
       };

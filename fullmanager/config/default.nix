@@ -11,5 +11,6 @@
     ./wlsunset.nix
     ./swaylock.nix
     ./wlogout
+    ./darkman.nix
   ];
 }
