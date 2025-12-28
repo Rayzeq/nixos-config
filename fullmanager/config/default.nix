@@ -7,5 +7,6 @@
     ./sublime-text.nix
     ./zsh.nix
     ./hyprpaper.nix
+    ./swayidle.nix
   ];
 }
