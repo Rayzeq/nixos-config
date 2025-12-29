@@ -14,5 +14,11 @@ in
 
     settings = gitOptions.settings;
   };
-  config.hm.programs.git = lib.mkIf cfg.enable cfg;
+  config = lib.mkIf cfg.enable {
+    hm.programs.git = cfg;
+    system.programs.git = {
+      enable = cfg.enable;
+      package = cfg.package;
+    };
+  };
 }
