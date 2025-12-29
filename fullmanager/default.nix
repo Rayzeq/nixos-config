@@ -6,6 +6,35 @@ let
   globals = import ./config/globals.nix { inherit pkgs; self = globalsFinal; };
   globalsFinal = globals;
 
+  getModules = folder: excludes:
+    let
+      dirContents = builtins.readDir folder;
+      names = builtins.attrNames dirContents;
+      filteredNames = builtins.filter (name: !(builtins.elem name excludes)) names;
+
+      modules = map
+        (name:
+          let
+            type = dirContents.${name};
+            path = "${folder}/${name}";
+          in
+          if type == "regular" && lib.hasSuffix ".nix" name then
+            path
+          else if type == "directory" then
+            let
+              subDirContents = builtins.readDir path;
+              hasDefault = builtins.elem "default.nix" (builtins.attrNames subDirContents);
+            in
+            if hasDefault then
+              path
+            else null
+          else null
+        )
+        filteredNames;
+      nonNullModules = builtins.filter (x: x != null) modules;
+    in
+    nonNullModules;
+
   fullmanager = evalModules {
     specialArgs = { inherit pkgs lib globals; };
     modules = [
@@ -24,9 +53,9 @@ let
           };
         };
       }
-      ./config
-      ./modules
-    ];
+    ]
+    ++ (getModules ./modules [ "types.nix" ])
+    ++ (getModules ./config [ "globals.nix" ]);
   };
 in
 {
