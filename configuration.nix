@@ -139,7 +139,7 @@
       gnumake
       gdb
       # Other
-      jetbrains.idea-community
+      jetbrains.idea
 
       # Useful
       steam-run
