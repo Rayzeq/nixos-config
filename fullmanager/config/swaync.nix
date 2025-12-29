@@ -1,10 +1,9 @@
-{ pkgs, ... }: {
+{ ... }: {
   swaync = {
     enable = true;
 
     # The default config, without the examples which break everything
     settings = {
-      "$schema" = "${pkgs.swaynotificationcenter}/etc/xdg/swaync/configSchema.json";
       positionX = "right";
       positionY = "top";
       layer = "overlay";

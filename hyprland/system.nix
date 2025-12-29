@@ -6,7 +6,6 @@
     pavucontrol
     rofi
     grimblast
-    swaynotificationcenter
     kdePackages.polkit-kde-agent-1
     wl-clipboard
     blueman

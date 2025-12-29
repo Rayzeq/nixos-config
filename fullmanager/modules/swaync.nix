@@ -16,5 +16,10 @@ in
     settings = swayncOptions.settings;
   };
 
-  config.hm.services.swaync = lib.mkIf cfg.enable cfg;
+  config.hm.services.swaync = lib.mkIf cfg.enable (lib.mkMerge [
+    {
+      settings."$schema" = "${pkgs.swaynotificationcenter}/etc/xdg/swaync/configSchema.json";
+    }
+    cfg
+  ]);
 }

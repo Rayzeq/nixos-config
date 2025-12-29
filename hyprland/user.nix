@@ -186,7 +186,7 @@
           ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
         ];
         bindr = [
-          "$mod, SUPER_L, exec, pkill -x rofi || rofi -show drun -theme \"~/.config/rofi/launcher.rasi\""
+          "$mod, SUPER_L, exec, pkill -x rofi || ${pkgs.rofi}/bin/rofi -show drun -theme \"~/.config/rofi/launcher.rasi\""
         ];
         bindm = [
           "$mod, mouse:272, movewindow"
