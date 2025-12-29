@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  imports = [ <home-manager/nixos> ./hardware-configuration.nix ./zacharie.nix ./hyprland/system.nix ./tuigreet.nix ./fullmanager ];
+  imports = [ <home-manager/nixos> ./hardware-configuration.nix ./zacharie.nix ./hyprland/system.nix ./fullmanager ];
 
   nixpkgs = {
     config = {
@@ -80,9 +80,6 @@
   };
 
   hardware.graphics.enable32Bit = true;
-
-  # Configure console keymap
-  console.keyMap = "fr";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
