@@ -14,5 +14,6 @@
     ./darkman.nix
     ./git.nix
     ./swaync.nix
+    ./greetd.nix
   ];
 }
