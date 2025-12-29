@@ -131,12 +131,7 @@
   programs.nix-ld.enable = true;
 
   environment.systemPackages = with pkgs; [
-    git
-    sublime-merge
     gparted
-    zsh-syntax-highlighting
-    zsh-autosuggestions
-    zsh-powerlevel10k
     trashy
     lsd
     bat
