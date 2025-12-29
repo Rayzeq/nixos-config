@@ -114,7 +114,6 @@
       inkscape-with-extensions
       blender
       discord
-      gnome-boxes
 
       mangohud
       modrinth-app
@@ -177,14 +176,7 @@
   programs.command-not-found.enable = true;
 
   virtualisation.virtualbox.host.enable = true;
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu.package = pkgs.qemu_kvm;
-  };
-  users.extraGroups = {
-    vboxusers.members = [ "zacharie" ];
-    libvirtd.members = [ "zacharie" ];
-  };
+  users.extraGroups.vboxusers.members = [ "zacharie" ];
   systemd.coredump.extraConfig = "Storage=none";
 
   # This value determines the NixOS release from which the default
