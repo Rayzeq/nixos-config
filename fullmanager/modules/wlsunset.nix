@@ -9,11 +9,7 @@ let
 in
 {
   options.wlsunset = {
-    enable = wlsunsetOptions.enable;
-    package = wlsunsetOptions.package;
-
-    latitude = wlsunsetOptions.latitude;
-    longitude = wlsunsetOptions.longitude;
+    inherit (wlsunsetOptions) enable package latitude longitude;
   };
 
   config.hm.services.wlsunset = lib.mkIf cfg.enable cfg;

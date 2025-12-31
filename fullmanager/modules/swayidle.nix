@@ -9,11 +9,7 @@ let
 in
 {
   options.swayidle = {
-    enable = swayidleOptions.enable;
-    package = swayidleOptions.package;
-
-    timeouts = swayidleOptions.timeouts;
-    events = swayidleOptions.events;
+    inherit (swayidleOptions) enable package timeouts events;
   };
 
   config.hm.services.swayidle = lib.mkIf cfg.enable cfg;

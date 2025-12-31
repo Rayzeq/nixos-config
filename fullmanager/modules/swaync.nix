@@ -9,11 +9,7 @@ let
 in
 {
   options.swaync = {
-    enable = swayncOptions.enable;
-    package = swayncOptions.package;
-
-    style = swayncOptions.style;
-    settings = swayncOptions.settings;
+    inherit (swayncOptions) enable package style settings;
   };
 
   config.hm.services.swaync = lib.mkIf cfg.enable (lib.mkMerge [

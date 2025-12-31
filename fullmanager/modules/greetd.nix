@@ -9,11 +9,7 @@ let
 in
 {
   options.greetd = {
-    enable = greetdOptions.enable;
-    package = greetdOptions.package;
-
-    settings = greetdOptions.settings;
-    useTextGreeter = greetdOptions.useTextGreeter;
+    inherit (greetdOptions) enable package settings useTextGreeter;
   };
 
   config.system.services.greetd = lib.mkIf cfg.enable cfg;

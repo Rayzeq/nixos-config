@@ -23,9 +23,7 @@ in
     settings = {
       cue = cfg.u2f.cue;
       authfile = builtins.toFile "u2f_mappings" (lib.concatStringsSep "\n" (
-        builtins.attrValues (
-          builtins.mapAttrs (user: ids: lib.concatStringsSep ":" ([ user ] ++ ids)) cfg.u2f.keys
-        )
+        lib.mapAttrsToList (user: ids: lib.concatStringsSep ":" ([ user ] ++ ids)) cfg.u2f.keys
       ));
     };
   };

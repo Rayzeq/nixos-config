@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   home-manager.users.zacharie = { config, ... }: {
     xdg.configFile."rofi/clipboard.sh" = {
@@ -76,7 +76,7 @@
         ];
         monitor = [ "e-DP1,1920x1080@60,0x0,1" ",preferred,auto,1" ];
 
-        env = builtins.attrValues (builtins.mapAttrs (name: value: name + "," + (toString value)) (config.systemd.user.sessionVariables // config.home.sessionVariables));
+        env = lib.mapAttrsToList (name: value: name + "," + (toString value)) (config.systemd.user.sessionVariables // config.home.sessionVariables);
 
         general = {
           gaps_in = 0;

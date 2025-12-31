@@ -81,8 +81,7 @@ in
   };
 
   config.hm.programs.firefox = mkIf cfg.enable {
-    enable = cfg.enable;
-    package = cfg.package;
+    inherit (cfg) enable package;
     profiles.default = {
       name = "default";
       path = "oyht42mb.default";

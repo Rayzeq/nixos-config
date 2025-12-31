@@ -10,8 +10,7 @@ let
 in
 {
   options.hyprpaper = {
-    enable = hyprpaperOptions.enable;
-    package = hyprpaperOptions.package;
+    inherit (hyprpaperOptions) enable package;
 
     preload = mkOption {
       type = with types; listOf str;
@@ -40,11 +39,10 @@ in
   };
 
   config.hm.services.hyprpaper = mkIf cfg.enable {
-    enable = cfg.enable;
-    package = cfg.package;
+    inherit (cfg) enable package;
     settings = {
       preload = cfg.preload;
-      wallpaper = builtins.attrValues (builtins.mapAttrs (monitor: wallpaper: "${monitor},${wallpaper}") cfg.wallpaper);
+      wallpaper = lib.mapAttrsToList (monitor: wallpaper: "${monitor},${wallpaper}") cfg.wallpaper;
     };
   };
 }

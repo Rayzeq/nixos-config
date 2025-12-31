@@ -9,11 +9,7 @@ let
 in
 {
   options.wlogout = {
-    enable = wlogoutOptions.enable;
-    package = wlogoutOptions.package;
-
-    layout = wlogoutOptions.layout;
-    style = wlogoutOptions.style;
+    inherit (wlogoutOptions) enable package layout style;
   };
 
   config.hm.programs.wlogout = lib.mkIf cfg.enable cfg;

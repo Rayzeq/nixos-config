@@ -9,12 +9,7 @@ let
 in
 {
   options.darkman = {
-    enable = darkmanOptions.enable;
-    package = darkmanOptions.package;
-
-    settings = darkmanOptions.settings;
-    darkModeScripts = darkmanOptions.darkModeScripts;
-    lightModeScripts = darkmanOptions.lightModeScripts;
+    inherit (darkmanOptions) enable package settings darkModeScripts lightModeScripts;
   };
 
   config.hm.services.darkman = lib.mkIf cfg.enable cfg;

@@ -9,18 +9,11 @@ let
 in
 {
   options.swaylock = {
-    enable = swaylockOptions.enable;
-    package = swaylockOptions.package;
-
-    settings = swaylockOptions.settings;
+    inherit (swaylockOptions) enable package settings;
   };
 
   config = lib.mkIf cfg.enable {
-    hm.programs.swaylock = {
-      enable = cfg.enable;
-      package = cfg.package;
-      settings = cfg.settings;
-    };
+    hm.programs.swaylock = cfg;
     system.security.pam.services.swaylock = { };
   };
 }

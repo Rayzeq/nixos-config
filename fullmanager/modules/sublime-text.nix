@@ -20,11 +20,9 @@ let
   userConfigDirectory = "${configDirectory}/User";
   jsonFormat = pkgs.formats.json { };
   fontType = (import ./types.nix { inherit lib; }).font;
-  attrItems = attrset: builtins.attrValues (
-    builtins.mapAttrs
-      (name: value: { inherit name value; })
-      attrset
-  );
+  attrItems = attrset: lib.mapAttrsToList
+    (name: value: { inherit name value; })
+    attrset;
 
   pluginOptions = types.submodule ({ ... }: {
     options = {

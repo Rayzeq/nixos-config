@@ -21,28 +21,19 @@ let
 in
 {
   options.kitty = {
-    enable = kittyOptions.enable;
-    package = kittyOptions.package;
+    inherit (kittyOptions) enable package settings keybindings;
 
     font = mkOption {
       type = types.nullOr fontType;
       default = null;
     };
-
-    settings = kittyOptions.settings;
-    keybindings = kittyOptions.keybindings;
   };
 
   config.hm.programs.kitty = mkIf cfg.enable {
-    enable = cfg.enable;
-    package = cfg.package;
-    # Unfortunatly font features doesn't seem to work with Fira Code
+    inherit (cfg) enable package settings keybindings;
     font = {
-      package = cfg.font.package;
-      name = cfg.font.name;
+      inherit (cfg.font) package name;
     };
-    settings = cfg.settings;
-    keybindings = cfg.keybindings;
     extraConfig = concatStringsSep "\n" (map
       (name:
         "font_features ${name} ${concatStringsSep " " (map (feature: "+${feature}") cfg.font.features)}"

@@ -9,16 +9,12 @@ let
 in
 {
   options.git = {
-    enable = gitOptions.enable;
-    package = gitOptions.package;
-
-    settings = gitOptions.settings;
+    inherit (gitOptions) enable package settings;
   };
   config = lib.mkIf cfg.enable {
     hm.programs.git = cfg;
     system.programs.git = {
-      enable = cfg.enable;
-      package = cfg.package;
+      inherit (cfg) enable package;
     };
   };
 }
