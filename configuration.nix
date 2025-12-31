@@ -106,7 +106,6 @@
       blender
       discord
 
-      mangohud
       modrinth-app
       heroic
       wineWowPackages.full
