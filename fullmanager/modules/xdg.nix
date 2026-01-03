@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, config, hmConfig, ... }:
 let
   inherit (lib) mkOption types;
   cfg = config.xdg;
@@ -28,7 +28,7 @@ let
       };
     };
     config = {
-      target = lib.mkDefault "/home/zacharie/.local/share/${name}";
+      target = lib.mkDefault "${hmConfig.xdg.dataHome}/${name}";
     };
   });
 in

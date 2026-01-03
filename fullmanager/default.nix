@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
 let
   inherit (lib) evalModules mkOption;
   customTypes = import ./types.nix { inherit lib; };
@@ -35,8 +35,11 @@ let
     in
     nonNullModules;
 
-  fullmanager = evalModules {
-    specialArgs = { inherit pkgs lib globals; };
+  fullmanager = { config, ... }: evalModules {
+    specialArgs = {
+      inherit pkgs lib globals;
+      hmConfig = config;
+    };
     modules = [
       {
         options = {
@@ -57,13 +60,17 @@ let
     ++ (getModules ./modules [ "types.nix" ])
     ++ (getModules ./config [ "globals.nix" ]);
   };
+
+  rootOptions = fullmanager { config = config.home-manager.users.root; };
+  zacharieOptions = fullmanager { config = config.home-manager.users.zacharie; };
 in
 {
   config = lib.mkMerge [
-    (fullmanager.config.system or { })
     {
-      home-manager.users.root = fullmanager.config.hm or { };
-      home-manager.users.zacharie = fullmanager.config.hm or { };
+      home-manager.users.root = rootOptions.config.hm;
+      home-manager.users.zacharie = zacharieOptions.config.hm;
     }
+    # let's assume (and hope) that the system config is the same for each users
+    zacharieOptions.config.system
   ];
 }
