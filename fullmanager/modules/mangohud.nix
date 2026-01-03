@@ -63,8 +63,8 @@ in
     programs.mangohud = {
       inherit (cfg) enable package enableSessionWide;
     };
-    xdg.configFile = {
-      "MangoHud/MangoHud.conf" = mkIf (cfg.settings != { }) { text = renderSettings cfg.settings; };
+    xdg.configFile."MangoHud/MangoHud.conf" = mkIf (cfg.settings != { }) {
+      text = renderSettings cfg.settings;
     };
   };
 }

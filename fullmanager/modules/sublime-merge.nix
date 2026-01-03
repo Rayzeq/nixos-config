@@ -19,10 +19,8 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    hm.home.packages = [ cfg.package ];
-    hm.xdg.configFile = {
-      "${configDirectory}/Preferences.sublime-settings".source = jsonFormat.generate "sublime-merge-settings" cfg.settings;
-    };
+  config.hm = mkIf cfg.enable {
+    home.packages = [ cfg.package ];
+    xdg.configFile."${configDirectory}/Preferences.sublime-settings".source = jsonFormat.generate "sublime-merge-settings" cfg.settings;
   };
 }

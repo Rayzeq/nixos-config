@@ -309,8 +309,8 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    hm.programs.zsh = {
+  config.hm.programs = mkIf cfg.enable {
+    zsh = {
       enable = true;
       package = cfg.package;
 
@@ -369,17 +369,17 @@ in
       ];
     };
 
-    hm.programs.autojump = mkIf cfg.autojump.enable {
+    autojump = mkIf cfg.autojump.enable {
       enable = true;
       enableZshIntegration = true;
     };
-    hm.programs.atuin = mkIf cfg.atuin.enable {
+    atuin = mkIf cfg.atuin.enable {
       enable = true;
       package = cfg.atuin.package;
       enableZshIntegration = true;
       settings = cfg.atuin.settings;
     };
-    hm.programs.direnv = mkIf cfg.direnv.enable {
+    direnv = mkIf cfg.direnv.enable {
       enable = true;
       package = cfg.direnv.package;
       enableZshIntegration = true;

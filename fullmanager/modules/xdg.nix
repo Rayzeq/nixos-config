@@ -38,7 +38,5 @@ in
       type = with types; attrsOf fileType;
     };
   };
-  config = {
-    hm.xdg = cfg;
-  };
+  config.hm.xdg = cfg;
 }

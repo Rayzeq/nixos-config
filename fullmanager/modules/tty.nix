@@ -19,11 +19,11 @@ in
     };
   };
 
-  config = {
-    system.console.keyMap = cfg.keyMap;
+  config.system = {
+    console.keyMap = cfg.keyMap;
     # Can't use directly preStart because nixos wraps it in a script
-    # and system can't expand the %I
-    system.systemd.services."getty@".serviceConfig.ExecStartPre = mkIf
+    # and systemd can't expand the %I
+    systemd.services."getty@".serviceConfig.ExecStartPre = mkIf
       cfg.enableNumlock
       "${pkgs.bash}/bin/sh -c '${pkgs.kbd}/bin/setleds -D +num < /dev/%I'";
   };

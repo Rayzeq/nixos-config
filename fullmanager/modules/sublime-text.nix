@@ -158,9 +158,9 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    hm.home.packages = [ cfg.package ];
-    hm.xdg.configFile = {
+  config.hm = mkIf cfg.enable {
+    home.packages = [ cfg.package ];
+    xdg.configFile = {
       "${userConfigDirectory}/Preferences.sublime-settings".source = jsonFormat.generate "sublime-text-settings" (
         (optionalAttrs (cfg.font != null) {
           font_face = cfg.font.name;
