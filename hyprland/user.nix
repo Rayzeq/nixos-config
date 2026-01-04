@@ -5,9 +5,6 @@
       source = ./rofi/clipboard.sh;
       executable = true;
     };
-    xdg.configFile."rofi/style.rasi".source = ./rofi/style.rasi;
-    xdg.configFile."rofi/launcher.rasi".source = ./rofi/launcher.rasi;
-    xdg.configFile."rofi/clipboard.rasi".source = ./rofi/clipboard.rasi;
 
     home.pointerCursor = {
       gtk.enable = true;
@@ -186,7 +183,8 @@
           ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
         ];
         bindr = [
-          "$mod, SUPER_L, exec, pkill -x rofi || ${pkgs.rofi}/bin/rofi -show drun -theme \"~/.config/rofi/launcher.rasi\""
+          # TODO: replace with `config.rofi.command.launcher` when in fullmanager
+          "$mod, SUPER_L, exec, pkill -x rofi || rofi -show combi -theme \"~/.config/rofi/launcher.rasi\""
         ];
         bindm = [
           "$mod, mouse:272, movewindow"
