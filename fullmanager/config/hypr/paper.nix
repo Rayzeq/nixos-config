@@ -13,7 +13,7 @@ in
       force = true;
     };
   };
-  hyprpaper = {
+  hypr.paper = {
     enable = true;
 
     preload = [

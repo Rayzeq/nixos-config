@@ -1,7 +1,7 @@
 { lib, pkgs, config, ... }:
 let
   inherit (lib) mkOption mkIf types literalExpression;
-  cfg = config.hyprpaper;
+  cfg = config.hypr.paper;
 
   hyprpaperOptions = (import <home-manager/modules/services/hyprpaper.nix> {
     inherit lib pkgs;
@@ -9,7 +9,7 @@ let
   }).options.services.hyprpaper;
 in
 {
-  options.hyprpaper = {
+  options.hypr.paper = {
     inherit (hyprpaperOptions) enable package;
 
     preload = mkOption {

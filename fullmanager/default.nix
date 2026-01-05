@@ -37,7 +37,10 @@ let
 
   fullmanager = { config, ... }: evalModules {
     specialArgs = {
-      inherit pkgs lib globals;
+      inherit pkgs globals;
+      lib = lib // {
+        inherit getModules;
+      };
       hmConfig = config;
     };
     modules = [
