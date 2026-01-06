@@ -1,0 +1,3 @@
+{ ... }: {
+  hypr.polkitagent.enable = true;
+}
