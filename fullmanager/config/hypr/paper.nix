@@ -16,22 +16,21 @@ in
   hypr.paper = {
     enable = true;
 
-    preload = [
-      "${current}"
-      "${light}"
-      "${dark}"
+    splash = false;
+    wallpapers = [
+      {
+        monitor = "";
+        path = "${current}";
+      }
     ];
-    wallpaper = {
-      "" = "${current}";
-    };
   };
   darkman = {
     darkModeScripts.hyprpaper = ''
-      ${pkgs.hyprland}/bin/hyprctl hyprpaper wallpaper ,${dark}
+      ${pkgs.hyprland}/bin/hyprctl hyprpaper wallpaper ',${dark}'
       ${pkgs.coreutils-full}/bin/ln -sf $(${pkgs.coreutils-full}/bin/readlink ${dark}) ${current}
     '';
     lightModeScripts.hyprpaper = ''
-      ${pkgs.hyprland}/bin/hyprctl hyprpaper wallpaper ,${light}
+      ${pkgs.hyprland}/bin/hyprctl hyprpaper wallpaper ',${light}'
       ${pkgs.coreutils-full}/bin/ln -sf $(${pkgs.coreutils-full}/bin/readlink ${light}) ${current}
     '';
   };

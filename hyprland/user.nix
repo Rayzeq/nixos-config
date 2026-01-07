@@ -191,13 +191,13 @@
         ];
 
         windowrule = [
-          "idleinhibit fullscreen, class:.*"
-          "float, class:org.freedesktop.impl.portal.desktop.kde"
+          "idle_inhibit fullscreen, match:class .*"
+          "float on, match:class org.freedesktop.impl.portal.desktop.kde"
         ];
 
         layerrule = [
-          "ignorezero, rofi"
-          "blur, rofi"
+          "ignore_alpha 0, match:namespace rofi"
+          "blur on, match:namespace rofi"
         ];
       };
     };

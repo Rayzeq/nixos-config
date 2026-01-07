@@ -7,42 +7,44 @@ let
     inherit lib pkgs;
     config = { };
   }).options.services.hyprpaper;
+
+  wallpaperModule = types.submodule {
+    options = {
+      monitor = mkOption { type = types.str; };
+      path = mkOption { type = types.str; };
+      fit_mode = mkOption {
+        type = types.enum [ "contain" "cover" "tile" "fill" ];
+        default = "cover";
+      };
+      timeout = mkOption { type = with types; nullOr int; default = null; };
+    };
+  };
 in
 {
   options.hypr.paper = {
     inherit (hyprpaperOptions) enable package;
 
-    preload = mkOption {
-      type = with types; listOf str;
-      default = [ ];
-      description = "Wallpapers to preload. In order to be used, a wallpaper must be preloaded.";
-      example = literalExpression ''
-        [
-          "/share/wallpapers/buttons.png"
-          "/share/wallpapers/cat_pacman.png"
-        ]
-      '';
+    splash = mkOption {
+      type = types.bool;
+      default = true;
     };
-
-    wallpaper = mkOption {
-      type = with types; attrsOf str;
+    wallpapers = mkOption {
+      type = with types; listOf wallpaperModule;
       default = { };
-      description = "Mapping of monitor name to wallpaper. Use an empty monitor name as a fallback";
-      example = literalExpression ''
-        {
-          "" = "/share/wallpapers/buttons.png";
-          "DP-3" = "/share/wallpapers/buttons.png";
-          "DP-1" = "/share/wallpapers/cat_pacman.png";
-        };
-      '';
     };
   };
 
   config.hm.services.hyprpaper = mkIf cfg.enable {
     inherit (cfg) enable package;
+    importantPrefixes = [ "monitor" ];
     settings = {
-      preload = cfg.preload;
-      wallpaper = lib.mapAttrsToList (monitor: wallpaper: "${monitor},${wallpaper}") cfg.wallpaper;
+      inherit (cfg) splash;
+      wallpaper = map
+        (wallpaper: {
+          inherit (wallpaper) monitor path fit_mode;
+          timeout = mkIf (wallpaper.timeout != null) wallpaper.timeout;
+        })
+        cfg.wallpapers;
     };
   };
 }
