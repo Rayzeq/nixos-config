@@ -1,6 +1,6 @@
-{ pkgs, config, ... }: {
+{ pkgs, lib, config, ... }: {
   sublime-text = {
-    enable = true;
+    enable = lib.mkDefault true;
 
     settings = {
       theme = "Adaptive.sublime-theme";

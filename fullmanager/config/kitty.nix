@@ -1,6 +1,6 @@
-{ config, ... }: {
+{ lib, config, ... }: {
   kitty = {
-    enable = true;
+    enable = lib.mkDefault true;
     font = builtins.head config.font.monospace;
     keybindings = {
       "ctrl+c" = "combine : copy_or_interrupt : clear_selection";

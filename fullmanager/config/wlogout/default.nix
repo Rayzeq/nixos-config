@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   background-color = "rgba(0, 0, 0, 0.8)";
   background-color-active = "rgba(176, 165, 255, 0.8)";
@@ -10,7 +10,7 @@ let
 in
 {
   wlogout = {
-    enable = true;
+    enable = lib.mkDefault true;
 
     layout = [
       {

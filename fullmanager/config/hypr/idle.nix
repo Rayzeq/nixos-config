@@ -1,6 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   hypr.idle = {
-    enable = true;
+    enable = lib.mkDefault true;
 
     # wait for lockscreen before sleeping
     inhibit-sleep = "lock-notify";

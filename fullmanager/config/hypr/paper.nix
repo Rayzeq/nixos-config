@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 let
   current = config.xdg.dataFile."wallpapers/current.png".target;
   light = config.xdg.dataFile."wallpapers/light.png".target;
@@ -14,7 +14,7 @@ in
     };
   };
   hypr.paper = {
-    enable = true;
+    enable = lib.mkDefault true;
 
     splash = false;
     wallpapers = [

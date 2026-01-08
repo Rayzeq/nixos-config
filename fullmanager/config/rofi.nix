@@ -1,10 +1,10 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 let
   inherit (config.lib.formats.rasi) mkLiteral;
 in
 {
   rofi = {
-    enable = true;
+    enable = lib.mkDefault true;
     plugins = with pkgs; [ rofi-games ];
 
     config = {

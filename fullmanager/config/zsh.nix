@@ -1,6 +1,6 @@
-{ ... }: {
+{ lib, ... }: {
   zsh = {
-    enable = true;
+    enable = lib.mkDefault true;
 
     autocd = true;
     history.share = false;

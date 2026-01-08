@@ -1,6 +1,6 @@
-{ pkgs, globals, ... }: {
+{ pkgs, lib, globals, ... }: {
   darkman = {
-    enable = true;
+    enable = lib.mkDefault true;
 
     settings = {
       lat = globals.latitude;

@@ -1,3 +1,3 @@
-{ ... }: {
-  hypr.polkitagent.enable = true;
+{ lib, ... }: {
+  hypr.polkitagent.enable = lib.mkDefault true;
 }

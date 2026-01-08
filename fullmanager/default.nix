@@ -35,7 +35,7 @@ let
     in
     nonNullModules;
 
-  fullmanager = { config, ... }: evalModules {
+  fullmanager = { config, username }: evalModules {
     specialArgs = {
       inherit pkgs globals;
       lib = lib // {
@@ -59,13 +59,20 @@ let
           };
         };
       }
+      ./users/${username}.nix
     ]
     ++ (getModules ./modules [ "types.nix" ])
     ++ (getModules ./config [ "globals.nix" ]);
   };
 
-  rootOptions = fullmanager { config = config.home-manager.users.root; };
-  zacharieOptions = fullmanager { config = config.home-manager.users.zacharie; };
+  rootOptions = fullmanager {
+    config = config.home-manager.users.root;
+    username = "root";
+  };
+  zacharieOptions = fullmanager {
+    config = config.home-manager.users.zacharie;
+    username = "zacharie";
+  };
 in
 {
   config = lib.mkMerge [

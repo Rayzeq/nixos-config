@@ -1,6 +1,6 @@
-{ ... }: {
+{ lib, ... }: {
   firefox = {
-    enable = true;
+    enable = lib.mkDefault true;
 
     restore-session = true;
     custom-titlebar = false;

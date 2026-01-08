@@ -1,6 +1,6 @@
-{ ... }: {
+{ lib, ... }: {
   swaync = {
-    enable = true;
+    enable = lib.mkDefault true;
 
     # The default config, without the examples which break everything
     settings = {

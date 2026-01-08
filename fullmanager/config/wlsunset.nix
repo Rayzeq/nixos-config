@@ -1,6 +1,6 @@
-{ globals, ... }: {
+{ lib, globals, ... }: {
   wlsunset = {
-    enable = true;
+    enable = lib.mkDefault true;
     latitude = globals.latitude;
     longitude = globals.longitude;
   };
