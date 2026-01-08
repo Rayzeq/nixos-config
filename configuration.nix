@@ -31,7 +31,7 @@
   # Firmware updates
   services.fwupd.enable = true;
 
-  networking.hostName = "zacharie-ThinkPad";
+  networking.hostName = "alpha";
 
   # Enable networking
   networking.networkmanager.enable = true;
