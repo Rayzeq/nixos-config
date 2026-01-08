@@ -1,8 +1,8 @@
-{ lib, pkgs, config, ... }:
+{ home-manager, lib, pkgs, config, ... }:
 let
   cfg = config.wlsunset;
 
-  wlsunsetOptions = (import <home-manager/modules/services/wlsunset.nix> {
+  wlsunsetOptions = (import "${home-manager}/modules/services/wlsunset.nix" {
     inherit lib pkgs;
     config = { };
   }).options.services.wlsunset;

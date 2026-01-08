@@ -1,7 +1,8 @@
 { pkgs, ... }:
 {
-  imports = [ <home-manager/nixos> ./hardware-configuration.nix ./zacharie.nix ./hyprland/system.nix ./fullmanager ];
+  imports = [ ./zacharie.nix ./hyprland/system.nix ./fullmanager ];
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs = {
     config = {
       allowUnfree = true;

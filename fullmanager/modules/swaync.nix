@@ -1,8 +1,8 @@
-{ lib, pkgs, config, ... }:
+{ home-manager, lib, pkgs, config, ... }:
 let
   cfg = config.swaync;
 
-  swayncOptions = (import <home-manager/modules/services/swaync.nix> {
+  swayncOptions = (import "${home-manager}/modules/services/swaync.nix" {
     inherit lib pkgs;
     config = { };
   }).options.services.swaync;

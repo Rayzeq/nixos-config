@@ -1,8 +1,8 @@
-{ lib, pkgs, config, ... }:
+{ home-manager, lib, pkgs, config, ... }:
 let
   cfg = config.darkman;
 
-  darkmanOptions = (import <home-manager/modules/services/darkman.nix> {
+  darkmanOptions = (import "${home-manager}/modules/services/darkman.nix" {
     inherit lib pkgs;
     config = { };
   }).options.services.darkman;

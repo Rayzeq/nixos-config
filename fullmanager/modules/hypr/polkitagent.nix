@@ -1,8 +1,8 @@
-{ lib, pkgs, config, ... }:
+{ home-manager, lib, pkgs, config, ... }:
 let
   cfg = config.hypr.polkitagent;
 
-  hypridleOptions = (import <home-manager/modules/services/hyprpolkitagent.nix> {
+  hypridleOptions = (import "${home-manager}/modules/services/hyprpolkitagent.nix" {
     inherit lib pkgs;
     config = { };
   }).options.services.hyprpolkitagent;

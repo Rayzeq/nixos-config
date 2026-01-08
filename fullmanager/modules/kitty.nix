@@ -1,11 +1,11 @@
-{ lib, pkgs, config, ... }:
+{ home-manager, lib, pkgs, config, ... }:
 let
   inherit (lib) types mkOption mkIf;
   inherit (builtins) concatStringsSep;
   cfg = config.kitty;
   fontType = (import ./types.nix { inherit lib; }).font;
 
-  kittyOptions = (import <home-manager/modules/programs/kitty.nix> {
+  kittyOptions = (import "${home-manager}/modules/programs/kitty.nix" {
     inherit lib pkgs;
     config = { };
   }).options.programs.kitty;

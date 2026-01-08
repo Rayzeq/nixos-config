@@ -1,8 +1,8 @@
-{ lib, pkgs, config, ... }:
+{ home-manager, lib, pkgs, config, ... }:
 let
   cfg = config.swaylock;
 
-  swaylockOptions = (import <home-manager/modules/programs/swaylock.nix> {
+  swaylockOptions = (import "${home-manager}/modules/programs/swaylock.nix" {
     inherit lib pkgs;
     config = { };
   }).options.programs.swaylock;

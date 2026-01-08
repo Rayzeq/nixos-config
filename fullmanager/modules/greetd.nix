@@ -1,8 +1,8 @@
-{ lib, pkgs, config, ... }:
+{ nixpkgs, lib, pkgs, config, ... }:
 let
   cfg = config.greetd;
 
-  greetdOptions = (import <nixos/nixos/modules/services/display-managers/greetd.nix> {
+  greetdOptions = (import "${nixpkgs}/nixos/modules/services/display-managers/greetd.nix" {
     inherit lib pkgs;
     config = { };
   }).options.services.greetd;

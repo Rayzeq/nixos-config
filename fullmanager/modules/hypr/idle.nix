@@ -1,9 +1,9 @@
-{ lib, pkgs, config, ... }:
+{ home-manager, lib, pkgs, config, ... }:
 let
   inherit (lib) mkOption mkIf mkMerge types;
   cfg = config.hypr.idle;
 
-  hypridleOptions = (import <home-manager/modules/services/hypridle.nix> {
+  hypridleOptions = (import "${home-manager}/modules/services/hypridle.nix" {
     inherit lib pkgs;
     config = { };
   }).options.services.hypridle;

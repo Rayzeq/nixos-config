@@ -1,8 +1,8 @@
-{ lib, pkgs, config, ... }:
+{ home-manager, lib, pkgs, config, ... }:
 let
   cfg = config.git;
 
-  gitOptions = (import <home-manager/modules/programs/git.nix> {
+  gitOptions = (import "${home-manager}/modules/programs/git.nix" {
     inherit lib pkgs;
     config = { };
   }).options.programs.git;

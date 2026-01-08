@@ -1,10 +1,10 @@
-{ lib, pkgs, config, hmConfig, ... }:
+{ home-manager, lib, pkgs, config, hmConfig, ... }:
 let
   inherit (lib) mkOption mkIf types filterAttrs;
   inherit (builtins) isAttrs isString;
   cfg = config.rofi;
 
-  rofiOptions = (import <home-manager/modules/programs/rofi.nix> {
+  rofiOptions = (import "${home-manager}/modules/programs/rofi.nix" {
     inherit lib pkgs;
     config = { };
   }).options.programs.rofi;

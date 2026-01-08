@@ -1,9 +1,9 @@
-{ lib, pkgs, config, ... }:
+{ home-manager, lib, pkgs, config, ... }:
 let
-  inherit (lib) mkOption mkIf types literalExpression;
+  inherit (lib) mkOption mkIf types;
   cfg = config.hypr.paper;
 
-  hyprpaperOptions = (import <home-manager/modules/services/hyprpaper.nix> {
+  hyprpaperOptions = (import "${home-manager}/modules/services/hyprpaper.nix" {
     inherit lib pkgs;
     config = { };
   }).options.services.hyprpaper;

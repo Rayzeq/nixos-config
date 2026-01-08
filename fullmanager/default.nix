@@ -1,4 +1,4 @@
-{ lib, pkgs, config, ... }:
+{ nixpkgs, home-manager, modulesPath, lib, pkgs, config, hostname, ... }:
 let
   inherit (lib) evalModules mkOption;
   customTypes = import ./types.nix { inherit lib; };
@@ -35,9 +35,10 @@ let
     in
     nonNullModules;
 
+  systemConfig = config;
   fullmanager = { config, username }: evalModules {
     specialArgs = {
-      inherit pkgs globals;
+      inherit nixpkgs home-manager pkgs globals systemConfig modulesPath;
       lib = lib // {
         inherit getModules;
       };
@@ -60,6 +61,7 @@ let
         };
       }
       ./users/${username}.nix
+      ./hosts/${hostname}
     ]
     ++ (getModules ./modules [ "types.nix" ])
     ++ (getModules ./config [ "globals.nix" ]);

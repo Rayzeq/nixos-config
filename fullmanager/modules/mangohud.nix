@@ -1,9 +1,9 @@
-{ lib, pkgs, config, ... }:
+{ home-manager, lib, pkgs, config, ... }:
 let
   inherit (lib) mkOption mkIf types;
   cfg = config.mangohud;
 
-  mangohudOptions = (import <home-manager/modules/programs/mangohud.nix> {
+  mangohudOptions = (import "${home-manager}/modules/programs/mangohud.nix" {
     inherit lib pkgs;
     config = { };
   }).options.programs.mangohud;

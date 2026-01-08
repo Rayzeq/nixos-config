@@ -1,9 +1,9 @@
-{ lib, pkgs, config, ... }:
+{ nixpkgs, lib, pkgs, config, ... }:
 let
   inherit (lib) mkOption mkIf types;
   cfg = config.tty;
 
-  consoleOptions = (import <nixos/nixos/modules/config/console.nix> {
+  consoleOptions = (import "${nixpkgs}/nixos/modules/config/console.nix" {
     inherit lib pkgs;
     config = { };
   }).options.console;

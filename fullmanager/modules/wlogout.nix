@@ -1,8 +1,8 @@
-{ lib, pkgs, config, ... }:
+{ home-manager, lib, pkgs, config, ... }:
 let
   cfg = config.wlogout;
 
-  wlogoutOptions = (import <home-manager/modules/programs/wlogout.nix> {
+  wlogoutOptions = (import "${home-manager}/modules/programs/wlogout.nix" {
     inherit lib pkgs;
     config = { };
   }).options.programs.wlogout;

@@ -1,8 +1,8 @@
-{ lib, pkgs, config, ... }:
+{ nixpkgs, lib, pkgs, config, ... }:
 let
   cfg = config.pam;
 
-  pamOptions = (import <nixos/nixos/modules/security/pam.nix> {
+  pamOptions = (import "${nixpkgs}/nixos/modules/security/pam.nix" {
     inherit lib pkgs;
     config = { };
   }).options.security.pam;
