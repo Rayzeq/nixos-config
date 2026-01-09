@@ -68,8 +68,6 @@
       clear = "clear -T xterm-256color";
       dust = "sudo dust -rx";
       discord = "discord --enable-features=UseOzonePlatform --ozone-platform=wayland";
-      system-update = "sudo nixos-rebuild switch --upgrade-all";
-      nixos-cleanup = "nix-collect-garbage -d; sudo zsh -c \"nix-collect-garbage -d && nixos-rebuild boot\"; echo \"\\nGC Roots:\\n\"; ls -l /nix/var/nix/gcroots/auto/";
     };
   };
 }
