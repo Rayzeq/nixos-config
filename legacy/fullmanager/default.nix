@@ -1,4 +1,4 @@
-{ nixpkgs, home-manager, lib, pkgs, config, hostname, ... }:
+{ nixpkgs, home-manager, lib, pkgs, config, ... }:
 let
   inherit (lib) evalModules mkOption;
   customTypes = import ./types.nix { inherit lib; };
@@ -76,8 +76,6 @@ let
   };
 in
 {
-  imports = [ ./hosts/${hostname}/hardware.nix ];
-
   config = lib.mkMerge [
     {
       home-manager.users.root = rootOptions.config.hm;
