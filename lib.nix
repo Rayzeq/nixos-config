@@ -1,6 +1,6 @@
 lib: {
   nixosSystems = hosts @ { nixpkgs, home-manager, ... }: lib.mapAttrs
-    (name: host @ { specialArgs ? { }, modules ? [ ], ... }:
+    (name: host @ { stateVersion, specialArgs ? { }, modules ? [ ], ... }:
       let
         withWarnings = specialArgs:
           lib.warnIf (specialArgs ? hostname) "Don't put `hostname` in extraArgs"
@@ -15,8 +15,13 @@ lib: {
           inherit nixpkgs home-manager;
           hostname = name;
         };
-        modules = modules ++ [ ./hosts/${name}/hardware.nix ];
-      } // removeAttrs host [ "specialArgs" "modules" ])
+        modules = modules ++ [
+          ({ ... }: {
+            system.stateVersion = stateVersion;
+          })
+          ./hosts/${name}/hardware.nix
+        ];
+      } // removeAttrs host [ "stateVersion" "specialArgs" "modules" ])
     )
     (removeAttrs hosts [ "nixpkgs" "home-manager" ]);
 }

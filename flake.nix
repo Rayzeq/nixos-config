@@ -16,6 +16,8 @@
         inherit nixpkgs home-manager;
         alpha = {
           system = "x86_64-linux";
+          stateVersion = "23.05";
+
           modules = [
             home-manager.nixosModules.home-manager
             ./legacy/configuration.nix
