@@ -159,7 +159,7 @@
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
   environment.shells = with pkgs; [ zsh ];
-  programs.command-not-found.enable = true;
+  programs.nix-index.enable = true;
 
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "zacharie" ];
