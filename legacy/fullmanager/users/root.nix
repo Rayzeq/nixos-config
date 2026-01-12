@@ -2,7 +2,6 @@
   hypr = {
     idle.enable = false;
     paper.enable = false;
-    polkitagent.enable = false;
   };
 
   wlogout.enable = false;
