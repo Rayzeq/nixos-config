@@ -23,7 +23,6 @@
           stateVersion = "23.05";
 
           modules = [
-            home-manager.nixosModules.home-manager
             nix-index-database.nixosModules.default
             ./legacy/configuration.nix
           ];
