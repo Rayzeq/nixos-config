@@ -35,6 +35,26 @@ let
     in
     nonNullModules;
 
+  getAttrIfUniq = attrset: max_rec:
+    let
+      values = builtins.attrValues attrset;
+    in
+    if (builtins.length values) == 1 then
+      if max_rec == 1 then
+        builtins.head values
+      else
+        getAttrIfUniq (builtins.head values) (max_rec - 1)
+    else
+      values;
+  getOptions = pkgs: path:
+    let
+      module = import path {
+        inherit lib pkgs;
+        config = { };
+      };
+    in
+    getAttrIfUniq module.options 2;
+
   withWarnings = specialArgs:
     lib.warnIf (specialArgs ? hostname) "Don't put `hostname` in extraArgs"
       lib.warnIf
@@ -68,7 +88,7 @@ in
               evalConfig = username: hmConfig: lib.evalModules {
                 specialArgs = {
                   inherit nixpkgs home-manager pkgs globals systemConfig hmConfig;
-                  lib = lib // { inherit getModules; };
+                  lib = lib // { inherit getModules; getOptions = getOptions pkgs; };
                 };
                 modules = [
                   ({ config, ... }: {
