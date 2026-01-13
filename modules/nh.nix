@@ -1,11 +1,8 @@
-{ home-manager, lib, pkgs, config, ... }:
+{ home-manager, lib, config, ... }:
 let
   cfg = config.nh;
 
-  nhOptions = (import "${home-manager}/modules/programs/nh.nix" {
-    inherit lib pkgs;
-    config = { };
-  }).options.programs.nh;
+  nhOptions = lib.getOptions "${home-manager}/modules/programs/nh.nix";
 in
 {
   options.nh = {
