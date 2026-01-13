@@ -6,6 +6,46 @@ let
     descriptionClass = "";
     merge = loc: defs: lib.mkMerge (map (def: def.value) defs);
   };
+  recursiveMerge = lib.mkOptionType rec {
+    name = "recursiveMerge";
+    description = "recursively merges attrs, deduplicates identical scalars, then uses mkMerge.";
+
+    merge = loc: defs:
+      let
+        values = map (d: d.value) defs;
+
+        # Determine if we should recurse. 
+        # We only recurse if ALL definitions are attribute sets, but NOT derivations.
+        isBranch = v: lib.isAttrs v && !lib.isDerivation v;
+      in
+      if lib.all isBranch values then
+        let
+          allKeys = lib.concatMap lib.attrNames values;
+          uniqueKeys = lib.unique allKeys;
+        in
+        lib.genAttrs uniqueKeys (key:
+          merge (loc ++ [ key ]) (
+            # using concatMap like a filterMap (which doesn't exists)
+            builtins.concatMap
+              (def:
+                if lib.hasAttr key def.value then
+                  [{ file = def.file; value = def.value.${key}; }]
+                else
+                  [ ]
+              )
+              defs
+          )
+        )
+      else
+        let
+          uniqueValues = lib.unique values;
+        in
+        if builtins.length uniqueValues == 1 then
+          builtins.head uniqueValues
+        else
+          lib.mkMerge uniqueValues;
+  };
+
   getModules = folder: excludes:
     let
       dirContents = builtins.readDir folder;
@@ -94,15 +134,9 @@ in
                   ({ config, ... }: {
                     options = {
                       system = lib.mkOption {
-                        type = deferMerge;
+                        type = recursiveMerge;
                         default = { };
                         description = "Options to forward to NixOS";
-                      };
-
-                      mergedSystem = lib.mkOption {
-                        type = deferMerge;
-                        default = { };
-                        description = "Options to forward to NixOS, and merged between each users";
                       };
 
                       hm = lib.mkOption {
@@ -134,20 +168,20 @@ in
                 (builtins.readDir ./users);
             in
             {
-              config = lib.mkMerge (
-                (lib.mapAttrsToList
-                  (username: modules: lib.mkMerge [
-                    {
-                      home-manager.users.${username} = modules.config.hm;
-                    }
-                    modules.config.mergedSystem
-                  ])
-                  users
-                ) ++ [
-                  # the non-merged system config should be the same for every user
-                  ((builtins.head (builtins.attrValues users)).config.system)
-                ]
-              );
+              config = lib.mkMerge [
+                {
+                  home-manager.users = builtins.mapAttrs
+                    (_: modules: modules.config.hm)
+                    users;
+                }
+                (recursiveMerge.merge [ ] (lib.mapAttrsToList
+                  (_: user: {
+                    file = "manualMerge";
+                    value = user.config.system;
+                  })
+                  users)
+                )
+              ];
             }
           )
         ];
