@@ -1,6 +1,5 @@
 { ... }: {
   hypr = {
-    idle.enable = false;
     paper.enable = false;
   };
 

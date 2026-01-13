@@ -2,7 +2,6 @@
   hypr.idle = {
     enable = lib.mkDefault true;
 
-    # wait for lockscreen before sleeping
     inhibit-sleep = "lock-notify";
     events = {
       lock = "${pkgs.swaylock-effects}/bin/swaylock -f";
