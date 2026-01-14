@@ -27,7 +27,7 @@ let
 
           text = mkOption {
             default = null;
-            type = types.nullOr types.lines;
+            type = with types; nullOr lines;
             description = ''
               Text of the file. If this option is null then
               [](#opt-${opt}._name_.source)
@@ -46,7 +46,7 @@ let
           };
 
           executable = mkOption {
-            type = types.nullOr types.bool;
+            type = with types; nullOr bool;
             default = null;
             description = ''
               Set the execute bit. If `null`, defaults to the mode

@@ -1,14 +1,14 @@
 { config, lib, pkgs, hmConfig, ... }:
 let
-  inherit (lib) mkOption types;
+  inherit (lib) mkOption mkEnableOption mkPackageOption mkIf types literalExpression;
   cfg = config.sunsetr;
 
   tomlFormat = pkgs.formats.toml { };
 in
 {
   options.sunsetr = {
-    enable = lib.mkEnableOption "sunsetr";
-    package = lib.mkPackageOption pkgs "sunsetr" { };
+    enable = mkEnableOption "sunsetr";
+    package = mkPackageOption pkgs "sunsetr" { };
 
     backend = mkOption {
       type = types.enum [ "auto" "hyprland" "hyprsunset" "wayland" ];
@@ -128,14 +128,14 @@ in
     systemdTarget = mkOption {
       type = with types; str;
       default = hmConfig.wayland.systemd.target;
-      defaultText = lib.literalExpression "config.wayland.systemd.target";
+      defaultText = literalExpression "config.wayland.systemd.target";
       description = ''
         Systemd target to bind to.
       '';
     };
   };
 
-  config.hm = lib.mkIf cfg.enable {
+  config.hm = mkIf cfg.enable {
     xdg.configFile."sunsetr/sunsetr.toml".source = tomlFormat.generate "sunsetr.toml" {
       inherit (cfg) backend smoothing latitude longitude;
       transition_mode = cfg.transition-mode;

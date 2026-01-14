@@ -6,7 +6,7 @@ in
   font = types.submodule {
     options = {
       package = mkOption {
-        type = types.nullOr types.package;
+        type = with types; nullOr package;
         default = null;
         example = literalExpression "pkgs.fira-code";
         description = ''
@@ -26,7 +26,7 @@ in
       };
 
       type = mkOption {
-        type = types.nullOr types.str;
+        type = with types; nullOr str;
         default = null;
         example = "monospace";
         description = ''
@@ -35,7 +35,7 @@ in
       };
 
       features = mkOption {
-        type = types.listOf types.str;
+        type = with types; listOf str;
         default = [ ];
         example = ''[ "subpixel_antialias" "ss03" "ss05" ]'';
         description = ''
