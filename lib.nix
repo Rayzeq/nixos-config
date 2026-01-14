@@ -105,11 +105,11 @@ let
 in
 {
   nixosSystems = hosts @ { nixpkgs, home-manager, ... }: lib.mapAttrs
-    (name: host @ { stateVersion, specialArgs ? { }, modules ? [ ], ... }:
+    (hostname: host @ { stateVersion, specialArgs ? { }, modules ? [ ], ... }:
       lib.nixosSystem ({
         specialArgs = (withWarnings specialArgs) // {
           inherit nixpkgs home-manager;
-          hostname = name;
+          hostname = hostname;
         };
         modules = modules ++ [
           home-manager.nixosModules.home-manager
@@ -117,7 +117,7 @@ in
             system.stateVersion = stateVersion;
             home-manager.useGlobalPkgs = true;
           })
-          ./hosts/${name}/hardware.nix
+          ./hosts/${hostname}/hardware.nix
           ({ pkgs, config, ... }:
             let
               systemConfig = config;
@@ -150,10 +150,11 @@ in
                       };
                     };
                     config = {
-                      hm.home.stateVersion = config.stateVersion.${name};
+                      hm.home.stateVersion = config.stateVersion.${hostname};
                     };
                   })
                   ./users/${username}.nix
+                  ./hosts/${hostname}
                 ]
                 ++ (getModules ./modules [ ])
                 ++ (getModules ./config [ "globals.nix" ]);
