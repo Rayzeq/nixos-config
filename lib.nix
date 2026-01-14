@@ -155,7 +155,7 @@ in
                   })
                   ./users/${username}.nix
                 ]
-                ++ (getModules ./modules [ "lib.nix" ])
+                ++ (getModules ./modules [ ])
                 ++ (getModules ./config [ "globals.nix" ]);
               };
               users = lib.mapAttrs'
