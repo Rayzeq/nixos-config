@@ -1,6 +1,7 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   greetd = {
-    enable = true;
+    enable = lib.mkDefault true;
+
     enableNumlock = true;
     useTextGreeter = true;
     settings = {

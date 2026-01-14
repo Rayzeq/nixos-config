@@ -1,12 +1,9 @@
-{ nixpkgs, lib, pkgs, config, ... }:
+{ nixpkgs, pkgs, lib, config, ... }:
 let
   inherit (lib) mkOption mkIf types;
   cfg = config.greetd;
 
-  greetdOptions = (import "${nixpkgs}/nixos/modules/services/display-managers/greetd.nix" {
-    inherit lib pkgs;
-    config = { };
-  }).options.services.greetd;
+  greetdOptions = lib.getOptions "${nixpkgs}/nixos/modules/services/display-managers/greetd.nix";
 in
 {
   options.greetd = {
@@ -14,6 +11,11 @@ in
 
     enableNumlock = mkOption {
       type = types.bool;
+      default = false;
+      example = true;
+      description = ''
+        Enable the numlock key in text greeters.
+      '';
     };
   };
 
