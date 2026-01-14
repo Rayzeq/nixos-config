@@ -1,10 +1,10 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, lib, config, hmConfig, ... }: {
   swaylock = {
     enable = lib.mkDefault true;
     package = pkgs.swaylock-effects;
 
     settings = {
-      image = config.xdg.dataFile."wallpapers/light.png".target;
+      image = "${hmConfig.home.homeDirectory}/${hmConfig.xdg.dataFile."wallpapers/light.png".target}";
       effect-blur = "7x5";
       effect-vignette = "0.5:0.5";
 
