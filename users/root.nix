@@ -3,6 +3,7 @@
     idle.enable = false;
     polkitagent.enable = false;
   };
+  darkman.enable = true;
   nh.enable = false;
   sunsetr.enable = false;
 

@@ -24,7 +24,7 @@ in
       }
     ];
   };
-  darkman = {
+  hm.services.darkman = {
     darkModeScripts.hyprpaper = ''
       ${pkgs.hyprland}/bin/hyprctl hyprpaper wallpaper ',${dark}'
       ${pkgs.coreutils-full}/bin/ln -sf $(${pkgs.coreutils-full}/bin/readlink ${dark}) ${current}
