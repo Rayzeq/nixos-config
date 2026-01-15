@@ -1,14 +1,9 @@
 { home-manager, lib, pkgs, config, ... }:
 let
-  inherit (lib) types mkOption mkIf;
-  inherit (builtins) concatStringsSep;
+  inherit (lib) mkOption mkIf types;
   cfg = config.kitty;
-  fontType = (import ./types.nix { inherit lib; }).font;
 
-  kittyOptions = (import "${home-manager}/modules/programs/kitty.nix" {
-    inherit lib pkgs;
-    config = { };
-  }).options.programs.kitty;
+  kittyOptions = lib.getOptions "${home-manager}/modules/programs/kitty.nix";
 
   postscriptNames = pkgs.runCommand "get-postscript-names" { }
     ''
@@ -24,20 +19,23 @@ in
     inherit (kittyOptions) enable package settings keybindings;
 
     font = mkOption {
-      type = types.nullOr fontType;
+      type = types.nullOr config.lib.types.font;
       default = null;
+      description = ''
+        The font to use.
+      '';
     };
   };
 
   config.hm.programs.kitty = mkIf cfg.enable {
     inherit (cfg) enable package settings keybindings;
-    font = {
+    font = mkIf (cfg.font != null) {
       inherit (cfg.font) package name;
     };
-    extraConfig = concatStringsSep "\n" (map
+    extraConfig = lib.concatMapStringsSep "\n"
       (name:
-        "font_features ${name} ${concatStringsSep " " (map (feature: "+${feature}") cfg.font.features)}"
+        "font_features ${name} ${lib.concatMapStringsSep " " (feature: "+${feature}") cfg.font.features}"
       )
-      namesList);
+      namesList;
   };
 }

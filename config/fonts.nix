@@ -1,13 +1,12 @@
 { pkgs, ... }: {
-  font = rec {
+  fonts = rec {
     sans-serif = with fonts; [ noto-sans unifont meslo-lgs-nf ];
     monospace = with fonts; [ fira-code meslo-lgs-nf ];
 
     fonts = {
       fira-code = {
-        # We don't use the NerdFont version of Fira Code
-        # because its icons are too small, by not using it
-        # applications will load those glyphs from another font
+        # We don't use the NerdFont version of Fira Code because its icons are too small,
+        # by not using it applications will load those glyphs from another font (here, MesloLGS NF)
         package = pkgs.fira-code;
         name = "Fira Code";
         type = "monospace";

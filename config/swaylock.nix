@@ -1,10 +1,10 @@
-{ pkgs, lib, config, hmConfig, ... }: {
+{ pkgs, lib, config, ... }: {
   swaylock = {
     enable = lib.mkDefault true;
     package = pkgs.swaylock-effects;
 
     settings = {
-      image = "${hmConfig.home.homeDirectory}/${hmConfig.xdg.dataFile."wallpapers/light.png".target}";
+      image = "${config.xdg.dataFile."wallpapers/light.png".target}";
       effect-blur = "7x5";
       effect-vignette = "0.5:0.5";
 
@@ -18,7 +18,7 @@
 
       text-color = "000000";
       text-caps-lock-color = "000000";
-      font = (builtins.head config.font.monospace).name;
+      font = (builtins.head config.fonts.monospace).name;
       font-size = 70;
 
       inside-color = "00000000";

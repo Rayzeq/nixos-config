@@ -1,28 +1,23 @@
 { lib, pkgs, config, ... }:
 let
   inherit (lib)
-    types
     mkEnableOption
     mkOption
     mkPackageOption
     mkIf
+    types
     literalExpression
-    optionalAttrs;
-  inherit (builtins)
-    filter
-    getAttr
-    foldl'
-    attrNames
-    attrValues;
+
+    optionalAttrs
+    filterAttrs
+    concatMapAttrs
+    unique
+    mapAttrsToList;
   cfg = config.sublime-text;
 
   configDirectory = "sublime-text/Packages";
   userConfigDirectory = "${configDirectory}/User";
   jsonFormat = pkgs.formats.json { };
-  fontType = (import ./types.nix { inherit lib; }).font;
-  attrItems = attrset: lib.mapAttrsToList
-    (name: value: { inherit name value; })
-    attrset;
 
   pluginOptions = types.submodule ({ ... }: {
     options = {
@@ -35,7 +30,7 @@ let
         '';
       };
       repository = mkOption {
-        type = types.nullOr types.str;
+        type = with types; nullOr str;
         default = null;
         example = "https://github.com/facelessuser/SublimeRandomCrap";
         description = ''
@@ -50,7 +45,7 @@ let
         '';
       };
       overrides = mkOption {
-        type = types.attrsOf types.path;
+        type = with types; attrsOf path;
         default = { };
         description = ''
           Files to override in a plugin.
@@ -103,31 +98,48 @@ in
     settings = mkOption {
       type = jsonFormat.type;
       default = { };
+      example = literalExpression ''
+        {
+          theme = "Adaptive.sublime-theme";
+          color_scheme = "Monokai.sublime-color-scheme";
+        }
+      '';
       description = ''
         Sublime Text's user settings.
       '';
     };
     font = mkOption {
-      type = types.nullOr fontType;
+      type = types.nullOr config.lib.types.font;
       default = null;
     };
     keymap = mkOption {
       type = jsonFormat.type;
       default = [ ];
+      example = ''
+        [
+          {
+            keys = [ "ctrl+alt+up" ];
+            command = "select_lines";
+            args.forward = false;
+          }
+          {
+            keys = [ "ctrl+alt+down" ];
+            command = "select_lines";
+            args.forward = true;
+          }
+        ]
+      '';
     };
     build-systems = mkOption {
       type = jsonFormat.type;
       default = { };
     };
     syntaxes = mkOption {
-      type = types.attrsOf types.path;
+      type = with types; attrsOf path;
       default = { };
     };
     plugins = mkOption {
       type = types.attrsOf pluginOptions;
-      description = ''
-        Installed plugin and their configuration.
-      '';
       example = literalExpression ''
         {
           LSP = {
@@ -148,6 +160,9 @@ in
             };
           };
         };
+      '';
+      description = ''
+        Installed plugin and their configuration.
       '';
     };
     snippets = mkOption {
@@ -173,50 +188,44 @@ in
       "${userConfigDirectory}/Package Control.sublime-settings".source = jsonFormat.generate "sublime-text-package-control" {
         bootstrapped = true;
         in_process_packages = [ ];
-        installed_packages = (filter (plugin_name: (getAttr plugin_name cfg.plugins).managed) (attrNames cfg.plugins)) ++ [ "Package Control" ];
-        repositories = filter (repo: repo != null) (map (plugin: plugin.repository or null) (attrValues cfg.plugins));
+        installed_packages = (builtins.attrNames (filterAttrs (_: plugin: plugin.managed) cfg.plugins)) ++ [ "Package Control" ];
+        repositories = unique (builtins.filter (repo: repo != null) (mapAttrsToList (_: plugin: plugin.repository or null) cfg.plugins));
       };
-    } // (foldl'
-      (all: { name, value }: all // {
-        "${userConfigDirectory}/${name}.sublime-settings".source = jsonFormat.generate "sublime-text-settings-${name}" value.settings;
+    } // (concatMapAttrs
+      (name: plugin: {
+        "${userConfigDirectory}/${name}.sublime-settings".source = jsonFormat.generate "sublime-text-settings-${name}" plugin.settings;
       })
-      { }
-      (filter ({ value, ... }: value.settings != { }) (attrItems cfg.plugins))
-    ) // (foldl'
-      (all: { name, value }:
-        let packageName = name; in all // (foldl'
-          (all: { name, value }: all // {
-            "${configDirectory}/${packageName}/${name}".source = value;
-          })
-          { }
-          (attrItems value.overrides)))
-      { }
-      (filter ({ value, ... }: value.overrides != { }) (attrItems cfg.plugins))
-    ) // (foldl'
-      (all: name: all // {
-        "${userConfigDirectory}/${name}.sublime-build".source = jsonFormat.generate "sublime-text-build-${name}" (getAttr name cfg.build-systems);
+      (filterAttrs (_: plugin: plugin.settings != { }) cfg.plugins)
+    ) // (concatMapAttrs
+      (packageName: plugin: concatMapAttrs
+        (name: value: {
+          "${configDirectory}/${packageName}/${name}".source = value;
+        })
+        plugin.overrides
+      )
+      (filterAttrs (_: plugin: plugin.overrides != { }) cfg.plugins)
+    ) // (concatMapAttrs
+      (name: build-system: {
+        "${userConfigDirectory}/${name}.sublime-build".source = jsonFormat.generate "sublime-text-build-${name}" build-system;
       })
-      { }
-      (attrNames cfg.build-systems)
-    ) // (foldl'
-      (all: name: all // {
-        "${userConfigDirectory}/${name}.sublime-syntax".source = getAttr name cfg.syntaxes;
+      cfg.build-systems
+    ) // (concatMapAttrs
+      (name: syntax: {
+        "${userConfigDirectory}/${name}.sublime-syntax".source = syntax;
       })
-      { }
-      (attrNames cfg.syntaxes)
-    ) // (foldl'
-      (all: name: all // {
+      cfg.syntaxes
+    ) // (concatMapAttrs
+      (name: snippet: {
         "${userConfigDirectory}/${name}.sublime-snippet".text = "
           <snippet>
-            <content><![CDATA[${(getAttr name cfg.snippets).content}]]></content>
-            <tabTrigger>${(getAttr name cfg.snippets).tabTrigger}</tabTrigger>
-            <scope>${(getAttr name cfg.snippets).scope}</scope>
-            <description>${(getAttr name cfg.snippets).description}</description>
+            <content><![CDATA[${snippet.content}]]></content>
+            <tabTrigger>${snippet.tabTrigger}</tabTrigger>
+            <scope>${snippet.scope}</scope>
+            <description>${snippet.description}</description>
           </snippet>
         ";
       })
-      { }
-      (attrNames cfg.snippets)
+      cfg.snippets
     );
   };
 }
