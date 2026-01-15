@@ -5,12 +5,13 @@ let
 
   kittyOptions = lib.getOptions "${home-manager}/modules/programs/kitty.nix";
 
-  postscriptNames = pkgs.runCommand "get-postscript-names" { }
+  postscriptNames = pkgs.runCommand "get-postscript-names"
+    {
+      nativeBuildInputs = [ pkgs.fontconfig ];
+      FONTCONFIG_FILE = pkgs.makeFontsConf { fontDirectories = [ cfg.font.package ]; };
+    }
     ''
-      # Can't use fc-scan because no config is available, and we can't write cache
-      # file=${pkgs.fontconfig}/bin/fc-match -f="%{file}" "${cfg.font.name}" | cut -c2-
-      file=$(find ${cfg.font.package} -name "*.ttf")
-      ${pkgs.fontconfig}/bin/fc-scan -f="%{postscriptname}\n" "$file" 2>/dev/null | cut -c2- | grep -v "^$" | head -c -1 > $out
+      ${pkgs.fontconfig}/bin/fc-list "${cfg.font.name}" -f "%{postscriptname}\n" | ${pkgs.coreutils}/bin/sort -u | ${pkgs.gnugrep}/bin/grep -v "^$" | ${pkgs.coreutils}/bin/head -c -1 > $out
     '';
   namesList = lib.splitString "\n" (builtins.readFile postscriptNames);
 in
