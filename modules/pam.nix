@@ -1,23 +1,25 @@
-{ nixpkgs, lib, pkgs, config, ... }:
+{ nixpkgs, lib, config, ... }:
 let
+  inherit (lib) mkOption mkIf types;
   cfg = config.pam;
 
-  pamOptions = (import "${nixpkgs}/nixos/modules/security/pam.nix" {
-    inherit lib pkgs;
-    config = { };
-  }).options.security.pam;
+  pamOptions = (lib.getOptions "${nixpkgs}/nixos/modules/security/pam.nix").security.pam;
 in
 {
   options.pam.u2f = {
     enable = pamOptions.u2f.enable;
 
     cue = (pamOptions.u2f.settings.type.getSubOptions { }).cue;
-    keys = lib.mkOption {
-      type = with lib.types; attrsOf (listOf str);
+    keys = mkOption {
+      type = with types; attrsOf (listOf str);
+      default = { };
+      description = ''
+        Public keys of users.
+      '';
     };
   };
 
-  config.system.security.pam.u2f = lib.mkIf cfg.u2f.enable {
+  config.system.security.pam.u2f = mkIf cfg.u2f.enable {
     enable = cfg.u2f.enable;
 
     settings = {
