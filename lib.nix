@@ -85,7 +85,7 @@ let
       else
         getAttrIfUniq (builtins.head values) (max_rec - 1)
     else
-      values;
+      attrset;
   getOptions = pkgs: path:
     let
       module = import path {
