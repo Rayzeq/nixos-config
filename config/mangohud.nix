@@ -1,6 +1,7 @@
 { lib, ... }: {
   mangohud = {
     enable = lib.mkDefault true;
+
     enableSessionWide = true;
     settings = [
       {

@@ -6,6 +6,7 @@
   };
   darkman.enable = true;
   kitty.enable = false;
+  mangohud.enable = false;
   nh.enable = false;
   rofi.enable = false;
   sunsetr.enable = false;

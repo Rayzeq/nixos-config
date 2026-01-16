@@ -1,12 +1,9 @@
-{ home-manager, lib, pkgs, config, ... }:
+{ home-manager, lib, config, ... }:
 let
   inherit (lib) mkOption mkIf types;
   cfg = config.mangohud;
 
-  mangohudOptions = (import "${home-manager}/modules/programs/mangohud.nix" {
-    inherit lib pkgs;
-    config = { };
-  }).options.programs.mangohud;
+  mangohudOptions = lib.getOptions "${home-manager}/modules/programs/mangohud.nix";
 
   settingsType =
     with types;
@@ -35,7 +32,7 @@ let
 
   renderLine = k: v: (if lib.isBool v && v then k else "${k}=${renderOption v}");
   renderSettings =
-    groups: lib.concatStringsSep "\n" (map (group: lib.concatStringsSep "\n" (lib.mapAttrsToList renderLine group)) groups) + "\n";
+    groups: lib.concatMapStringsSep "\n" (group: lib.concatStringsSep "\n" (lib.mapAttrsToList renderLine group)) groups + "\n";
 in
 {
   options.mangohud = {
@@ -45,14 +42,19 @@ in
       type = with types; listOf (attrsOf settingsType);
       default = { };
       example = lib.literalExpression ''
-        {
-          output_folder = ~/Documents/mangohud/;
-          full = true;
-        }
+        [
+          {
+            output_folder = ~/Documents/mangohud/;
+            full = true;
+          }
+          {
+            gpu_stats = true;
+            gpu_text = "GPU";
+          }
+        ]
       '';
       description = ''
-        Configuration written to
-        {file}`$XDG_CONFIG_HOME/MangoHud/MangoHud.conf`. See
+        Configuration written to {file}`$XDG_CONFIG_HOME/MangoHud/MangoHud.conf`. See
         <https://github.com/flightlessmango/MangoHud/blob/master/data/MangoHud.conf>
         for the default configuration.
       '';
