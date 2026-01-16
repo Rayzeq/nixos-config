@@ -1,7 +1,8 @@
 { lib, pkgs, config, ... }:
 let
-  inherit (lib) mkEnableOption mkOption mkPackageOption mkIf;
+  inherit (lib) mkOption mkEnableOption mkPackageOption mkIf;
   cfg = config.sublime-merge;
+
   configDirectory = "sublime-merge/Packages/User/";
   jsonFormat = pkgs.formats.json { };
 in
