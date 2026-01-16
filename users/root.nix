@@ -7,6 +7,7 @@
   darkman.enable = true;
   kitty.enable = false;
   nh.enable = false;
+  rofi.enable = false;
   sunsetr.enable = false;
   swaylock.enable = false;
 

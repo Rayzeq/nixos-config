@@ -1,32 +1,37 @@
-{ home-manager, lib, pkgs, config, hmConfig, ... }:
+{ home-manager, lib, config, hmConfig, ... }:
 let
-  inherit (lib) mkOption mkIf types filterAttrs;
+  inherit (lib)
+    mkOption
+    mkIf
+    mkDefault
+    types
+
+    optionalString
+    concatMapAttrs
+    filterAttrs
+    concatMapAttrsStringSep;
   inherit (builtins) isAttrs isString;
   cfg = config.rofi;
 
-  rofiOptions = (import "${home-manager}/modules/programs/rofi.nix" {
-    inherit lib pkgs;
-    config = { };
-  }).options.programs.rofi;
+  rofiOptions = lib.getOptions "${home-manager}/modules/programs/rofi.nix";
 
-  rasiLiteral =
-    types.submodule
-      {
-        options = {
-          _type = mkOption {
-            type = types.enum [ "literal" ];
-            internal = true;
-          };
-
-          value = mkOption {
-            type = types.str;
-            internal = true;
-          };
+  rasiLiteral = types.submodule
+    {
+      options = {
+        _type = mkOption {
+          type = types.enum [ "literal" ];
+          internal = true;
         };
-      }
-    // {
-      description = "Rasi literal string";
-    };
+
+        value = mkOption {
+          type = types.str;
+          internal = true;
+        };
+      };
+    }
+  // {
+    description = "Rasi literal string";
+  };
   primitive =
     with types;
     (oneOf [
@@ -52,10 +57,7 @@ let
     else
       abort "Unhandled value type ${builtins.typeOf value}";
   mkKeyValue =
-    { sep ? ": "
-    , end ? ";"
-    ,
-    }:
+    { sep ? ": ", end ? ";" }:
     name: value: "${name}${sep}${mkValueString value}${end}";
   mkRasiSection =
     name: value:
@@ -107,10 +109,19 @@ in
 
     config = mkOption {
       type = with types; attrsOf configType;
+      default = { };
+      description = ''
+        Config files to generate for rofi.
+      '';
     };
 
     command = mkOption {
       type = with types; attrsOf str;
+      default = null;
+      description = ''
+        Command to run each configuration.
+        This is automatically generated and shouldn't be overriden.
+      '';
     };
   };
 
@@ -118,39 +129,33 @@ in
     hm.programs.rofi = {
       inherit (cfg) enable package plugins theme;
     };
-    hm.xdg.configFile = lib.mapAttrs'
-      (name: value:
-        lib.nameValuePair
-          "rofi/${name}.rasi"
-          {
-            text = (if value.show == "dmenu" then
-              ""
-            else
-              toRasi { configuration = (removeAttrs value [ "show" ]); }
-            ) +
-            (lib.optionalString (themeName != null) (toRasi {
-              "@theme" = themeName;
-            }));
-          })
+    hm.xdg.configFile = concatMapAttrs
+      (name: value: {
+        "rofi/${name}.rasi".text = (optionalString (value.show != "dmenu")
+          (toRasi { configuration = (removeAttrs value [ "show" ]); })
+        ) + (optionalString (themeName != null) (toRasi {
+          "@theme" = themeName;
+        }));
+      })
       cfg.config;
-    rofi.command = lib.mkDefault (builtins.mapAttrs
+    rofi.command = mkDefault (builtins.mapAttrs
       (name: value:
         let
           rofiPath = "${hmConfig.programs.rofi.finalPackage}/bin/rofi";
           configPath = "${hmConfig.home.homeDirectory}/${hmConfig.xdg.configFile."rofi/${name}.rasi".target}";
         in
         if value.show == "dmenu" then
-          "${rofiPath} -dmenu -config \"${configPath}\" " + (lib.concatStringsSep " " (
-            lib.mapAttrsToList
-              (name: value: "-${name} ${toString value}")
-              (removeAttrs value [ "show" ])
-          ))
+          "${rofiPath} -dmenu -config \"${configPath}\" " + (concatMapAttrsStringSep " "
+            (name: value: "-${name} ${toString value}")
+            (removeAttrs value [ "show" ])
+          )
         else
           "${rofiPath} -show ${value.show} -config \"${configPath}\""
       )
       cfg.config
     );
 
+    # Remove home-manager's default config file, because we make our owns
     hm.home.file."${hmConfig.programs.rofi.configPath}".enable = false;
     lib.formats.rasi.mkLiteral = value: {
       _type = "literal";
