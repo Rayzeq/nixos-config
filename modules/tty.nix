@@ -3,10 +3,7 @@ let
   inherit (lib) mkOption mkIf types;
   cfg = config.tty;
 
-  consoleOptions = (import "${nixpkgs}/nixos/modules/config/console.nix" {
-    inherit lib pkgs;
-    config = { };
-  }).options.console;
+  consoleOptions = lib.getOptions "${nixpkgs}/nixos/modules/config/console.nix";
 in
 {
   options.tty = {
@@ -15,7 +12,7 @@ in
       type = types.bool;
       default = false;
       example = true;
-      description = "Whether to enable the num lock key by default on TTYs";
+      description = "Whether to enable the num lock key by default on TTYs.";
     };
   };
 
