@@ -11,6 +11,7 @@
   rofi.enable = false;
   sunsetr.enable = false;
   swaylock.enable = false;
+  swaync.enable = false;
 
   stateVersion = {
     alpha = "23.05";
