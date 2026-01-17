@@ -334,6 +334,7 @@
           includeInlayVariableTypeHints = true;
         };
       };
+      LSP-lemminix = { };
       Debugger = { };
       Nix = { };
       SublimeRandomCrap.repository = "https://github.com/facelessuser/SublimeRandomCrap";
