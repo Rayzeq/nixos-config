@@ -20,4 +20,17 @@ in
       '';
     };
   };
+
+  config = {
+    lib = rec {
+      rgba = r: g: b: a: {
+        r = r;
+        g = g;
+        b = b;
+        a = a;
+        css = "rgba(${toString r}, ${toString g}, ${toString b}, ${toString a})";
+      };
+      rgb = r: g: b: rgba r g b 1;
+    };
+  };
 }

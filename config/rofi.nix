@@ -47,7 +47,7 @@ in
         padding = mkLiteral "10px";
 
         font = "Fira Code 15";
-        background-color = mkLiteral config.globals.overlay-background;
+        background-color = mkLiteral config.globals.theme.overlay.background.css;
       };
 
       inputbar = {

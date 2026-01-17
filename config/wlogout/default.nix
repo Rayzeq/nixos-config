@@ -1,8 +1,8 @@
 { pkgs, lib, config, ... }:
 let
-  background-color = config.globals.overlay-background;
-  background-color-active = "rgba(176, 165, 255, 0.7)";
-  background-color-hover = "rgba(114, 211, 254, 0.7)";
+  background = config.globals.theme.overlay.background;
+  background-active = "rgba(176, 165, 255, ${toString background.a})";
+  background-hover = "rgba(114, 211, 254, ${toString background.a})";
 
   border-radius = "40";
   border-radius-hover = "20";
@@ -69,7 +69,7 @@ in
         font-weight: bold;
         text-shadow: none;
 
-        background-color: ${background-color};
+        background-color: ${background.css};
         background-repeat: no-repeat;
         background-position: center;
         background-size: 25%;
@@ -78,12 +78,12 @@ in
       }
 
       button:focus {
-        background-color: ${background-color-active};
+        background-color: ${background-active};
         background-size: 30%;
       }
 
       button:hover {
-        background-color: ${background-color-hover};
+        background-color: ${background-hover};
         background-size: 35%;
         border-radius: ${border-radius-hover}px;
 

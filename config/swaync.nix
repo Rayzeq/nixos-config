@@ -1,18 +1,22 @@
-{ lib, config, ... }: {
+{ lib, config, ... }:
+let
+  background = config.globals.theme.overlay.background;
+in
+{
   swaync = {
     enable = lib.mkDefault true;
 
     style = ''
       .notification {
-        background: ${config.globals.overlay-background};
+        background: ${background.css};
       }
 
       .notification.low {
-        background: mix(rgba(179, 235, 242, 0.7), ${config.globals.overlay-background}, 0.5);
+        background: mix(rgba(179, 235, 242, ${toString background.a}), ${background.css}, 0.5);
       }
 
       .notification.critical {
-        background: mix(rgba(255, 116, 108, 0.7), ${config.globals.overlay-background}, 0.5);
+        background: mix(rgba(255, 116, 108, ${toString background.a}), ${background.css}, 0.5);
       }
 
       .notification:hover {
