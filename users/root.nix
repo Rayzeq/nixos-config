@@ -12,6 +12,7 @@
   sunsetr.enable = false;
   swaylock.enable = false;
   swaync.enable = false;
+  wlogout.enable = false;
 
   stateVersion = {
     alpha = "23.05";

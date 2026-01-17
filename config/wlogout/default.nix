@@ -1,8 +1,8 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, globals, ... }:
 let
-  background-color = "rgba(0, 0, 0, 0.8)";
-  background-color-active = "rgba(176, 165, 255, 0.8)";
-  background-color-hover = "rgba(114, 211, 254, 0.8)";
+  background-color = globals.overlay-background;
+  background-color-active = "rgba(176, 165, 255, 0.7)";
+  background-color-hover = "rgba(114, 211, 254, 0.7)";
 
   border-radius = "40";
   border-radius-hover = "20";
@@ -27,12 +27,14 @@ in
       }
       {
         label = "logout";
+        # TODO: use hyprshutdown when in nixpkgs
         action = "${pkgs.hyprland}/bin/hyprctl dispatch exit";
         text = "Logout";
         keybind = "e";
       }
       {
         label = "shutdown";
+        # TODO: use hyprshutdown when in nixpkgs
         action = "${pkgs.systemd}/bin/systemctl poweroff";
         text = "Shutdown";
         keybind = "s";
@@ -45,6 +47,7 @@ in
       }
       {
         label = "reboot";
+        # TODO: use hyprshutdown when in nixpkgs
         action = "${pkgs.systemd}/bin/systemctl reboot";
         text = "Reboot";
         keybind = "r";
