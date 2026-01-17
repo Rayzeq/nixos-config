@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"
+  viewBox="0 0 180 180">
+  <circle
+    cy="90"
+    cx="90"
+    r="84"
+    fill="none"
+    stroke="white"
+    stroke-width="12" />
+  <rect
+    x="59"
+    y="53"
+    width="19"
+    height="74"
+    fill="white" />
+  <rect
+    x="102"
+    y="53"
+    width="19"
+    height="74"
+    fill="white" />
+</svg>

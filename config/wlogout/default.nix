@@ -97,16 +97,16 @@ in
       }
 
       #logout {
-        background-image: image(url("${./logout.png}"));
+        background-image: image(url("${./logout.svg}"));
       }
 
       #suspend {
-        background-image: image(url("${./suspend.png}"));
+        background-image: image(url("${./suspend.svg}"));
         border-radius: 0px ${border-radius}px 0px 0px;
       }
 
       #hibernate {
-        background-image: image(url("${./hibernate.png}"));
+        background-image: image(url("${./hibernate.svg}"));
         border-radius: 0px 0px 0px ${border-radius}px;
       }
 
@@ -115,7 +115,7 @@ in
       }
 
       #reboot {
-        background-image: image(url("${./reboot.png}"));
+        background-image: image(url("${./reboot.svg}"));
         border-radius: 0px 0px ${border-radius}px 0px;
       }
 
