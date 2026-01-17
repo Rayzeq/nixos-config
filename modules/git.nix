@@ -8,10 +8,5 @@ in
   options.git = {
     inherit (gitOptions) enable package settings;
   };
-  config = lib.mkIf cfg.enable {
-    hm.programs.git = cfg;
-    system.programs.git = {
-      inherit (cfg) enable package;
-    };
-  };
+  config.hm.programs.git = lib.mkIf cfg.enable cfg;
 }
