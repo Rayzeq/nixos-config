@@ -1,10 +1,10 @@
-{ pkgs, lib, globals, ... }: {
+{ pkgs, lib, config, ... }: {
   darkman = {
     enable = lib.mkDefault true;
 
     settings = {
-      lat = globals.latitude;
-      lng = globals.longitude;
+      lat = config.globals.latitude;
+      lng = config.globals.longitude;
       usegeoclue = false;
     };
 

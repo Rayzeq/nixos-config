@@ -122,12 +122,9 @@ in
             let
               systemConfig = config;
 
-              globals = import ./config/globals.nix { inherit pkgs; self = globalsFinal; };
-              globalsFinal = globals;
-
               evalConfig = username: hmConfig: lib.evalModules {
                 specialArgs = {
-                  inherit nixpkgs home-manager pkgs globals systemConfig hmConfig;
+                  inherit nixpkgs home-manager pkgs systemConfig hmConfig;
                   lib = lib // { inherit getModules; getOptions = getOptions pkgs; };
                 };
                 modules = [
@@ -157,7 +154,7 @@ in
                   ./hosts/${hostname}
                 ]
                 ++ (getModules ./modules [ ])
-                ++ (getModules ./config [ "globals.nix" ]);
+                ++ (getModules ./config [ ]);
               };
               users = lib.mapAttrs'
                 (filename: _:

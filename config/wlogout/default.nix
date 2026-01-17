@@ -1,6 +1,6 @@
-{ pkgs, lib, globals, ... }:
+{ pkgs, lib, config, ... }:
 let
-  background-color = globals.overlay-background;
+  background-color = config.globals.overlay-background;
   background-color-active = "rgba(176, 165, 255, 0.7)";
   background-color-hover = "rgba(114, 211, 254, 0.7)";
 

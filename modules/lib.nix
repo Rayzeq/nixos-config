@@ -11,5 +11,13 @@ in
         This option allows modules to define helper functions, constants, etc.
       '';
     };
+
+    globals = mkOption {
+      type = with types; attrsOf anything;
+      default = { };
+      description = ''
+        This option allows modules to define global values.
+      '';
+    };
   };
 }

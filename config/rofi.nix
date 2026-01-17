@@ -1,4 +1,4 @@
-{ pkgs, lib, globals, config, ... }:
+{ pkgs, lib, config, ... }:
 let
   inherit (config.lib.formats.rasi) mkLiteral;
 in
@@ -47,7 +47,7 @@ in
         padding = mkLiteral "10px";
 
         font = "Fira Code 15";
-        background-color = mkLiteral globals.overlay-background;
+        background-color = mkLiteral config.globals.overlay-background;
       };
 
       inputbar = {
