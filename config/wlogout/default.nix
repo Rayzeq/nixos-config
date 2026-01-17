@@ -52,6 +52,10 @@ in
     ];
 
     style = ''
+      * {
+        box-shadow: none;
+      }
+
       window {
         background: transparent;
       }

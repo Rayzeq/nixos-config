@@ -196,8 +196,8 @@
         ];
 
         layerrule = [
-          "ignore_alpha 0, match:namespace rofi"
-          "blur on, match:namespace rofi"
+          "ignore_alpha 0, match:namespace rofi|swaync-notification-window|logout_dialog"
+          "blur on, match:namespace rofi|swaync-notification-window|logout_dialog"
         ];
       };
     };
