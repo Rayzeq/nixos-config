@@ -1,3 +1,1 @@
-{ ... }: {
-  firefox.enable = false;
-}
+{ ... }: { }
