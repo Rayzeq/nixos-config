@@ -1,4 +1,12 @@
-{ lib, config, ... }: {
+{ pkgs, lib, config, ... }: {
+  packages = with pkgs; [
+    file
+
+    # development man pages (i.e C functions and such)
+    man-pages
+    man-pages-posix
+  ];
+
   zsh = {
     enable = lib.mkDefault true;
 
@@ -56,6 +64,7 @@
     dust = "sudo dust -rx";
   };
 
+  nix-index.enable = true;
   atuin = {
     enable = true;
 

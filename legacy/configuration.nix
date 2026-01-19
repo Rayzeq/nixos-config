@@ -135,8 +135,6 @@
     trashy
     kdePackages.kcalc
     unrar
-    man-pages
-    file
     piper
     htop
     dust
@@ -156,7 +154,6 @@
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
   environment.shells = with pkgs; [ zsh ];
-  programs.nix-index.enable = true;
 
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "zacharie" ];
