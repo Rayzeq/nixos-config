@@ -47,4 +47,24 @@
       };
     };
   };
+
+  atuin = {
+    enable = true;
+
+    settings = {
+      update_check = false;
+      filter_mode = "session";
+      enter_accept = true;
+      inline_height = 0;
+    };
+  };
+  direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+
+    config.global = {
+      hide_env_diff = true;
+      log_format = "\\u001b[2mdirenv: %s\\u001b[0m";
+    };
+  };
 }

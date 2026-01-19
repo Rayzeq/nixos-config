@@ -2,24 +2,6 @@
   zsh = {
     enable = lib.mkDefault true;
 
-    atuin = {
-      enable = true;
-      settings = {
-        update_check = false;
-        filter_mode = "session";
-        enter_accept = true;
-        inline_height = 0;
-      };
-    };
-    autojump.enable = true;
-    direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-
-      hide_env_diff = true;
-      log_format = ''$(printf "\033[2mdirenv: %%s\033[0m")'';
-    };
-
     aliases = {
       fix = "reset; stty sane; tput rs1; echo -e \"\\033c\"; clear";
       # safety net when using mv
