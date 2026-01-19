@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  imports = [ ./zacharie.nix ./hyprland/system.nix ./fullmanager ];
+  imports = [ ./zacharie.nix ./hyprland/system.nix ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs = {
