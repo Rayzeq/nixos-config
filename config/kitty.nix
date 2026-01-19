@@ -2,6 +2,7 @@
   kitty = {
     enable = lib.mkDefault true;
 
+    clearScrollback = true;
     font = builtins.head config.fonts.monospace;
     keybindings = {
       "ctrl+c" = "combine : copy_or_interrupt : clear_selection";

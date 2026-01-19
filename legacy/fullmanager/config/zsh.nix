@@ -10,8 +10,6 @@
       cat = "bat";
       grep = "rg";
       sudogui = "sudo -EH";
-      # force scrollback clear on kitty
-      clear = "clear -T xterm-256color";
       dust = "sudo dust -rx";
       discord = "discord --enable-features=UseOzonePlatform --ozone-platform=wayland";
     };
