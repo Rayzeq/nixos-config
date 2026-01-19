@@ -133,9 +133,6 @@
   environment.systemPackages = with pkgs; [
     gparted
     trashy
-    lsd
-    bat
-    ripgrep
     kdePackages.kcalc
     unrar
     man-pages

@@ -67,4 +67,8 @@
       log_format = "\\u001b[2mdirenv: %s\\u001b[0m";
     };
   };
+
+  lsd.enable = true;
+  bat.enable = true;
+  ripgrep.enable = true;
 }
