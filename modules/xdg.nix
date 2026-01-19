@@ -1,7 +1,9 @@
-{ lib, config, hmConfig, ... }:
+{ home-manager, lib, config, hmConfig, ... }:
 let
   inherit (lib) mkDefault mkOption types literalExpression hasPrefix;
   cfg = config.xdg;
+
+  xdgOptions = lib.getOptions "${home-manager}/modules/misc/xdg.nix";
 
   fileType =
     opt: basePathDesc: basePath:
@@ -115,6 +117,30 @@ let
 in
 {
   options.xdg = {
+    configHome = mkOption {
+      type = types.path;
+      defaultText = "~/.config";
+      default = "${hmConfig.home.homeDirectory}/.config";
+      apply = toString;
+      description = ''
+        Absolute path to directory holding application configurations.
+
+        Sets `XDG_CONFIG_HOME` for the user if `xdg.enable` is set `true`.
+      '';
+    };
+
+    dataHome = mkOption {
+      type = types.path;
+      defaultText = "~/.local/share";
+      default = "${hmConfig.home.homeDirectory}/.local/share";
+      apply = toString;
+      description = ''
+        Absolute path to directory holding application data.
+
+        Sets `XDG_DATA_HOME` for the user if `xdg.enable` is set `true`.
+      '';
+    };
+
     cacheFile = mkOption {
       type = fileType "xdg.cacheFile" "{var}`xdg.cacheHome`" hmConfig.xdg.cacheHome;
       default = { };

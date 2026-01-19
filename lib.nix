@@ -91,6 +91,7 @@ let
       module = import path {
         inherit lib pkgs;
         config = { };
+        options = { };
       };
     in
     getAttrIfUniq module.options 2;
