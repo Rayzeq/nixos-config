@@ -47,6 +47,14 @@
       };
     };
   };
+  shellAliases = {
+    fix = "reset; stty sane; tput rs1; echo -e \"\\x1bc\"; clear";
+    # safety net when using mv
+    mv = "mv -bi";
+    # allow graphical applications to start under sudo
+    sudogui = "sudo -EH";
+    dust = "sudo dust -rx";
+  };
 
   atuin = {
     enable = true;
