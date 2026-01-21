@@ -12,6 +12,7 @@
   sunsetr.enable = false;
   swaylock.enable = false;
   swaync.enable = false;
+  wayland-pipewire-idle-inhibit.enable = false;
   wlogout.enable = false;
 
   stateVersion = {
