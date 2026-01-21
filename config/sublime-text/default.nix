@@ -149,7 +149,8 @@
         jedi_symbols.enabled = true;
         pycodestyle.enabled = false;
         mccabe.enabled = false;
-        rope_autoimport.enabled = true;
+        # crashes pylsp
+        # rope_autoimport.enabled = true;
         autopep8.enabled = false;
         pylsp_mypy = {
           enabled = true;
