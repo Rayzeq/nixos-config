@@ -1,4 +1,4 @@
-{ home-manager, lib, config, ... }:
+{ home-manager, pkgs, lib, config, ... }:
 let
   cfg = config.wlogout;
 
@@ -9,5 +9,8 @@ in
     inherit (wlogoutOptions) enable package layout style;
   };
 
-  config.hm.programs.wlogout = lib.mkIf cfg.enable cfg;
+  config.hm.programs.wlogout = lib.mkIf cfg.enable {
+    inherit (cfg) enable package style;
+    layout = map (layout: layout // { action = pkgs.writeScript "wlogout-${layout.label}" layout.action; }) cfg.layout;
+  };
 }
