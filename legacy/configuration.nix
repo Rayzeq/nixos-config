@@ -32,8 +32,6 @@
   # Firmware updates
   services.fwupd.enable = true;
 
-  networking.hostName = "alpha";
-
   # Enable networking
   networking.networkmanager.enable = true;
 

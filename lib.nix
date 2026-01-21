@@ -169,6 +169,7 @@ in
             {
               config = lib.mkMerge [
                 {
+                  networking.hostName = hostname;
                   home-manager.users = builtins.mapAttrs
                     (_: modules: modules.config.hm)
                     users;
