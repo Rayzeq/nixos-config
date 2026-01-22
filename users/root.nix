@@ -1,6 +1,7 @@
 { ... }: {
   hypr = {
     idle.enable = false;
+    land.enable = false;
     paper.enable = false;
     polkitagent.enable = false;
   };
