@@ -104,6 +104,7 @@ in
         "$mod + CONTROL_L, S, exec, ${config.sublime-text.package}/bin/subl --new-window"
 
         "$mod, K, exec, ${config.kitty.package}/bin/kitty"
+        "$mod, D, exec, ${config.discord.finalPackage}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland"
 
         ", XF86AudioMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_SINK@ toggle"
         ", XF86AudioMicMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_SOURCE@ toggle"

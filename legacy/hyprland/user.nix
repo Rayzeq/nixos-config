@@ -70,7 +70,6 @@
           "$mod + SHIFT, MULTI_KEY, exec, grimblast copy screen"
 
           "$mod, E, exec, dolphin"
-          "$mod, D, exec, discord --enable-features=UseOzonePlatform --ozone-platform=wayland"
           "$mod, F, exec, firefox"
           "$mod + SHIFT, F, exec, firefox -private-window"
         ];

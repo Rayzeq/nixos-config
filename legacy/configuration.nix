@@ -15,10 +15,6 @@
         vencord = prev.vencord.overrideAttrs (oldAttrs: {
           patches = (oldAttrs.patches or [ ]) ++ [ ./mudaebot.patch ];
         });
-        discord = prev.discord.override {
-          withOpenASAR = true;
-          withVencord = true;
-        };
       })
     ];
   };
@@ -103,7 +99,6 @@
       gimp3-with-plugins
       inkscape-with-extensions
       blender
-      discord
 
       modrinth-app
       heroic

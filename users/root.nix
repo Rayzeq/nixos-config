@@ -7,6 +7,7 @@
   };
   cliphist.enable = false;
   darkman.enable = false;
+  discord.enable = false;
   kitty.enable = false;
   mangohud.enable = false;
   nh.enable = false;
