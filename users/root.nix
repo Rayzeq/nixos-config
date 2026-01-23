@@ -5,6 +5,7 @@
     paper.enable = false;
     polkitagent.enable = false;
   };
+  cliphist.enable = false;
   darkman.enable = true;
   kitty.enable = false;
   mangohud.enable = false;
