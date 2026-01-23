@@ -6,7 +6,7 @@
     polkitagent.enable = false;
   };
   cliphist.enable = false;
-  darkman.enable = true;
+  darkman.enable = false;
   kitty.enable = false;
   mangohud.enable = false;
   nh.enable = false;
