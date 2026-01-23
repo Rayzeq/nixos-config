@@ -1,11 +1,6 @@
 { pkgs, lib, ... }:
 {
   home-manager.users.zacharie = { config, ... }: {
-    xdg.configFile."rofi/clipboard.sh" = {
-      source = ./rofi/clipboard.sh;
-      executable = true;
-    };
-
     home.pointerCursor = {
       gtk.enable = true;
       x11.enable = true;
@@ -73,7 +68,6 @@
           "$mod, MULTI_KEY, exec, grimblast copy area"
           "$mod + CONTROL_L, MULTI_KEY, exec, grimblast --freeze copy area"
           "$mod + SHIFT, MULTI_KEY, exec, grimblast copy screen"
-          "$mod, V, exec, ${config.home.homeDirectory}/${config.xdg.configFile."rofi/clipboard.sh".target}"
 
           "$mod, E, exec, dolphin"
           "$mod, D, exec, discord --enable-features=UseOzonePlatform --ozone-platform=wayland"

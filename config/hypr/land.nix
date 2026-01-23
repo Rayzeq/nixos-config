@@ -1,4 +1,13 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, lib, config, ... }:
+let
+  rofi-clipboard = pkgs.writeScript "rofi-clipboard" ''
+    selection=$(${config.cliphist.package}/bin/cliphist list | ${config.rofi.command.clipboard})
+    if [ ! -z "$selection" ]; then
+      printf "$selection" | ${config.cliphist.package}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy
+    fi 
+  '';
+in
+{
   hypr.land = {
     enable = lib.mkDefault true;
 
@@ -113,6 +122,7 @@
       ];
       bindr = [
         "$mod, SUPER_L, exec, ${pkgs.procps}/bin/pkill -x rofi || ${config.rofi.command.launcher}"
+        "$mod, V, exec, ${rofi-clipboard}"
 
         "$mod, L, exec, ${pkgs.procps}/bin/pkill -x wlogout || ${config.wlogout.package}/bin/wlogout -p layer-shell"
       ];
