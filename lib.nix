@@ -95,23 +95,12 @@ let
       };
     in
     getAttrIfUniq module.options 2;
-
-  withWarnings = specialArgs:
-    lib.warnIf (specialArgs ? hostname) "Don't put `hostname` in extraArgs"
-      lib.warnIf
-      (specialArgs ? nixpkgs) "Don't put `nixpkgs` in extraArgs"
-      lib.warnIf
-      (specialArgs ? home-manager) "Don't put `home-manager` in extraArgs"
-      specialArgs;
 in
 {
   nixosSystems = hosts @ { nixpkgs, home-manager, ... }: lib.mapAttrs
     (hostname: host @ { stateVersion, specialArgs ? { }, modules ? [ ], ... }:
       lib.nixosSystem ({
-        specialArgs = (withWarnings specialArgs) // {
-          inherit nixpkgs home-manager;
-          hostname = hostname;
-        };
+        inherit specialArgs;
         modules = modules ++ [
           home-manager.nixosModules.home-manager
           ({ ... }: {
