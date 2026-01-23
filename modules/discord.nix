@@ -15,7 +15,7 @@ in
       readOnly = true;
       visible = false;
       description = ''
-        Resulting discord package.
+        Resulting Discord package.
       '';
     };
 
@@ -59,20 +59,47 @@ in
     vencord = {
       enable = mkEnableOption "Vencord";
       package = mkPackageOption pkgs "vencord" { };
+      finalPackage = mkOption {
+        type = types.package;
+        readOnly = true;
+        visible = false;
+        description = ''
+          Resulting Vencord package.
+        '';
+      };
+
+      customPlugins = mkOption {
+        type = with types; listOf path;
+        default = [ ];
+        description = ''
+          Plugins to add to Vencord.
+        '';
+      };
     };
   };
 
   config =
     let
+      finaleVencordPackage = cfg.vencord.package.overrideAttrs (oldAttrs: {
+        postPatch = lib.concatStringsSep "\n" (
+          [ (oldAttrs.postPatch or "") "mkdir -p src/userplugins" ] ++ (
+            map
+              (plugin: "cp ${plugin} src/userplugins/")
+              cfg.vencord.customPlugins
+          )
+        );
+      });
+
       finalPackage = cfg.package.override {
         withOpenASAR = cfg.openasar.enable;
         openasar = cfg.openasar.package;
         withVencord = cfg.vencord.enable;
-        vencord = cfg.vencord.package;
+        vencord = finaleVencordPackage;
       };
     in
     mkIf cfg.enable {
       discord.finalPackage = finalPackage;
+      discord.vencord.finalPackage = finaleVencordPackage;
       hm.programs.discord = {
         inherit (cfg) enable;
         package = finalPackage;
@@ -82,6 +109,5 @@ in
           openasar.setup = mkIf cfg.openasar.enable true;
         } // (removeAttrs cfg.settings [ "disable-updates" "enable-devtools" ]);
       };
-    }
-  ;
+    };
 }

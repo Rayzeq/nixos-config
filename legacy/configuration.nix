@@ -10,13 +10,6 @@
         "openssl-1.1.1w"
       ];
     };
-    overlays = [
-      (final: prev: {
-        vencord = prev.vencord.overrideAttrs (oldAttrs: {
-          patches = (oldAttrs.patches or [ ]) ++ [ ./mudaebot.patch ];
-        });
-      })
-    ];
   };
 
   # Bootloader.

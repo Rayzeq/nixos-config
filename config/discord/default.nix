@@ -9,9 +9,14 @@
       offloadAdmControls = true;
       enableHardwareAcceleration = true;
       trayBalloonShown = true;
+      chromiumSwitches = { };
+      BACKGROUND_COLOR = "#121214";
     };
 
     openasar.enable = true;
-    vencord.enable = true;
+    vencord = {
+      enable = true;
+      customPlugins = [ ./MudaeBot.ts ];
+    };
   };
 }
