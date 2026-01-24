@@ -1,5 +1,20 @@
 { pkgs, ... }: {
+  # Mouse keybind to reset keyboard
+  system.security.sudo.extraRules = [
+    {
+      groups = [ "wheel" ];
+      commands = [
+        {
+          command = "${pkgs.coreutils-full}/bin/tee /sys/bus/serio/drivers/atkbd/unbind";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
   hm = {
+    wayland.windowManager.hyprland.settings.bindio = [
+      '', F5, exec, echo -n "serio0" | sudo ${pkgs.coreutils-full}/bin/tee /sys/bus/serio/drivers/atkbd/unbind''
+    ];
     # This is needed for dolphin to detect applications outside of plasma6.
     # This is technically expected behavior and (likely) won't be fixed from KDE's side,
     # but it might be from nixos's side
