@@ -65,10 +65,6 @@
         env = lib.mapAttrsToList (name: value: name + "," + (toString value)) (config.systemd.user.sessionVariables // config.home.sessionVariables);
 
         bind = [
-          "$mod, MULTI_KEY, exec, grimblast copy area"
-          "$mod + CONTROL_L, MULTI_KEY, exec, grimblast --freeze copy area"
-          "$mod + SHIFT, MULTI_KEY, exec, grimblast copy screen"
-
           "$mod, E, exec, dolphin"
           "$mod, F, exec, firefox"
           "$mod + SHIFT, F, exec, firefox -private-window"

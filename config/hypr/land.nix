@@ -106,6 +106,10 @@ in
         "$mod, K, exec, ${config.kitty.package}/bin/kitty"
         "$mod, D, exec, ${config.discord.finalPackage}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland"
 
+        "$mod, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast copy area"
+        "$mod + CONTROL_L, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast --freeze copy area"
+        "$mod + SHIFT, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast copy screen"
+
         ", XF86AudioMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_SINK@ toggle"
         ", XF86AudioMicMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_SOURCE@ toggle"
       ];
