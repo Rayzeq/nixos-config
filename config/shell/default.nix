@@ -7,6 +7,7 @@
     man-pages-posix
   ];
 
+  defaultShell = "zsh";
   zsh = {
     enable = lib.mkDefault true;
 

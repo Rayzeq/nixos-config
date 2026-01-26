@@ -137,9 +137,6 @@
     localNetworkGameTransfers.openFirewall = true;
   };
 
-  programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
-  environment.shells = with pkgs; [ zsh ];
 
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "zacharie" ];
