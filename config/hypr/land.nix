@@ -73,8 +73,8 @@ in
       ];
 
       layerrule = [
-        "blur on, match:namespace rofi|swaync-notification-window|logout_dialog"
-        "ignore_alpha 0, match:namespace rofi|swaync-notification-window|logout_dialog"
+        "blur on, match:namespace rofi|swaync-notification-window|wleave"
+        "ignore_alpha 0, match:namespace rofi|swaync-notification-window|wleave"
       ];
 
       "$mod" = "SUPER";
@@ -129,7 +129,7 @@ in
         "$mod, SUPER_L, exec, ${pkgs.procps}/bin/pkill -x rofi || ${config.rofi.command.launcher}"
         "$mod, V, exec, ${rofi-clipboard}"
 
-        "$mod, L, exec, ${pkgs.procps}/bin/pkill -x wlogout || ${config.wlogout.package}/bin/wlogout -p layer-shell"
+        "$mod, L, exec, ${pkgs.procps}/bin/pkill -x .wleave-wrapped || ${config.wleave.package}/bin/wleave"
       ];
       bindm = [
         "$mod, mouse:272, movewindow"
