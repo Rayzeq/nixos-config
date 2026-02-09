@@ -75,6 +75,8 @@ in
       layerrule = [
         "blur on, match:namespace rofi|swaync-notification-window|wleave"
         "ignore_alpha 0, match:namespace rofi|swaync-notification-window|wleave"
+
+        "no_anim on, match:namespace selection"
       ];
 
       "$mod" = "SUPER";
