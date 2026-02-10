@@ -1,4 +1,4 @@
-{ home-manager, lib, config, hmConfig, ... }:
+{ home-manager, pkgs, lib, config, hmConfig, ... }:
 let
   inherit (lib)
     mkOption
@@ -7,13 +7,16 @@ let
     types
 
     optionalString
+    optionalAttrs
     concatMapAttrs
     filterAttrs
     concatMapAttrsStringSep;
   inherit (builtins) isAttrs isString;
-  cfg = config.rofi;
+  cfgRofi = config.rofi;
+  cfgRofiGames = config.rofi-games;
 
   rofiOptions = lib.getOptions "${home-manager}/modules/programs/rofi.nix";
+  tomlFormat = pkgs.formats.toml { };
 
   rasiLiteral = types.submodule
     {
@@ -94,14 +97,14 @@ let
     );
 
   themeName =
-    if (cfg.theme == null) then
+    if (cfgRofi.theme == null) then
       null
-    else if (isString cfg.theme) then
-      cfg.theme
-    else if (isAttrs cfg.theme) then
+    else if (isString cfgRofi.theme) then
+      cfgRofi.theme
+    else if (isAttrs cfgRofi.theme) then
       "custom"
     else
-      lib.removeSuffix ".rasi" (baseNameOf cfg.theme);
+      lib.removeSuffix ".rasi" (baseNameOf cfgRofi.theme);
 in
 {
   options.rofi = {
@@ -124,12 +127,53 @@ in
       '';
     };
   };
-
-  config = mkIf cfg.enable {
-    hm.programs.rofi = {
-      inherit (cfg) enable package plugins theme;
+  options.rofi-games = {
+    hide-entries-without-box-art = mkOption {
+      type = types.bool;
+      default = false;
+      example = true;
+      description = ''
+        Allows hiding any entries which don't have box art images defined.
+      '';
     };
-    hm.xdg.configFile = concatMapAttrs
+    box-art-dir = mkOption {
+      type = with types; nullOr str;
+      default = null;
+      description = ''
+        Directory to find box art in if an absolute path is not given.
+      '';
+    };
+    fallback-to-icons = mkOption {
+      type = types.bool;
+      default = false;
+      example = true;
+      description = ''
+        If the box art for a game is not found, fallback to using the icon.
+      '';
+    };
+    show-entry-source-text = mkOption {
+      type = types.bool;
+      default = true;
+      example = false;
+      description = ''
+        Show the source launcher next to the title of each entry.
+      '';
+    };
+    use-bold-entry-title = mkOption {
+      type = types.bool;
+      default = true;
+      example = false;
+      description = ''
+        Make entry titles bold - recommended if showing the source text.
+      '';
+    };
+  };
+
+  config = mkIf cfgRofi.enable {
+    hm.programs.rofi = {
+      inherit (cfgRofi) enable package plugins theme;
+    };
+    hm.xdg.configFile = (concatMapAttrs
       (name: value: {
         "rofi/${name}.rasi".text = (optionalString (value.show != "dmenu")
           (toRasi { configuration = (removeAttrs value [ "show" ]); })
@@ -137,7 +181,17 @@ in
           "@theme" = themeName;
         }));
       })
-      cfg.config;
+      cfgRofi.config
+    ) // {
+      "rofi-games/config.toml".source = tomlFormat.generate "config.toml" ({
+        hide_entries_without_box_art = cfgRofiGames.hide-entries-without-box-art;
+        fallback_to_icons = cfgRofiGames.fallback-to-icons;
+        show_entry_source_text = cfgRofiGames.show-entry-source-text;
+        use_bold_entry_title = cfgRofiGames.use-bold-entry-title;
+      } // optionalAttrs (cfgRofiGames.box-art-dir != null) {
+        box_art_dir = cfgRofiGames.box-art-dir;
+      });
+    };
     rofi.command = mkDefault (builtins.mapAttrs
       (name: value:
         let
@@ -152,7 +206,7 @@ in
         else
           "${rofiPath} -show ${value.show} -config \"${configPath}\""
       )
-      cfg.config
+      cfgRofi.config
     );
 
     # Remove home-manager's default config file, because we make our owns

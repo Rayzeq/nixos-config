@@ -82,4 +82,9 @@ in
       };
     };
   };
+  rofi-games = {
+    fallback-to-icons = true;
+    use-bold-entry-title = false;
+    show-entry-source-text = false;
+  };
 }
