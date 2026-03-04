@@ -68,15 +68,15 @@ in
       };
 
       windowrule = [
-        "idle_inhibit fullscreen, match:class .*"
-        "float on, match:class org.freedesktop.impl.portal.desktop.kde"
+        "match:class .*, idle_inhibit fullscreen"
+        "match:class org.freedesktop.impl.portal.desktop.kde, float on"
+        "match:initial_title Picture-in-Picture, float on, pin on"
       ];
 
       layerrule = [
-        "blur on, match:namespace rofi|swaync-notification-window|wleave"
-        "ignore_alpha 0, match:namespace rofi|swaync-notification-window|wleave"
+        "match:namespace rofi|swaync-notification-window|wleave, blur on, ignore_alpha 0"
 
-        "no_anim on, match:namespace selection"
+        "match:namespace selection, no_anim on"
       ];
 
       "$mod" = "SUPER";
