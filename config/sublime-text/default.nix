@@ -285,7 +285,7 @@
         };
       };
       LSP-rust-analyzer.settings = {
-        command = [ "${pkgs.rust-analyzer}/bin/rust-analyzer" ];
+        command = [ "${pkgs.rustup}/bin/rust-analyzer" ];
         settings.rust-analyzer = {
           assist.emitMustUse = true;
           check.command = "clippy";
