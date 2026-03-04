@@ -122,8 +122,8 @@ in
         ", XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl set +5%"
       ];
       bindl = [
-        ", XF86AudioPause, exec, ${pkgs.playerctl}/bin/playerctl pause"
-        ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play"
+        ", XF86AudioPause, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
+        ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
         ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
         ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
       ];
