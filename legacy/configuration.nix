@@ -57,9 +57,7 @@
     HandlePowerKey = "ignore";
   };
 
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=1h
-  '';
+  systemd.sleep.settings.Sleep.HibernateDelaySec = "1h";
 
   hardware.graphics.enable32Bit = true;
 
@@ -95,7 +93,7 @@
 
       modrinth-app
       heroic
-      wineWowPackages.full
+      wineWow64Packages.full
       winetricks
 
       # Rust
