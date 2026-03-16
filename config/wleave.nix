@@ -36,16 +36,14 @@ in
         }
         {
           label = "shutdown";
-          # TODO: use hyprshutdown when in nixpkgs
-          action = "${pkgs.systemd}/bin/systemctl poweroff";
+          action = ''${pkgs.hyprshutdown}/bin/hyprshutdown -t "Shutting down..." --post-cmd "${pkgs.systemd}/bin/systemctl poweroff"'';
           text = "Shutdown";
           keybind = "s";
           icon = "${icons}/shutdown.svg";
         }
         {
           label = "logout";
-          # TODO: use hyprshutdown when in nixpkgs
-          action = "${pkgs.hyprland}/bin/hyprctl dispatch exit";
+          action = ''${pkgs.hyprshutdown}/bin/hyprshutdown -t "Logging out..."'';
           text = "Logout";
           keybind = "e";
           icon = "${icons}/logout.svg";
@@ -59,8 +57,7 @@ in
         }
         {
           label = "reboot";
-          # TODO: use hyprshutdown when in nixpkgs
-          action = "${pkgs.systemd}/bin/systemctl reboot";
+          action = ''${pkgs.hyprshutdown}/bin/hyprshutdown -t "Rebooting..." --post-cmd "${pkgs.systemd}/bin/systemctl reboot"'';
           text = "Reboot";
           keybind = "r";
           icon = "${icons}/reboot.svg";
