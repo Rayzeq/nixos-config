@@ -46,13 +46,12 @@ let
           lib.mkMerge uniqueValues;
   };
 
-  getModules = folder: excludes:
+  getModules = folder:
     let
       dirContents = builtins.readDir folder;
       names = builtins.attrNames dirContents;
-      filteredNames = builtins.filter (name: !(builtins.elem name excludes)) names;
 
-      modules = map
+      modules = lib.flatten (map
         (name:
           let
             type = dirContents.${name};
@@ -61,16 +60,11 @@ let
           if type == "regular" && lib.hasSuffix ".nix" name then
             path
           else if type == "directory" then
-            let
-              subDirContents = builtins.readDir path;
-              hasDefault = builtins.elem "default.nix" (builtins.attrNames subDirContents);
-            in
-            if hasDefault then
-              path
-            else null
+            getModules path
           else null
         )
-        filteredNames;
+        names
+      );
       nonNullModules = builtins.filter (x: x != null) modules;
     in
     nonNullModules;
@@ -114,7 +108,7 @@ in
               evalConfig = username: hmConfig: lib.evalModules {
                 specialArgs = {
                   inherit nixpkgs home-manager pkgs systemConfig hmConfig;
-                  lib = lib // { inherit getModules; getOptions = getOptions pkgs; };
+                  lib = lib // { getOptions = getOptions pkgs; };
                 };
                 modules = [
                   ({ config, ... }: {
@@ -142,8 +136,8 @@ in
                   ./users/${username}.nix
                   ./hosts/${hostname}
                 ]
-                ++ (getModules ./modules [ ])
-                ++ (getModules ./config [ ]);
+                ++ (getModules ./modules)
+                ++ (getModules ./config);
               };
               users = lib.mapAttrs'
                 (filename: _:

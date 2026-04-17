@@ -6,8 +6,6 @@ let
   homeOptions = lib.getOptions "${home-manager}/modules/home-environment.nix";
 in
 {
-  imports = lib.getModules ./. [ "default.nix" ];
-
   options = {
     inherit (homeOptions) shellAliases;
 
