@@ -97,12 +97,11 @@ let
     getAttrIfUniq module.options 2;
 in
 {
-  nixosSystems = hosts @ { nixpkgs, home-manager, ... }: lib.mapAttrs
+  nixosSystems = hosts @ { nixpkgs, home-manager, commonModules ? [ ], ... }: lib.mapAttrs
     (hostname: host @ { stateVersion, specialArgs ? { }, modules ? [ ], ... }:
       lib.nixosSystem ({
         inherit specialArgs;
-        modules = modules ++ [
-          home-manager.nixosModules.home-manager
+        modules = modules ++ commonModules ++ [
           ({ ... }: {
             system.stateVersion = stateVersion;
             home-manager.useGlobalPkgs = true;
@@ -176,5 +175,5 @@ in
         ];
       } // removeAttrs host [ "stateVersion" "specialArgs" "modules" ])
     )
-    (removeAttrs hosts [ "nixpkgs" "home-manager" ]);
+    (removeAttrs hosts [ "nixpkgs" "home-manager" "commonModules" ]);
 }
