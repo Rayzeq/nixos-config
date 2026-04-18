@@ -48,22 +48,16 @@ let
 
   getModules = folder:
     let
-      dirContents = builtins.readDir folder;
-      names = builtins.attrNames dirContents;
-
-      modules = lib.flatten (map
-        (name:
-          let
-            type = dirContents.${name};
-            path = "${folder}/${name}";
-          in
-          if type == "regular" && lib.hasSuffix ".nix" name then
-            path
+      modules = lib.concatLists (lib.mapAttrsToList
+        (name: type:
+          let path = "${folder}/${name}";
+          in if type == "regular" && lib.hasSuffix ".nix" name then
+            [ path ]
           else if type == "directory" then
             getModules path
-          else null
+          else [ ]
         )
-        names
+        (builtins.readDir folder)
       );
       nonNullModules = builtins.filter (x: x != null) modules;
     in
