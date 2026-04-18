@@ -101,7 +101,7 @@ in
 
               evalConfig = username: hmConfig: lib.evalModules {
                 specialArgs = {
-                  inherit nixpkgs home-manager pkgs systemConfig hmConfig;
+                  inherit nixpkgs home-manager pkgs systemConfig hmConfig hostname;
                   lib = lib // { getOptions = getOptions pkgs; };
                 };
                 modules = [
