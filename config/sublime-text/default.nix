@@ -116,8 +116,10 @@
         };
         show_inlay_hints = true;
         semantic_highlighting = true;
-        default_clients = { };
-        clients.nixd = {
+      };
+      LanguageServers = {
+        managed = false;
+        settings.nixd = {
           enabled = true;
           command = [ "${pkgs.nixd}/bin/nixd" ];
           selector = "source.nix";
