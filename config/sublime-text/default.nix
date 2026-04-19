@@ -313,6 +313,8 @@
             "clippy::clone_on_ref_ptr"
             "-W"
             "clippy::unwrap_used"
+            "-W"
+            "clippy::allow_attributes_without_reason"
 
             "-A"
             "clippy::missing_errors_doc"
