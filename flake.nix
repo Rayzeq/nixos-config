@@ -18,19 +18,11 @@
     {
       nixosConfigurations = lib.nixosSystems {
         inherit nixpkgs home-manager;
-
-        commonModules = [
+        modules = [
           home-manager.nixosModules.home-manager
           nix-index-database.nixosModules.default
+          ./legacy/configuration.nix
         ];
-        alpha = {
-          system = "x86_64-linux";
-          stateVersion = "23.05";
-
-          modules = [
-            ./legacy/configuration.nix
-          ];
-        };
       };
     };
 }

@@ -17,8 +17,4 @@
   swaync.enable = false;
   wayland-pipewire-idle-inhibit.enable = false;
   wleave.enable = false;
-
-  stateVersion = {
-    alpha = "23.05";
-  };
 }

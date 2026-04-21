@@ -85,83 +85,84 @@ let
     getAttrIfUniq module.options 2;
 in
 {
-  nixosSystems = hosts @ { nixpkgs, home-manager, commonModules ? [ ], ... }: lib.mapAttrs
-    (hostname: host @ { stateVersion, specialArgs ? { }, modules ? [ ], ... }:
-      lib.nixosSystem ({
-        inherit specialArgs;
-        modules = modules ++ commonModules ++ [
-          ({ ... }: {
-            system.stateVersion = stateVersion;
-            home-manager.useGlobalPkgs = true;
-          })
-          ./hosts/${hostname}/hardware.nix
-          ({ pkgs, config, ... }:
-            let
-              systemConfig = config;
+  nixosSystems = { nixpkgs, home-manager, modules ? [ ] }: lib.mapAttrs
+    (hostname: _: lib.nixosSystem {
+      modules = modules ++ [
+        ./hosts/${hostname}/hardware.nix
+        ({ pkgs, config, ... }:
+          let
+            systemConfig = config;
 
-              evalConfig = username: hmConfig: lib.evalModules {
-                specialArgs = {
-                  inherit nixpkgs home-manager pkgs systemConfig hmConfig hostname;
-                  lib = lib // { getOptions = getOptions pkgs; };
-                };
-                modules = [
-                  ({ config, ... }: {
-                    options = {
-                      system = lib.mkOption {
-                        type = recursiveMerge;
-                        default = { };
-                        description = "Options to forward to NixOS";
-                      };
-
-                      hm = lib.mkOption {
-                        type = deferMerge;
-                        default = { };
-                        description = "Options to forward to Home Manager";
-                      };
-
-                      stateVersion = lib.mkOption {
-                        type = with lib.types; attrsOf str;
-                      };
-                    };
-                    config = {
-                      hm.home.stateVersion = config.stateVersion.${hostname};
-                    };
-                  })
-                  ./users/${username}.nix
-                  ./hosts/${hostname}
-                ]
-                ++ (getModules ./modules)
-                ++ (getModules ./config);
+            evalConfig = username: hmConfig: lib.evalModules {
+              specialArgs = {
+                inherit nixpkgs home-manager pkgs systemConfig hmConfig hostname username;
+                lib = lib // { getOptions = getOptions pkgs; };
               };
-              users = lib.mapAttrs'
-                (filename: _:
-                  let
-                    username = lib.removeSuffix ".nix" filename;
-                  in
-                  lib.nameValuePair username (evalConfig username config.home-manager.users.${username})
-                )
-                (builtins.readDir ./users);
-            in
-            {
-              config = lib.mkMerge [
-                {
-                  networking.hostName = hostname;
-                  home-manager.users = builtins.mapAttrs
-                    (_: modules: modules.config.hm)
-                    users;
-                }
-                (recursiveMerge.merge [ ] (lib.mapAttrsToList
-                  (_: user: {
-                    file = "manualMerge";
-                    value = user.config.system;
-                  })
-                  users)
-                )
-              ];
-            }
-          )
-        ];
-      } // removeAttrs host [ "stateVersion" "specialArgs" "modules" ])
-    )
-    (removeAttrs hosts [ "nixpkgs" "home-manager" "commonModules" ]);
+              modules = [
+                ({ config, ... }: {
+                  options = {
+                    system = lib.mkOption {
+                      type = recursiveMerge;
+                      default = { };
+                      description = "Options to forward to NixOS";
+                    };
+
+                    hm = lib.mkOption {
+                      type = deferMerge;
+                      default = { };
+                      description = "Options to forward to Home Manager";
+                    };
+
+                    architecture = lib.mkOption {
+                      type = lib.types.str;
+                    };
+                    stateVersion = lib.mkOption {
+                      type = with lib.types; attrsOf str;
+                    };
+                  };
+                  config = {
+                    system = {
+                      nixpkgs.system = config.architecture;
+                      system.stateVersion = config.stateVersion.system;
+                      home-manager.useGlobalPkgs = true;
+                    };
+                    hm.home.stateVersion = config.stateVersion.${username};
+                  };
+                })
+                ./users/${username}.nix
+                ./hosts/${hostname}
+              ]
+              ++ (getModules ./modules)
+              ++ (getModules ./config);
+            };
+            users = lib.mapAttrs'
+              (filename: _:
+                let
+                  username = lib.removeSuffix ".nix" filename;
+                in
+                lib.nameValuePair username (evalConfig username config.home-manager.users.${username})
+              )
+              (builtins.readDir ./users);
+          in
+          {
+            config = lib.mkMerge [
+              {
+                networking.hostName = hostname;
+                home-manager.users = builtins.mapAttrs
+                  (_: modules: modules.config.hm)
+                  users;
+              }
+              (recursiveMerge.merge [ ] (lib.mapAttrsToList
+                (_: user: {
+                  file = "manualMerge";
+                  value = user.config.system;
+                })
+                users)
+              )
+            ];
+          }
+        )
+      ];
+    })
+    (builtins.readDir ./hosts);
 }
