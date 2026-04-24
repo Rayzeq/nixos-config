@@ -76,10 +76,11 @@ let
       attrset;
   getOptions = pkgs: path:
     let
-      module = import path {
+      module = import path rec {
         inherit lib pkgs;
         config = { };
         options = { };
+        utils = import "${pkgs}/nixos/lib/utils.nix" { inherit lib config pkgs; };
       };
     in
     getAttrIfUniq module.options 2;

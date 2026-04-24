@@ -12,6 +12,7 @@
       {
         gtk.gtk4.theme = null;
         programs.git.signing.format = null;
+        programs.firefox.configPath = ".mozilla/firefox";
       }
     else builtins.warn "Remove this! stateVersion is high enough for this is not needed anymore" { };
 }
