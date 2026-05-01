@@ -12,6 +12,14 @@
     };
     overlays = [
       (final: prev: {
+        oh-my-zsh = prev.oh-my-zsh.overrideAttrs (oldAttrs: {
+          patches = (oldAttrs.patches or [ ]) ++ [
+            (pkgs.fetchpatch {
+              url = "https://github.com/Rayzeq/ohmyzsh/pull/1.patch";
+              hash = "sha256-4cPKivrtvbIwWogvU5qms2KgZDi7h+1CzJnUjlFa8QU=";
+            })
+          ];
+        });
         rofi-games = prev.rofi-games.overrideAttrs (oldAttrs: {
           buildInputs = oldAttrs.buildInputs ++ [ pkgs.sqlite ];
 
