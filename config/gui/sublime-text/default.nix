@@ -78,6 +78,24 @@
         keys = [ "ctrl+shift+k" ];
         command = "open_terminal";
       }
+      {
+        keys = [
+          "ctrl+alt+shift+left"
+        ];
+        command = "move_tab";
+        args = {
+          position = "-1";
+        };
+      }
+      {
+        keys = [
+          "ctrl+alt+shift+right"
+        ];
+        command = "move_tab";
+        args = {
+          position = "+1";
+        };
+      }
     ];
     build-systems."Python - Terminus" = {
       target = "terminus_open";
@@ -347,6 +365,7 @@
       Terminal.settings.terminal = "kitty";
       Sass = { };
       FileIcons = { };
+      MoveTab = { };
       HTML = {
         managed = false;
         settings.extensions = [ "hbs" ];
