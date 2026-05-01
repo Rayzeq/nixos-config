@@ -16,6 +16,7 @@ in
 
     settings = {
       no-version-info = true;
+      buttons-per-row = "3";
       column-spacing = 0;
       row-spacing = 0;
 
