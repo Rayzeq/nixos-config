@@ -9,7 +9,7 @@ let
 in
 {
   hypr.land = {
-    enable = lib.mkDefault true;
+    enable = true;
 
     settings = {
       # primary monitor is in per-host config

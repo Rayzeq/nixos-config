@@ -74,22 +74,26 @@ let
       [ ]
   ;
 
-  getModules = folder:
+  importRecursive = arg:
     let
-      modules = lib.concatLists (lib.mapAttrsToList
-        (name: type:
-          let path = "${folder}/${name}";
-          in if type == "regular" && lib.hasSuffix ".nix" name then
-            [ path ]
-          else if type == "directory" then
-            getModules path
-          else [ ]
-        )
-        (builtins.readDir folder)
-      );
-      nonNullModules = builtins.filter (x: x != null) modules;
+      argType = lib.typeOf arg;
+      fileType = lib.readFileType arg;
     in
-    nonNullModules;
+    if argType == "path" then
+      if fileType == "directory" then
+        lib.concatLists
+          (lib.mapAttrsToList (name: _: importRecursive (arg + "/${name}")) (lib.readDir arg))
+      else if fileType == "regular" && lib.hasSuffix ".nix" arg then
+        [ arg ]
+      else
+        [ ]
+    else if argType == "list" then
+      lib.concatMap importRecursive arg
+    else if argType == "set" then
+      imports: lib.filter (file: !(lib.elem file arg.exclude)) (importRecursive imports)
+    else
+      abort "Unsupported import type"
+  ;
 
   getAttrIfUniq = attrset: max_rec:
     let
@@ -126,7 +130,7 @@ in
             evalConfig = username: hmConfig: lib.evalModules {
               specialArgs = {
                 inherit nixpkgs home-manager pkgs systemConfig hmConfig hostname username;
-                lib = lib // { getOptions = getOptions pkgs; };
+                lib = lib // { import = importRecursive; getOptions = getOptions pkgs; };
               };
               modules = [
                 ({ config, ... }: {
@@ -163,8 +167,7 @@ in
               ++ (getImportPaths ./targets/${username + "@"})
               ++ (getImportPaths ./targets/${"@" + hostname})
               ++ (getImportPaths ./targets/${username + "@" + hostname})
-              ++ (getModules ./modules)
-              ++ (getModules ./config);
+              ++ (importRecursive ./options);
             };
             users = lib.genAttrs
               (getUsers hostname)

@@ -19,14 +19,16 @@ in
     };
   };
 
-  config.system.security.pam.u2f = mkIf cfg.u2f.enable {
-    enable = cfg.u2f.enable;
+  config.system = mkIf cfg.u2f.enable {
+    security.pam.u2f = {
+      enable = cfg.u2f.enable;
 
-    settings = {
-      cue = cfg.u2f.cue;
-      authfile = builtins.toFile "u2f_mappings" (lib.concatStringsSep "\n" (
-        lib.mapAttrsToList (user: ids: lib.concatStringsSep ":" ([ user ] ++ ids)) cfg.u2f.keys
-      ));
+      settings = {
+        cue = cfg.u2f.cue;
+        authfile = builtins.toFile "u2f_mappings" (lib.concatStringsSep "\n" (
+          lib.mapAttrsToList (user: ids: lib.concatStringsSep ":" ([ user ] ++ ids)) cfg.u2f.keys
+        ));
+      };
     };
   };
 }

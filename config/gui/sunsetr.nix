@@ -1,6 +1,6 @@
 { lib, config, ... }: {
   sunsetr = {
-    enable = lib.mkDefault true;
+    enable = true;
 
     night.gamma = 80;
     latitude = config.globals.latitude;

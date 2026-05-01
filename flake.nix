@@ -21,7 +21,7 @@
         modules = [
           home-manager.nixosModules.home-manager
           nix-index-database.nixosModules.default
-          ./legacy/configuration.nix
+          ./_legacy/configuration.nix
         ];
       };
     };

@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }: {
   darkman = {
-    enable = lib.mkDefault true;
+    enable = true;
 
     settings = {
       lat = config.globals.latitude;

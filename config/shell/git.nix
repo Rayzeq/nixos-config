@@ -1,6 +1,6 @@
 { lib, ... }: {
   git = {
-    enable = lib.mkDefault true;
+    enable = true;
     settings = {
       user = {
         name = "Zacharie Dubrulle";

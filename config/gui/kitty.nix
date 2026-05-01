@@ -1,6 +1,6 @@
 { lib, config, ... }: {
   kitty = {
-    enable = lib.mkDefault true;
+    enable = true;
 
     clearScrollback = true;
     font = builtins.head config.fonts.monospace;

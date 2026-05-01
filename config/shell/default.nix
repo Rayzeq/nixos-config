@@ -9,7 +9,7 @@
 
   defaultShell = "zsh";
   zsh = {
-    enable = lib.mkDefault true;
+    enable = true;
 
     # note: this is the default when stateVersion >= 26.05
     dotDir = "${config.xdg.configHome}/zsh";

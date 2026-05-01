@@ -1,6 +1,6 @@
 { lib, ... }: {
   sublime-merge = {
-    enable = lib.mkDefault true;
+    enable = true;
 
     settings = {
       diff_style = "auto";

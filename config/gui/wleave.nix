@@ -12,7 +12,7 @@ let
 in
 {
   wleave = {
-    enable = lib.mkDefault true;
+    enable = true;
 
     settings = {
       no-version-info = true;

@@ -14,7 +14,7 @@ in
     };
   };
   hypr.paper = {
-    enable = lib.mkDefault true;
+    enable = true;
 
     splash = false;
     wallpapers = [

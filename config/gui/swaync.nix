@@ -4,7 +4,7 @@ let
 in
 {
   swaync = {
-    enable = lib.mkDefault true;
+    enable = true;
 
     style = ''
       .notification {

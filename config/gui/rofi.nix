@@ -4,7 +4,7 @@ let
 in
 {
   rofi = {
-    enable = lib.mkDefault true;
+    enable = true;
     plugins = with pkgs; [ rofi-games ];
 
     config = {

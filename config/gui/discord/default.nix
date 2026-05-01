@@ -1,6 +1,6 @@
 { lib, ... }: {
   discord = {
-    enable = lib.mkDefault true;
+    enable = true;
 
     settings = {
       enable-devtools = true;

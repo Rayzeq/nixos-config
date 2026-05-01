@@ -1,20 +1,8 @@
-{ ... }: {
-  hypr = {
-    idle.enable = false;
-    land.enable = false;
-    paper.enable = false;
-    polkitagent.enable = false;
-  };
-  cliphist.enable = false;
-  darkman.enable = false;
-  discord.enable = false;
-  kitty.enable = false;
-  mangohud.enable = false;
-  nh.enable = false;
-  rofi.enable = false;
-  sunsetr.enable = false;
-  swaylock.enable = false;
-  swaync.enable = false;
-  wayland-pipewire-idle-inhibit.enable = false;
-  wleave.enable = false;
+{ lib, ... }: {
+  imports = lib.import { exclude = [ ../config/shell/nh.nix ]; } [
+    ../config/shell
+    ../config/gui/fonts.nix
+    ../config/gui/sublime-text
+    ../config/gui/sublime-merge.nix
+  ];
 }

@@ -6,7 +6,8 @@ let
 in
 {
   options.swaylock = {
-    inherit (swaylockOptions) enable package settings;
+    inherit (swaylockOptions) package settings;
+    enable = lib.mkEnableOption "Swaylock";
   };
 
   config = lib.mkIf cfg.enable {

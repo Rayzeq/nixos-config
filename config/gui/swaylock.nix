@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }: {
   swaylock = {
-    enable = lib.mkDefault true;
+    enable = true;
     package = pkgs.swaylock-effects;
 
     settings = {

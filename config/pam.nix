@@ -1,6 +1,6 @@
 { lib, ... }: {
   pam.u2f = {
-    enable = lib.mkDefault true;
+    enable = true;
 
     cue = true;
     keys = {

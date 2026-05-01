@@ -1,6 +1,6 @@
 { pkgs, lib, ... }: {
   hypr.idle = {
-    enable = lib.mkDefault true;
+    enable = true;
 
     inhibit-sleep = "lock-notify";
     events = {
