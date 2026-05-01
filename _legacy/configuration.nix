@@ -10,6 +10,29 @@
         "openssl-1.1.1w"
       ];
     };
+    overlays = [
+      (final: prev: {
+        rofi-games = prev.rofi-games.overrideAttrs (oldAttrs: {
+          buildInputs = oldAttrs.buildInputs ++ [ pkgs.sqlite ];
+
+          src = pkgs.fetchFromGitHub {
+            owner = "Rolv-Apneseth";
+            repo = "rofi-games";
+            rev = "a8c6ef50fbb60fa29508ecc88d5736c0fd89ade1";
+            hash = "sha256-LwzlBjRh9YdUGBl9+L3Vdetmy7lUdAIvjKvp8hSebvY=";
+          };
+
+          patches = oldAttrs.patches ++ [ ./a.patch ];
+
+          cargoDeps = pkgs.rustPlatform.importCargoLock {
+            lockFile = ./Cargo.lock;
+            outputHashes = {
+              "lib_game_detector-0.0.28" = "sha256-f8DH+cSaN4u/ugLJuyNDsACyihde52X7s4hdlV8nT5U=";
+            };
+          };
+        });
+      })
+    ];
   };
 
   # Bootloader.
