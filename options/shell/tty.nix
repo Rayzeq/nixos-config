@@ -7,7 +7,7 @@ let
 in
 {
   options.tty = {
-    keyMap = consoleOptions.keyMap;
+    keymap = consoleOptions.keyMap;
     enableNumlock = mkOption {
       type = types.bool;
       default = false;
@@ -17,7 +17,7 @@ in
   };
 
   config.system = {
-    console.keyMap = cfg.keyMap;
+    console.keyMap = cfg.keymap;
     # Can't use directly preStart because nixos wraps it in a script
     # and systemd can't expand the %I
     systemd.services."getty@".serviceConfig.ExecStartPre = mkIf

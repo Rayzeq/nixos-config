@@ -1,6 +1,6 @@
 {
   tty = {
-    keyMap = "fr-pc";
+    keymap = "fr-pc";
     enableNumlock = true;
   };
 }
