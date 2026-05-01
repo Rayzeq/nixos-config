@@ -1,0 +1,26 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index 08f6986..3faa293 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -367,8 +367,7 @@ checksum = "bbd2bcb4c963f2ddae06a2efc7e9f3591312473c50c6685e1f298068316e66fe"
+ [[package]]
+ name = "lib_game_detector"
+ version = "0.0.28"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "1e0c09ba0c89401de445ddf7f5d093277b4b67c852729af48a95dcf59329156b"
++source = "git+https://github.com/Rayzeq/lib_game_detector#fd54813d384b270b6ca54e24353ac4e0fe1d0c0d"
+ dependencies = [
+  "cfg-if",
+  "dirs",
+diff --git a/Cargo.toml b/Cargo.toml
+index 10539fa..616e6f3 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -39,3 +39,6 @@ crate-type = ["cdylib"]
+ [features]
+ default = []
+ bundled_sqlite = ["lib_game_detector/bundled_sqlite"]
++
++[patch.'crates-io']
++lib_game_detector = { git = 'https://github.com/Rayzeq/lib_game_detector' }
+\ No newline at end of file
