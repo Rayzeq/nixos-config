@@ -105,8 +105,12 @@ in
         "$mod + SHIFT, S, exec, ${config.kitty.package}/bin/kitty sudo -EH ${config.sublime-text.package}/bin/subl"
         "$mod + CONTROL_L, S, exec, ${config.sublime-text.package}/bin/subl --new-window"
 
+        "$mod, F, exec, ${pkgs.firefox}/bin/firefox"
+        "$mod + SHIFT, F, exec, ${pkgs.firefox}/bin/firefox -private-window"
+
         "$mod, K, exec, ${config.kitty.package}/bin/kitty"
         "$mod, D, exec, ${config.discord.finalPackage}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland"
+        "$mod, E, exec, ${pkgs.kdePackages.dolphin}/bin/dolphin"
 
         "$mod, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast copy area"
         "$mod + CONTROL_L, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast --freeze copy area"
