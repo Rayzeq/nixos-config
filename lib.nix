@@ -46,6 +46,34 @@ let
           lib.mkMerge uniqueValues;
   };
 
+  targets = lib.mapAttrsToList (name: _: lib.removeSuffix ".nix" name) (lib.readDir ./targets);
+  hosts = lib.filter
+    (x: x != "")
+    (lib.uniqueStrings (map (name: lib.last (lib.split "@" name)) targets));
+  getUsers = host: lib.filter
+    (x: x != "")
+    (lib.uniqueStrings (map
+      (name:
+        let
+          pair = lib.split "@" name;
+          userHost = lib.last pair;
+        in
+        if userHost == host || userHost == "" then
+          lib.head pair
+        else
+          ""
+      )
+      targets
+    ));
+  getImportPaths = path:
+    if lib.pathExists (path + ".nix") then
+      [ (path + ".nix") ]
+    else if lib.pathExists path then
+      [ path ]
+    else
+      [ ]
+  ;
+
   getModules = folder:
     let
       modules = lib.concatLists (lib.mapAttrsToList
@@ -86,10 +114,11 @@ let
     getAttrIfUniq module.options 2;
 in
 {
-  nixosSystems = { nixpkgs, home-manager, modules ? [ ] }: lib.mapAttrs
-    (hostname: _: lib.nixosSystem {
+  nixosSystems = { nixpkgs, home-manager, modules ? [ ] }: lib.genAttrs hosts
+    (hostname: lib.nixosSystem {
+      specialArgs = { inherit nixpkgs home-manager; };
       modules = modules ++ [
-        ./hosts/${hostname}/hardware.nix
+        ./targets/${"@" + hostname}/hardware.nix
         ({ pkgs, config, ... }:
           let
             systemConfig = config;
@@ -130,20 +159,16 @@ in
                     hm.home.stateVersion = config.stateVersion.${username};
                   };
                 })
-                ./users/${username}.nix
-                ./hosts/${hostname}
               ]
+              ++ (getImportPaths ./targets/${username + "@"})
+              ++ (getImportPaths ./targets/${"@" + hostname})
+              ++ (getImportPaths ./targets/${username + "@" + hostname})
               ++ (getModules ./modules)
               ++ (getModules ./config);
             };
-            users = lib.mapAttrs'
-              (filename: _:
-                let
-                  username = lib.removeSuffix ".nix" filename;
-                in
-                lib.nameValuePair username (evalConfig username config.home-manager.users.${username})
-              )
-              (builtins.readDir ./users);
+            users = lib.genAttrs
+              (getUsers hostname)
+              (username: evalConfig username config.home-manager.users.${username});
           in
           {
             config = lib.mkMerge [
@@ -164,6 +189,5 @@ in
           }
         )
       ];
-    })
-    (builtins.readDir ./hosts);
+    });
 }
