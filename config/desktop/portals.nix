@@ -12,4 +12,7 @@
       ];
     };
   };
+  # Needed for gtk3 applications (notably sublime text) to use portals
+  # it's technically a debug flag but who cares
+  hm.systemd.user.sessionVariables.GTK_USE_PORTAL = "1";
 }
