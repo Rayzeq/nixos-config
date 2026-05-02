@@ -1,22 +1,6 @@
-{ pkgs, lib, ... }:
+{ lib, ... }:
 {
   home-manager.users.zacharie = { config, ... }: {
-    xdg.portal = {
-      enable = true;
-      extraPortals = with pkgs; [ xdg-desktop-portal-hyprland kdePackages.xdg-desktop-portal-kde ];
-      config = {
-        hyprland = {
-          default = [
-            "hyprland"
-            "kde"
-          ];
-          "org.freedesktop.impl.portal.Settings" = [
-            "darkman"
-          ];
-        };
-      };
-    };
-
     services.playerctld.enable = true;
     wayland.windowManager.hyprland = {
       settings = {
