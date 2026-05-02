@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, config, ... }: {
   packages = with pkgs; [
     file
 

@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{
   sublime-merge = {
     enable = true;
 

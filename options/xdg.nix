@@ -1,9 +1,7 @@
-{ home-manager, lib, config, hmConfig, ... }:
+{ lib, config, hmConfig, ... }:
 let
   inherit (lib) mkDefault mkOption types literalExpression hasPrefix;
   cfg = config.xdg;
-
-  xdgOptions = lib.getOptions "${home-manager}/modules/misc/xdg.nix";
 
   fileType =
     opt: basePathDesc: basePath:

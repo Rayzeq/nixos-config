@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ config, ... }:
 let
   background = config.globals.theme.overlay.background;
 in

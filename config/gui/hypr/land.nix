@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, config, ... }:
 let
   rofi-clipboard = pkgs.writeScript "rofi-clipboard" ''
     selection=$(${config.cliphist.package}/bin/cliphist list | ${config.rofi.command.clipboard})

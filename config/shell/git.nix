@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{
   git = {
     enable = true;
     settings = {

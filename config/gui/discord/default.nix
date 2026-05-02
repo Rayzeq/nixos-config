@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{
   discord = {
     enable = true;
 

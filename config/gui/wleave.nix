@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, config, ... }:
 let
   icons = "${pkgs.wleave}/share/wleave/icons";
 

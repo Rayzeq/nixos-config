@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, config, ... }: {
   swaylock = {
     enable = true;
     package = pkgs.swaylock-effects;

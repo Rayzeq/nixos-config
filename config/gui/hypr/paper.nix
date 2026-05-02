@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, config, ... }:
 let
   current = config.xdg.dataFile."wallpapers/current.png".target;
   light = config.xdg.dataFile."wallpapers/light.png".target;

@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{
   pam.u2f = {
     enable = true;
 

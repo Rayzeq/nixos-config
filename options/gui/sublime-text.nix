@@ -19,7 +19,7 @@ let
   userConfigDirectory = "${configDirectory}/User";
   jsonFormat = pkgs.formats.json { };
 
-  pluginOptions = types.submodule ({ ... }: {
+  pluginOptions = types.submodule {
     options = {
       managed = mkOption {
         type = types.bool;
@@ -52,8 +52,8 @@ let
         '';
       };
     };
-  });
-  snippetOptions = types.submodule ({ ... }: {
+  };
+  snippetOptions = types.submodule {
     options = {
       content = mkOption {
         type = types.str;
@@ -88,7 +88,7 @@ let
         '';
       };
     };
-  });
+  };
 in
 {
   options.sublime-text = {

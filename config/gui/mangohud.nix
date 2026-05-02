@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{
   mangohud = {
     enable = true;
 
