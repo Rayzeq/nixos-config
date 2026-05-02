@@ -1,30 +1,6 @@
 { pkgs, lib, ... }:
 {
   home-manager.users.zacharie = { config, ... }: {
-    gtk = {
-      enable = true;
-
-      font = {
-        name = "Noto Sans";
-        size = 10;
-      };
-      cursorTheme = {
-        name = "breeze_cursors";
-        size = 24;
-      };
-      iconTheme = {
-        package = pkgs.kdePackages.breeze-icons;
-        name = "breeze-dark";
-      };
-
-      gtk3.extraConfig = {
-        gtk-application-prefer-dark-theme = true;
-      };
-      gtk4.extraConfig = {
-        gtk-application-prefer-dark-theme = true;
-      };
-    };
-
     qt = {
       enable = true;
       platformTheme.name = "kde";
