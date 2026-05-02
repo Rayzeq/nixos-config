@@ -1,12 +1,6 @@
 { pkgs, lib, ... }:
 {
   home-manager.users.zacharie = { config, ... }: {
-    qt = {
-      enable = true;
-      platformTheme.name = "kde";
-      style.name = "Breeze";
-    };
-
     xdg.portal = {
       enable = true;
       extraPortals = with pkgs; [ xdg-desktop-portal-hyprland kdePackages.xdg-desktop-portal-kde ];
