@@ -90,7 +90,7 @@ let
     else if argType == "list" then
       lib.concatMap importRecursive arg
     else if argType == "set" then
-      imports: lib.filter (file: !(lib.elem file arg.exclude)) (importRecursive imports)
+      imports: lib.filter (file: !(lib.any (exclude: file == exclude || lib.path.hasPrefix exclude file) arg.exclude)) (importRecursive imports)
     else
       abort "Unsupported import type"
   ;

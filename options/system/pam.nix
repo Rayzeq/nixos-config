@@ -19,16 +19,16 @@ in
     };
   };
 
-  config.system = mkIf cfg.u2f.enable {
-    security.pam.u2f = {
+  config = mkIf cfg.u2f.enable {
+    system.security.pam.u2f = {
       enable = cfg.u2f.enable;
 
-      settings = {
-        cue = cfg.u2f.cue;
-        authfile = builtins.toFile "u2f_mappings" (lib.concatStringsSep "\n" (
-          lib.mapAttrsToList (user: ids: lib.concatStringsSep ":" ([ user ] ++ ids)) cfg.u2f.keys
-        ));
-      };
+      settings.cue = cfg.u2f.cue;
+    };
+    hm = mkIf (cfg.u2f.keys != { }) {
+      xdg.configFile."Yubico/u2f_keys".text = lib.concatStringsSep "\n" (
+        lib.mapAttrsToList (user: ids: lib.concatStringsSep ":" ([ user ] ++ ids)) cfg.u2f.keys
+      );
     };
   };
 }

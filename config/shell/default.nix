@@ -101,4 +101,5 @@
   lsd.enable = true;
   bat.enable = true;
   ripgrep.enable = true;
+  nh.enable = true;
 }

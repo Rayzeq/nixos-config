@@ -1,4 +1,6 @@
-{ config, username, ... }: {
+{ lib, config, username, ... }: {
+  imports = lib.import [ ../../config/system ];
+
   architecture = "x86_64-linux";
   stateVersion = {
     system = "23.05";
