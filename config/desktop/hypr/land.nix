@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, hmConfig, ... }:
 {
   hypr.land = {
     enable = true;
@@ -135,5 +135,12 @@
         "$mod, mouse:273, resizewindow"
       ];
     };
+  };
+  hm.wayland.windowManager.hyprland.settings = {
+    exec-once = [
+      "/mnt/Storage/Projects/tryfol/target/debug/tryfol && ( nm-applet & blueman-applet & discord --enable-features=UseOzonePlatform --ozone-platform=wayland --start-minimized & )"
+    ];
+
+    env = lib.mapAttrsToList (name: value: "${name},${toString value}") (hmConfig.systemd.user.sessionVariables // hmConfig.home.sessionVariables);
   };
 }
