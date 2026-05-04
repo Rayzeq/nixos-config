@@ -116,6 +116,18 @@ let
       };
     in
     getAttrIfUniq module.options 2;
+  deferOption = base: lib.mkOption
+    {
+      type = deferMerge;
+    }
+  // (lib.optionalAttrs (base ? apply) { apply = base.apply; })
+  // (lib.optionalAttrs (base ? default) { default = base.default; })
+  // (lib.optionalAttrs (base ? defaultText) { defaultText = base.defaultText; })
+  // (lib.optionalAttrs (base ? example) { example = base.example; })
+  // (lib.optionalAttrs (base ? description) { description = base.description; })
+  // (lib.optionalAttrs (base ? relatedPackages) { relatedPackages = base.relatedPackages; })
+  // (lib.optionalAttrs (base ? visible) { visible = base.visible; })
+  // (lib.optionalAttrs (base ? readOnly) { readOnly = base.readOnly; });
 in
 {
   nixosSystems = { nixpkgs, home-manager, modules ? [ ] }: lib.genAttrs hosts
@@ -130,7 +142,7 @@ in
             evalConfig = username: hmConfig: lib.evalModules {
               specialArgs = {
                 inherit nixpkgs home-manager pkgs systemConfig hmConfig hostname username;
-                lib = lib // { import = importRecursive; getOptions = getOptions pkgs; };
+                lib = lib // { import = importRecursive; getOptions = getOptions pkgs; defer = deferOption; };
               };
               modules = [
                 ({ config, ... }: {
