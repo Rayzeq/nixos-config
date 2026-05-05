@@ -119,7 +119,6 @@
     zip
   ];
 
-  programs.gamemode.enable = true;
   programs.kdeconnect.enable = true;
   services.ratbagd.enable = true;
   programs.steam = {
