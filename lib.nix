@@ -159,6 +159,12 @@ in
                       description = "Options to forward to Home Manager";
                     };
 
+                    user = lib.mkOption {
+                      type = deferMerge;
+                      default = { };
+                      description = "Options to forward to users.users.<username>";
+                    };
+
                     architecture = lib.mkOption {
                       type = lib.types.str;
                     };
@@ -171,6 +177,7 @@ in
                       nixpkgs.system = config.architecture;
                       system.stateVersion = config.stateVersion.system;
                       home-manager.useGlobalPkgs = true;
+                      users.users.${username} = config.user;
                     };
                     hm.home.stateVersion = config.stateVersion.${username};
                   };
