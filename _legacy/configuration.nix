@@ -80,7 +80,7 @@
   };
 
   users.users.zacharie = {
-    extraGroups = [ "networkmanager" "wheel" "input" "dialout" ];
+    extraGroups = [ "networkmanager" "wheel" "input" ];
     packages = with pkgs; [
       simple-scan
       vlc
