@@ -77,7 +77,7 @@
   };
 
   users.users.zacharie = {
-    extraGroups = [ "wheel" "input" ];
+    extraGroups = [ "input" ];
     packages = with pkgs; [
       simple-scan
       vlc

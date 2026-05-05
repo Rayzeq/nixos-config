@@ -4,6 +4,7 @@
   user = {
     isNormalUser = true;
     description = "Zacharie";
+    extraGroups = [ "wheel" ];
   };
 
   nh.osFlake = "/home/zacharie/.config/nixos";
