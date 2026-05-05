@@ -21,9 +21,6 @@
   # Firmware updates
   services.fwupd.enable = true;
 
-  # Enable networking
-  networking.networkmanager.enable = true;
-
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
 
@@ -80,7 +77,7 @@
   };
 
   users.users.zacharie = {
-    extraGroups = [ "networkmanager" "wheel" "input" ];
+    extraGroups = [ "wheel" "input" ];
     packages = with pkgs; [
       simple-scan
       vlc
@@ -108,7 +105,6 @@
       steam-run
     ];
   };
-  environment.etc."ppp/options".text = "ipcp-accept-remote";
 
   programs.nix-ld.enable = true;
 
