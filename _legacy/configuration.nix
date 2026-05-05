@@ -54,15 +54,6 @@
 
   hardware.graphics.enable32Bit = true;
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-  # Auto-discovery of printers
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-  };
-
   # Enable sound with pipewire.
   security.rtkit.enable = true;
   services.pipewire = {
