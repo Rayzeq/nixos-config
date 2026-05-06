@@ -82,11 +82,6 @@
 
       modrinth-app
       heroic
-      wineWow64Packages.full
-      winetricks
-
-      # Useful
-      steam-run
     ];
   };
 
