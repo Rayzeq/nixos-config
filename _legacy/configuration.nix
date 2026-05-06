@@ -72,12 +72,6 @@
     pulse.enable = true;
   };
 
-  users.users.zacharie = {
-    packages = with pkgs; [
-      python3
-    ];
-  };
-
   programs.nix-ld.enable = true;
 
   environment.systemPackages = with pkgs; [

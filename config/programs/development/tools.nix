@@ -5,6 +5,12 @@
     clang
     gdb
 
+    # Python
+    (python3.withPackages (ppkgs: with ppkgs; [
+      # commonly used, especially in throwaway scripts
+      requests
+    ]))
+
     # Rust
     rustup
 
