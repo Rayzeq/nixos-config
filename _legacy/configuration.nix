@@ -79,9 +79,6 @@
       gimp3-with-plugins
       inkscape-with-extensions
       blender
-
-      modrinth-app
-      heroic
     ];
   };
 
@@ -99,13 +96,6 @@
 
   programs.kdeconnect.enable = true;
   services.ratbagd.enable = true;
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    localNetworkGameTransfers.openFirewall = true;
-  };
-
 
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "zacharie" ];
