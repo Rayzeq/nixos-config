@@ -74,7 +74,6 @@
 
   users.users.zacharie = {
     packages = with pkgs; [
-      simple-scan
       vlc
       python3
       gimp3-with-plugins
