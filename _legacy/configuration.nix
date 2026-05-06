@@ -77,8 +77,6 @@
       vlc
       python3
       gimp3-with-plugins
-      inkscape-with-extensions
-      blender
     ];
   };
 
