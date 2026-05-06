@@ -12,6 +12,7 @@
     kdegraphics-thumbnailers
 
     # Apps & plugins
+    kcalc
     ark
     gwenview
     okular

@@ -95,7 +95,6 @@
   environment.systemPackages = with pkgs; [
     gparted
     trashy
-    kdePackages.kcalc
     unrar
     piper
     htop
