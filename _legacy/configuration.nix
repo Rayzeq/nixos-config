@@ -85,16 +85,6 @@
       wineWow64Packages.full
       winetricks
 
-      # Rust
-      rustup
-      cargo-generate
-      clang
-      # Build essentials
-      gnumake
-      gdb
-      # Other
-      jetbrains.idea
-
       # Useful
       steam-run
     ];
