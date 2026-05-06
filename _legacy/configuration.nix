@@ -74,9 +74,7 @@
 
   users.users.zacharie = {
     packages = with pkgs; [
-      vlc
       python3
-      gimp3-with-plugins
     ];
   };
 
