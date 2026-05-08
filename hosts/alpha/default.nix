@@ -14,4 +14,9 @@
       null
     else
       lib.warn "Remove this! stateVersion is high enough for this is not needed anymore" { };
+  hm.programs.firefox.configPath =
+    if hmConfig.home.stateVersion < "26.05" then
+      ".mozilla/firefox"
+    else
+      lib.warn "Remove this! stateVersion is high enough for this is not needed anymore" { };
 }
