@@ -7,4 +7,6 @@
     # needed to provide shell definitions for xterm-kitty
     ../../config/desktop/kitty.nix
   ];
+
+  hm.programs.firefox.enable = false;
 }
