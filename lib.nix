@@ -1,4 +1,4 @@
-lib:
+pkgs: lib:
 let
   deferMerge = lib.mkOptionType {
     name = "deferMerge";
@@ -46,33 +46,29 @@ let
           lib.mkMerge uniqueValues;
   };
 
-  targets = lib.mapAttrsToList (name: _: lib.removeSuffix ".nix" name) (lib.readDir ./targets);
-  hosts = lib.filter
-    (x: x != "")
-    (lib.uniqueStrings (map (name: lib.last (lib.split "@" name)) targets));
-  getUsers = host: lib.filter
-    (x: x != "")
-    (lib.uniqueStrings (map
-      (name:
+  readSymlink = path: lib.readFile (pkgs.runCommand "read-symlink" { inherit path; } ''
+    ${pkgs.coreutils}/bin/readlink "$path" > "$out"
+  '');
+  hosts = lib.attrNames (lib.readDir ./hosts);
+  getUsers = hostname:
+    map
+      (userModule:
         let
-          pair = lib.split "@" name;
-          userHost = lib.last pair;
+          username = lib.head (lib.split "\\." userModule);
+          hostFile = ./users/${username}/hosts/${hostname}.nix;
+          userFile = ./hosts/${hostname}/users/${username}.nix;
+          userFileTarget = "../../../users/${username}/hosts/${hostname}.nix";
+
+          hasHostFile = lib.pathIsRegularFile hostFile;
+          hasUserFile = lib.pathType userFile == "symlink" &&
+            lib.trim (readSymlink userFile) == userFileTarget;
         in
-        if userHost == host || userHost == "" then
-          lib.head pair
-        else
-          ""
-      )
-      targets
-    ));
-  getImportPaths = path:
-    if lib.pathExists (path + ".nix") then
-      [ (path + ".nix") ]
-    else if lib.pathExists path then
-      [ path ]
-    else
-      [ ]
-  ;
+        if !hasHostFile then
+          throw "${toString hostFile} should exist and be a normal file"
+        else if !hasUserFile then
+          throw "${toString userFile} should exist and be a symlink to ${userFileTarget}"
+        else username)
+      (lib.attrNames (lib.readDir ./hosts/${hostname}/users));
 
   importRecursive = arg:
     let
@@ -134,7 +130,7 @@ in
     (hostname: lib.nixosSystem {
       specialArgs = { inherit nixpkgs home-manager; };
       modules = modules ++ [
-        ./targets/${"@" + hostname}/hardware.nix
+        ./hosts/${hostname}/hardware.nix
         ({ pkgs, config, ... }:
           let
             systemConfig = config;
@@ -164,28 +160,18 @@ in
                       default = { };
                       description = "Options to forward to users.users.<username>";
                     };
-
-                    architecture = lib.mkOption {
-                      type = lib.types.str;
-                    };
-                    stateVersion = lib.mkOption {
-                      type = with lib.types; attrsOf str;
-                    };
                   };
                   config = {
                     system = {
-                      nixpkgs.system = config.architecture;
-                      system.stateVersion = config.stateVersion.system;
                       home-manager.useGlobalPkgs = true;
                       users.users.${username} = config.user;
                     };
-                    hm.home.stateVersion = config.stateVersion.${username};
                   };
                 })
+                ./hosts/${hostname}
+                ./users/${username}
+                ./users/${username}/hosts/${hostname}.nix
               ]
-              ++ (getImportPaths ./targets/${username + "@"})
-              ++ (getImportPaths ./targets/${"@" + hostname})
-              ++ (getImportPaths ./targets/${username + "@" + hostname})
               ++ (importRecursive ./options);
             };
             users = lib.genAttrs

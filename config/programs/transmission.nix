@@ -1,4 +1,4 @@
-{ pkgs, config, username, ... }:
+{ pkgs, hmConfig, ... }:
 let
   icon = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/transmission/transmission/main/icons/hicolor_apps_scalable_transmission.svg";
@@ -23,7 +23,7 @@ in
   system.services.transmission = {
     enable = true;
     package =
-      if config.stateVersion.${username} < "25.11" then
+      if hmConfig.home.stateVersion < "25.11" then
         pkgs.transmission_4
       else builtins.warn "Remove this! stateVersion is high enough for this is not needed anymore" { };
     webHome = pkgs.flood-for-transmission;

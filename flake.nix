@@ -13,7 +13,7 @@
 
   outputs = { nixpkgs, home-manager, nix-index-database, ... }:
     let
-      lib = import ./lib.nix nixpkgs.lib;
+      lib = import ./lib.nix nixpkgs.legacyPackages.x86_64-linux nixpkgs.lib;
     in
     {
       nixosConfigurations = lib.nixosSystems {
