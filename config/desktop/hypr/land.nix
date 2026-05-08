@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 let
   rofi-clipboard = pkgs.writeScript "rofi-clipboard" ''
     selection=$(${config.cliphist.package}/bin/cliphist list | ${config.rofi.command.clipboard})
@@ -109,7 +109,6 @@ in
         "$mod + SHIFT, F, exec, ${pkgs.firefox}/bin/firefox -private-window"
 
         "$mod, K, exec, ${config.kitty.package}/bin/kitty"
-        "$mod, D, exec, ${config.discord.finalPackage}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland"
         "$mod, E, exec, ${pkgs.kdePackages.dolphin}/bin/dolphin"
 
         "$mod, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast copy area"
@@ -118,7 +117,11 @@ in
 
         ", XF86AudioMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_SINK@ toggle"
         ", XF86AudioMicMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_SOURCE@ toggle"
-      ];
+      ] ++ (
+        lib.optional
+          config.discord.enable
+          "$mod, D, exec, ${config.discord.finalPackage}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland"
+      );
       bindle = [
         ", XF86AudioLowerVolume, exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_SINK@ 1%-"
         ", XF86AudioRaiseVolume, exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_SINK@ 1%+"
