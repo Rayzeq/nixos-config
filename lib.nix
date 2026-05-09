@@ -126,9 +126,9 @@ let
   // (lib.optionalAttrs (base ? readOnly) { readOnly = base.readOnly; });
 in
 {
-  nixosSystems = { nixpkgs, home-manager, modules ? [ ] }: lib.genAttrs hosts
+  nixosSystems = { specialArgs ? { }, modules ? [ ] }: lib.genAttrs hosts
     (hostname: lib.nixosSystem {
-      specialArgs = { inherit nixpkgs home-manager; };
+      inherit specialArgs;
       modules = modules ++ [
         ./hosts/${hostname}/hardware.nix
         ({ pkgs, config, ... }:
@@ -137,9 +137,9 @@ in
 
             evalConfig = username: hmConfig: lib.evalModules {
               specialArgs = {
-                inherit nixpkgs home-manager pkgs systemConfig hmConfig hostname username;
+                inherit pkgs systemConfig hmConfig hostname username;
                 lib = lib // { import = importRecursive; getOptions = getOptions pkgs; defer = deferOption; };
-              };
+              } // specialArgs;
               modules = [
                 ({ config, ... }: {
                   options = {

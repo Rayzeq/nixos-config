@@ -17,7 +17,7 @@
     in
     {
       nixosConfigurations = lib.nixosSystems {
-        inherit nixpkgs home-manager;
+        specialArgs = { inherit nixpkgs home-manager; };
         modules = [
           home-manager.nixosModules.home-manager
           nix-index-database.nixosModules.default
