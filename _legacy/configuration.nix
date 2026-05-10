@@ -89,5 +89,5 @@
 
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "zacharie" ];
-  systemd.coredump.extraConfig = "Storage=none";
+  systemd.coredump.settings.Coredump.Storage = "none";
 }
