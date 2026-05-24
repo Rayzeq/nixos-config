@@ -130,11 +130,18 @@
       };
       LanguageServers = {
         managed = false;
-        settings.nixd = {
-          enabled = true;
-          command = [ "${pkgs.nixd}/bin/nixd" ];
-          selector = "source.nix";
-          settings.nixd.formatting.command = [ "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt" ];
+        settings = {
+          nixd = {
+            enabled = true;
+            command = [ "${pkgs.nixd}/bin/nixd" ];
+            selector = "source.nix";
+            settings.nixd.formatting.command = [ "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt" ];
+          };
+          qmlls = {
+            enabled = true;
+            command = [ "${pkgs.kdePackages.qtdeclarative}/bin/qmlls" ];
+            selector = "source.qml";
+          };
         };
       };
       LSP-bash = { };
@@ -215,6 +222,7 @@
       Sass = { };
       FileIcons = { };
       MoveTab = { };
+      QML = { };
       HTML = {
         managed = false;
         settings.extensions = [ "hbs" ];
