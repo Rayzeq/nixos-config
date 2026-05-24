@@ -79,7 +79,7 @@ let
       if fileType == "directory" then
         lib.concatLists
           (lib.mapAttrsToList (name: _: importRecursive (arg + "/${name}")) (lib.readDir arg))
-      else if fileType == "regular" && lib.hasSuffix ".nix" arg then
+      else if fileType == "regular" && lib.hasSuffix ".nix" arg && !(baseNameOf arg == "shell.nix") then
         [ arg ]
       else
         [ ]
