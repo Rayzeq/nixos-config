@@ -11,7 +11,7 @@
         position = "middle-left";
         round_corners = 10;
         font_size = 20;
-        blacklist = "";
+        blacklist = "mpv";
       }
       {
         text_color = "FFFFFF";
