@@ -20,6 +20,9 @@
     dolphin-plugins
     ffmpegthumbs
     skanpage
+
+    # provides kfontview
+    plasma-workspace
   ];
   system.environment.systemPackages = [ pkgs.kdePackages.kio-admin ];
 }
