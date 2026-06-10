@@ -1,8 +1,11 @@
 { pkgs, ... }: {
   hm.programs.quickshell = {
     enable = true;
-    configs.lockscreen = pkgs.stdenv.mkDerivation {
-      name = "lockscreen";
+
+    systemd.enable = true;
+    activeConfig = "shell";
+    configs.shell = pkgs.stdenv.mkDerivation {
+      name = "shell";
       src = ./.;
       buildInputs = with pkgs; [
         rsync
@@ -20,7 +23,7 @@
         mkdir -p $out/
         mkdir -p $out/assets/image/
         cp ${../hypr/wallpapers/light.png} $out/assets/image/background.png
-        rsync -r --exclude '*.frag' --exclude '*.nix' --exclude .envrc --exclude test.qml . $out/
+        rsync -r --exclude '*.frag' --exclude '*.nix' --exclude .envrc . $out/
       '';
     };
   };

@@ -4,7 +4,7 @@
 
     inhibit-sleep = "lock-notify";
     events = {
-      lock = "${pkgs.quickshell}/bin/quickshell -c lockscreen";
+      lock = "${pkgs.quickshell}/bin/quickshell -c shell ipc call shell lock && ${pkgs.quickshell}/bin/quickshell -c shell ipc wait shell lockSecure";
       before-sleep = "${pkgs.systemd}/bin/loginctl lock-session";
       after-sleep = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
     };
