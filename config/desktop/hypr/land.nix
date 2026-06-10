@@ -70,7 +70,7 @@ in
       windowrule = [
         "match:class .*, idle_inhibit fullscreen"
         "match:class org.freedesktop.impl.portal.desktop.kde, float on"
-        "match:initial_title Picture-in-Picture, float on, pin on"
+        "match:initial_title Picture-in-Picture, float on, pin on, focus_on_activate off"
       ];
 
       layerrule = [
