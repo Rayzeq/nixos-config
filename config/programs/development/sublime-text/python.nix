@@ -20,10 +20,7 @@
               "CPY"
             ];
           };
-          format = {
-            nested-string-quote-style = "preferred";
-            skip-magic-trailing-comma = true;
-          };
+          format.nested-string-quote-style = "preferred";
         };
       };
       LSP-ty = { };
