@@ -22,12 +22,6 @@ in
         show-icons = true;
         terminal = "kitty";
       };
-      clipboard = {
-        show = "dmenu";
-
-        display-columns = 2;
-        p = "Clipboard";
-      };
     };
 
     theme = {

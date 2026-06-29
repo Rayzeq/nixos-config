@@ -24,17 +24,54 @@ let
       quickshell_pid=$!
     done
   '';
+
+  quickshellWrapper = pkgs.quickshell.stdenv.mkDerivation
+    {
+      inherit (pkgs.quickshell) version meta buildInputs;
+      pname = "${pkgs.quickshell.pname}-wrapped";
+
+      nativeBuildInputs = pkgs.quickshell.nativeBuildInputs ++ [ pkgs.qt6.wrapQtAppsHook ];
+
+      dontUnpack = true;
+      dontConfigure = true;
+      dontBuild = true;
+
+      installPhase = ''
+        mkdir -p $out
+        cp -r ${pkgs.quickshell}/* $out
+      '';
+
+      passthru = {
+        unwrapped = pkgs.quickshell;
+        withModules = modules: quickshellWrapper.overrideAttrs (prev: {
+          buildInputs = prev.buildInputs ++ modules;
+        });
+      };
+    };
+
+  rustExtensions = import ./rust { inherit pkgs; };
+  qmlModules = with pkgs; [
+    qt6.qtdeclarative
+    quickshell
+    kdePackages.kirigami.unwrapped
+    rustExtensions
+  ];
+  qmlImportPath = pkgs.lib.makeSearchPath "lib/qt-6/qml" qmlModules;
 in
 pkgs.mkShell {
+  inputsFrom = [ rustExtensions ];
+
   packages = with pkgs; [
-    quickshell
-    kdePackages.qtdeclarative
+    (quickshellWrapper.withModules [ kdePackages.kirigami rustExtensions ])
     inotify-tools
+    shaderWatch
+    rust-analyzer
+    clippy
   ];
-  shellHook = ''
-    # Required for qmlls to find the correct type declarations
-    export QMLLS_BUILD_DIRS=${pkgs.kdePackages.qtdeclarative}/lib/qt-6/qml/:${pkgs.quickshell}/lib/qt-6/qml/
-    export QML_IMPORT_PATH=$PWD/src
-    export PATH=$PATH:${shaderWatch}/bin
-  '';
+
+  env = {
+    QMLLS_BUILD_DIRS = qmlImportPath;
+    QT_LOGGING_RULES = "qt.qml.usedbeforedeclared.warning=false";
+    RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
+  };
 }

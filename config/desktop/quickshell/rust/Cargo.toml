@@ -1,0 +1,27 @@
+[package]
+name = "rust_extensions"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+anyhow = "1.0.102"
+base64 = "0.22.1"
+cxx = "1.0.95"
+cxx-qt = "0.8"
+cxx-qt-lib = { version="0.8", features = ["qt_full"] }
+magika = "1.1.0"
+ort = { version = "2.0.0-rc.12", default-features = false, features = ["ndarray", "pkg-config"] }
+regex = "1.12.4"
+reqwest = { version = "0.13.4", features = ["blocking"] }
+syntect = { version = "5.3.0", default-features = false, features = ["parsing", "default-syntaxes", "default-themes", "html", "regex-fancy"] }
+unindent = "0.2.4"
+url = "2.5.8"
+wayland-client = "0.31.14"
+wayland-protocols = { version = "0.32.13", features = ["client", "staging"] }
+wl-clipboard-rs = "0.9.3"
+
+[build-dependencies]
+cxx-qt-build = "0.8"

@@ -1,0 +1,4 @@
+QT_PLUGIN_META {
+  global:
+    qt_plugin_instance;
+};

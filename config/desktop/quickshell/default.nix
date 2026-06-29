@@ -1,6 +1,29 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+let
+  quickshell = pkgs.quickshell.stdenv.mkDerivation {
+    inherit (pkgs.quickshell) version meta;
+    pname = "${pkgs.quickshell.pname}-wrapped";
+
+    nativeBuildInputs = pkgs.quickshell.nativeBuildInputs ++ [ pkgs.qt6.wrapQtAppsHook ];
+    buildInputs = pkgs.quickshell.buildInputs ++ [
+      pkgs.kdePackages.kirigami
+      (import ./rust { inherit pkgs; })
+    ];
+
+    dontUnpack = true;
+    dontConfigure = true;
+    dontBuild = true;
+
+    installPhase = ''
+      mkdir -p $out
+      cp -r ${pkgs.quickshell}/* $out
+    '';
+  };
+in
+{
   hm.programs.quickshell = {
     enable = true;
+    package = quickshell;
 
     systemd.enable = true;
     activeConfig = "shell";
@@ -28,4 +51,8 @@
     };
   };
   system.security.pam.services.quickshell = { };
+
+  hypr.land.settings.bindr = [
+    "$mod, V, exec, ${quickshell}/bin/quickshell -c shell ipc call shell openClipboard"
+  ];
 }

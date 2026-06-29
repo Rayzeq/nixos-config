@@ -1,12 +1,4 @@
 { pkgs, lib, config, ... }:
-let
-  rofi-clipboard = pkgs.writeScript "rofi-clipboard" ''
-    selection=$(${config.cliphist.package}/bin/cliphist list | ${config.rofi.command.clipboard})
-    if [ ! -z "$selection" ]; then
-      printf "$selection" | ${config.cliphist.package}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy
-    fi 
-  '';
-in
 {
   hypr.land = {
     enable = true;
@@ -74,7 +66,7 @@ in
       ];
 
       layerrule = [
-        "match:namespace rofi|swaync-notification-window|wleave, blur on, ignore_alpha 0"
+        "match:namespace rofi|swaync-notification-window|wleave|quickshell, blur on, ignore_alpha 0"
 
         "match:namespace selection, no_anim on"
       ];
@@ -136,8 +128,6 @@ in
       ];
       bindr = [
         "$mod, SUPER_L, exec, ${pkgs.procps}/bin/pkill -x rofi || ${config.rofi.command.launcher}"
-        "$mod, V, exec, ${rofi-clipboard}"
-
         "$mod, L, exec, ${pkgs.procps}/bin/pkill -x .wleave-wrapped || ${config.wleave.package}/bin/wleave"
       ];
       bindm = [

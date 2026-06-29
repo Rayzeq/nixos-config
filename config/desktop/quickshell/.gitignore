@@ -1,0 +1,5 @@
+.direnv/
+*.qsb
+
+/rust/.qmlls.ini
+/rust/target/

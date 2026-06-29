@@ -77,9 +77,15 @@ let
     in
     if argType == "path" then
       if fileType == "directory" then
+        let
+          dirContent = lib.readDir arg;
+          excludes =
+            if dirContent ? ".noimport" then
+              lib.split "\n" (lib.readFile (arg + "/.noimport")) else [ ];
+        in
         lib.concatLists
-          (lib.mapAttrsToList (name: _: importRecursive (arg + "/${name}")) (lib.readDir arg))
-      else if fileType == "regular" && lib.hasSuffix ".nix" arg && !(baseNameOf arg == "shell.nix") then
+          (lib.mapAttrsToList (name: _: importRecursive (arg + "/${name}")) (lib.filterAttrs (name: _: !(lib.elem name excludes)) dirContent))
+      else if fileType == "regular" && lib.hasSuffix ".nix" arg then
         [ arg ]
       else
         [ ]
