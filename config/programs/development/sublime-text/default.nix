@@ -11,7 +11,6 @@
       ignored_packages = [ "Vintage" ];
       relative_line_numbers = true;
       index_files = true;
-      "disable_plugin_host_3.3" = true;
     };
     font = builtins.head config.fonts.monospace;
     keymap = [
