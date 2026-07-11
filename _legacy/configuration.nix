@@ -87,7 +87,5 @@
   programs.kdeconnect.enable = true;
   services.ratbagd.enable = true;
 
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "zacharie" ];
   systemd.coredump.settings.Coredump.Storage = "none";
 }
