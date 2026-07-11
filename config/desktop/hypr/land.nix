@@ -71,48 +71,47 @@
         "match:namespace selection, no_anim on"
       ];
 
-      "$mod" = "SUPER";
       bind = [
-        "$mod, F4, killactive"
-        "$mod, W, togglefloating"
-        "$mod, X, pin"
-        "$mod, PRIOR, fullscreen, 1"
-        "$mod + SHIFT, PRIOR, fullscreen, 0"
-        "$mod, KP_End, movetoworkspace, 1"
-        "$mod, KP_Down, movetoworkspace, 2"
-        "$mod, KP_Next, movetoworkspace, 3"
-        "$mod, KP_Left, movetoworkspace, 4"
-        "$mod, KP_Begin, movetoworkspace, 5"
-        "$mod, KP_Right, movetoworkspace, 6"
-        "$mod, KP_Home, movetoworkspace, 7"
-        "$mod, KP_Up, movetoworkspace, 8"
-        "$mod, KP_Prior, movetoworkspace, 9"
-        "$mod + ALT_L + CONTROL_L, LEFT, movetoworkspace, -1"
-        "$mod + ALT_L + CONTROL_L, RIGHT, movetoworkspace, +1"
+        "SUPER, F4, killactive"
+        "SUPER, W, togglefloating"
+        "SUPER, X, pin"
+        "SUPER, PRIOR, fullscreen, 1"
+        "SUPER + SHIFT, PRIOR, fullscreen, 0"
+        "SUPER, KP_End, movetoworkspace, 1"
+        "SUPER, KP_Down, movetoworkspace, 2"
+        "SUPER, KP_Next, movetoworkspace, 3"
+        "SUPER, KP_Left, movetoworkspace, 4"
+        "SUPER, KP_Begin, movetoworkspace, 5"
+        "SUPER, KP_Right, movetoworkspace, 6"
+        "SUPER, KP_Home, movetoworkspace, 7"
+        "SUPER, KP_Up, movetoworkspace, 8"
+        "SUPER, KP_Prior, movetoworkspace, 9"
+        "SUPER + ALT_L + CONTROL_L, LEFT, movetoworkspace, -1"
+        "SUPER + ALT_L + CONTROL_L, RIGHT, movetoworkspace, +1"
 
-        "$mod + ALT_L, LEFT, workspace, -1"
-        "$mod + ALT_L, RIGHT, workspace, +1"
+        "SUPER + ALT_L, LEFT, workspace, -1"
+        "SUPER + ALT_L, RIGHT, workspace, +1"
 
-        "$mod, S, exec, ${config.sublime-text.package}/bin/subl"
-        "$mod + SHIFT, S, exec, ${config.kitty.package}/bin/kitty sudo -EH ${config.sublime-text.package}/bin/subl"
-        "$mod + CONTROL_L, S, exec, ${config.sublime-text.package}/bin/subl --new-window"
+        "SUPER, S, exec, ${config.sublime-text.package}/bin/subl"
+        "SUPER + SHIFT, S, exec, ${config.kitty.package}/bin/kitty sudo -EH ${config.sublime-text.package}/bin/subl"
+        "SUPER + CONTROL_L, S, exec, ${config.sublime-text.package}/bin/subl --new-window"
 
-        "$mod, F, exec, ${pkgs.firefox}/bin/firefox"
-        "$mod + SHIFT, F, exec, ${pkgs.firefox}/bin/firefox -private-window"
+        "SUPER, F, exec, ${pkgs.firefox}/bin/firefox"
+        "SUPER + SHIFT, F, exec, ${pkgs.firefox}/bin/firefox -private-window"
 
-        "$mod, K, exec, ${config.kitty.package}/bin/kitty"
-        "$mod, E, exec, ${pkgs.kdePackages.dolphin}/bin/dolphin"
+        "SUPER, K, exec, ${config.kitty.package}/bin/kitty"
+        "SUPER, E, exec, ${pkgs.kdePackages.dolphin}/bin/dolphin"
 
-        "$mod, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast copy area"
-        "$mod + CONTROL_L, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast --freeze copy area"
-        "$mod + SHIFT, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast copy screen"
+        "SUPER, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast copy area"
+        "SUPER + CONTROL_L, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast --freeze copy area"
+        "SUPER + SHIFT, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast copy screen"
 
         ", XF86AudioMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_SINK@ toggle"
         ", XF86AudioMicMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_SOURCE@ toggle"
       ] ++ (
         lib.optional
           config.discord.enable
-          "$mod, D, exec, ${config.discord.finalPackage}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland"
+          "SUPER, D, exec, ${config.discord.finalPackage}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland"
       );
       bindle = [
         ", XF86AudioLowerVolume, exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_SINK@ 1%-"
@@ -127,12 +126,12 @@
         ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
       ];
       bindr = [
-        "$mod, SUPER_L, exec, ${pkgs.procps}/bin/pkill -x rofi || ${config.rofi.command.launcher}"
-        "$mod, L, exec, ${pkgs.procps}/bin/pkill -x .wleave-wrapped || ${config.wleave.package}/bin/wleave"
+        "SUPER, SUPER_L, exec, ${pkgs.procps}/bin/pkill -x rofi || ${config.rofi.command.launcher}"
+        "SUPER, L, exec, ${pkgs.procps}/bin/pkill -x .wleave-wrapped || ${config.wleave.package}/bin/wleave"
       ];
       bindm = [
-        "$mod, mouse:272, movewindow"
-        "$mod, mouse:273, resizewindow"
+        "SUPER, mouse:272, movewindow"
+        "SUPER, mouse:273, resizewindow"
       ];
     };
   };

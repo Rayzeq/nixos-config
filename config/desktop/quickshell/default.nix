@@ -53,6 +53,6 @@ in
   system.security.pam.services.quickshell = { };
 
   hypr.land.settings.bindr = [
-    "$mod, V, exec, ${quickshell}/bin/quickshell -c shell ipc call shell openClipboard"
+    "SUPER, V, exec, ${quickshell}/bin/quickshell -c shell ipc call shell openClipboard"
   ];
 }
