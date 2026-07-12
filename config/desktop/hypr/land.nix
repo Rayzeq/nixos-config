@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, hmConfig, ... }:
 {
   hypr.land = {
     enable = true;
@@ -131,5 +131,17 @@
         { leaf = "specialWorkspace"; enabled = true; speed = 10; bezier = "default"; style = "fade"; }
       ];
     };
+  };
+  hm.wayland.windowManager.hyprland.settings = {
+    on = {
+      _args = [
+        "hyprland.start"
+        (lib.generators.mkLuaInline ''function ()
+          hl.exec_cmd("/mnt/Storage/Projects/tryfol/target/debug/tryfol && ( nm-applet & blueman-applet & discord --enable-features=UseOzonePlatform --ozone-platform=wayland --start-minimized & )")
+        end'')
+      ];
+    };
+
+    env = lib.mapAttrsToList (name: value: { _args = [ name "${toString value}" ]; }) (hmConfig.systemd.user.sessionVariables // hmConfig.home.sessionVariables);
   };
 }
