@@ -82,15 +82,15 @@
         [ "SUPER + KP_Home" (window.move.workspace 7) ]
         [ "SUPER + KP_Up" (window.move.workspace 8) ]
         [ "SUPER + KP_Prior" (window.move.workspace 9) ]
-        [ "SUPER + ALT_L + CONTROL_L + LEFT" (window.move.workspace "r-1") ]
-        [ "SUPER + ALT_L + CONTROL_L + RIGHT" (window.move.workspace "r+1") ]
+        [ "SUPER + ALT + CONTROL + LEFT" (window.move.workspace "r-1") ]
+        [ "SUPER + ALT + CONTROL + RIGHT" (window.move.workspace "r+1") ]
 
-        [ "SUPER + ALT_L + LEFT" (focus.workspace "r-1") ]
-        [ "SUPER + ALT_L + RIGHT" (focus.workspace "r+1") ]
+        [ "SUPER + ALT + LEFT" (focus.workspace "r-1") ]
+        [ "SUPER + ALT + RIGHT" (focus.workspace "r+1") ]
 
         [ "SUPER + S" (exec "${config.sublime-text.package}/bin/subl") ]
         [ "SUPER + SHIFT + S" (exec "${config.kitty.package}/bin/kitty sudo -EH ${config.sublime-text.package}/bin/subl") ]
-        [ "SUPER + CONTROL_L + S" (exec "${config.sublime-text.package}/bin/subl --new-window") ]
+        [ "SUPER + CONTROL + S" (exec "${config.sublime-text.package}/bin/subl --new-window") ]
 
         [ "SUPER + F" (exec "${pkgs.firefox}/bin/firefox") ]
         [ "SUPER + SHIFT + F" (exec "${pkgs.firefox}/bin/firefox -private-window") ]
@@ -99,7 +99,7 @@
         [ "SUPER + E" (exec "${pkgs.kdePackages.dolphin}/bin/dolphin") ]
 
         [ "SUPER + MULTI_KEY" (exec "${pkgs.grimblast}/bin/grimblast copy area") ]
-        [ "SUPER + CONTROL_L + MULTI_KEY" (exec "${pkgs.grimblast}/bin/grimblast --freeze copy area") ]
+        [ "SUPER + CONTROL + MULTI_KEY" (exec "${pkgs.grimblast}/bin/grimblast --freeze copy area") ]
         [ "SUPER + SHIFT + MULTI_KEY" (exec "${pkgs.grimblast}/bin/grimblast copy screen") ]
 
         [ "SUPER + SUPER_L" (exec "${pkgs.procps}/bin/pkill -x rofi || ${config.rofi.command.launcher}") { release = true; } ]
