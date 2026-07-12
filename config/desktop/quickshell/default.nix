@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   quickshell = pkgs.quickshell.stdenv.mkDerivation {
     inherit (pkgs.quickshell) version meta;
@@ -52,7 +52,7 @@ in
   };
   system.security.pam.services.quickshell = { };
 
-  hypr.land.settings.bindr = [
-    "SUPER, V, exec, ${quickshell}/bin/quickshell -c shell ipc call shell openClipboard"
+  hypr.land.settings.bind = with config.lib.hyprland.dispatchers; [
+    [ "SUPER + V" (exec "${quickshell}/bin/quickshell -c shell ipc call shell openClipboard") { release = true; } ]
   ];
 }

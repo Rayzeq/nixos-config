@@ -4,21 +4,18 @@
     enable = true;
 
     settings = {
-      # primary monitor is in per-host config
-      monitor = [ ", preferred, auto, 1" ];
-
       general = {
         gaps_in = 0;
         gaps_out = 0;
-        "col.active_border" = "rgba(ff00ffee) rgba(00ff99ee) 45deg";
+        col.active_border = { colors = [ "rgba(ff00ffee)" "rgba(00ff99ee)" ]; angle = 45; };
       };
 
-      misc = {
-        disable_hyprland_logo = true;
-        disable_splash_rendering = true;
-        key_press_enables_dpms = true;
-        focus_on_activate = true;
-        allow_session_lock_restore = true;
+      decoration = {
+        rounding = 10;
+        blur = {
+          passes = 3;
+          size = 5;
+        };
       };
 
       input = {
@@ -36,13 +33,13 @@
           natural_scroll = true;
         };
       };
-      device = {
-        name = "synps/2-synaptics-touchpad";
-        sensitivity = 0;
-      };
 
       gesture = [
-        "3, horizontal, workspace"
+        {
+          fingers = 3;
+          direction = "horizontal";
+          action = "workspace";
+        }
       ];
 
       gestures = {
@@ -51,87 +48,84 @@
         workspace_swipe_forever = true;
       };
 
-      decoration = {
-        rounding = 10;
-        blur = {
-          passes = 3;
-          size = 5;
-        };
+      misc = {
+        disable_hyprland_logo = true;
+        disable_splash_rendering = true;
+        key_press_enables_dpms = true;
+        focus_on_activate = true;
+        allow_session_lock_restore = true;
       };
 
-      windowrule = [
-        "match:class .*, idle_inhibit fullscreen"
-        "match:class org.freedesktop.impl.portal.desktop.kde, float on"
-        "match:initial_title Picture-in-Picture, float on, pin on, focus_on_activate off"
+      ecosystem = {
+        no_update_news = true;
+        no_donation_nag = true;
+      };
+
+      # primary monitor is in per-host config
+      monitor = [{ output = ""; mode = "preferred"; position = "auto"; scale = 1; }];
+
+      bind = with config.lib.hyprland.dispatchers; [
+        [ "SUPER + mouse:272" window.drag ]
+        [ "SUPER + mouse:273" window.resize ]
+        [ "SUPER + F4" window.close ]
+        [ "SUPER + W" (window.float "toggle") ]
+        [ "SUPER + X" (window.pin "toggle") ]
+        [ "SUPER + PRIOR" (window.fullscreen "maximized" "toggle") ]
+        [ "SUPER + SHIFT + PRIOR" (window.fullscreen "fullscreen" "toggle") ]
+
+        [ "SUPER + KP_End" (window.move.workspace 1) ]
+        [ "SUPER + KP_Down" (window.move.workspace 2) ]
+        [ "SUPER + KP_Next" (window.move.workspace 3) ]
+        [ "SUPER + KP_Left" (window.move.workspace 4) ]
+        [ "SUPER + KP_Begin" (window.move.workspace 5) ]
+        [ "SUPER + KP_Right" (window.move.workspace 6) ]
+        [ "SUPER + KP_Home" (window.move.workspace 7) ]
+        [ "SUPER + KP_Up" (window.move.workspace 8) ]
+        [ "SUPER + KP_Prior" (window.move.workspace 9) ]
+        [ "SUPER + ALT_L + CONTROL_L + LEFT" (window.move.workspace "-1") ]
+        [ "SUPER + ALT_L + CONTROL_L + RIGHT" (window.move.workspace "+1") ]
+
+        [ "SUPER + ALT_L + LEFT" (focus.workspace "-1") ]
+        [ "SUPER + ALT_L + RIGHT" (focus.workspace "+1") ]
+
+        [ "SUPER + S" (exec "${config.sublime-text.package}/bin/subl") ]
+        [ "SUPER + SHIFT + S" (exec "${config.kitty.package}/bin/kitty sudo -EH ${config.sublime-text.package}/bin/subl") ]
+        [ "SUPER + CONTROL_L + S" (exec "${config.sublime-text.package}/bin/subl --new-window") ]
+
+        [ "SUPER + F" (exec "${pkgs.firefox}/bin/firefox") ]
+        [ "SUPER + SHIFT + F" (exec "${pkgs.firefox}/bin/firefox -private-window") ]
+
+        [ "SUPER + K" (exec "${config.kitty.package}/bin/kitty") ]
+        [ "SUPER + E" (exec "${pkgs.kdePackages.dolphin}/bin/dolphin") ]
+
+        [ "SUPER + MULTI_KEY" (exec "${pkgs.grimblast}/bin/grimblast copy area") ]
+        [ "SUPER + CONTROL_L + MULTI_KEY" (exec "${pkgs.grimblast}/bin/grimblast --freeze copy area") ]
+        [ "SUPER + SHIFT + MULTI_KEY" (exec "${pkgs.grimblast}/bin/grimblast copy screen") ]
+
+        [ "SUPER + SUPER_L" (exec "${pkgs.procps}/bin/pkill -x rofi || ${config.rofi.command.launcher}") { release = true; } ]
+        [ "SUPER + L" (exec "${pkgs.procps}/bin/pkill -x .wleave-wrapped || ${config.wleave.package}/bin/wleave") { release = true; } ]
+
+        [ "XF86AudioMute" (exec "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_SINK@ toggle") ]
+        [ "XF86AudioMicMute" (exec "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_SOURCE@ toggle") ]
+        [ "XF86AudioPause" (exec "${pkgs.playerctl}/bin/playerctl play-pause") { locked = true; } ]
+        [ "XF86AudioPlay" (exec "${pkgs.playerctl}/bin/playerctl play-pause") { locked = true; } ]
+        [ "XF86AudioNext" (exec "${pkgs.playerctl}/bin/playerctl next") { locked = true; } ]
+        [ "XF86AudioPrev" (exec "${pkgs.playerctl}/bin/playerctl previous") { locked = true; } ]
+        [ "XF86AudioLowerVolume" (exec "${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_SINK@ 1%-") { locked = true; repeating = true; } ]
+        [ "XF86AudioRaiseVolume" (exec "${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_SINK@ 1%+") { locked = true; repeating = true; } ]
+        [ "XF86MonBrightnessDown" (exec "${pkgs.brightnessctl}/bin/brightnessctl set 5%-") { locked = true; repeating = true; } ]
+        [ "XF86MonBrightnessUp" (exec "${pkgs.brightnessctl}/bin/brightnessctl set +5%") { locked = true; repeating = true; } ]
       ];
 
-      layerrule = [
-        "match:namespace rofi|swaync-notification-window|wleave|quickshell, blur on, ignore_alpha 0"
-
-        "match:namespace selection, no_anim on"
+      window_rule = [
+        { match.class = ".*"; idle_inhibit = "fullscreen"; }
+        { match.class = "org.freedesktop.impl.portal.desktop.kde"; float = true; }
+        { match.initial_title = "Picture-in-Picture"; float = true; pin = true; focus_on_activate = false; }
       ];
 
-      bind = [
-        "SUPER, F4, killactive"
-        "SUPER, W, togglefloating"
-        "SUPER, X, pin"
-        "SUPER, PRIOR, fullscreen, 1"
-        "SUPER + SHIFT, PRIOR, fullscreen, 0"
-        "SUPER, KP_End, movetoworkspace, 1"
-        "SUPER, KP_Down, movetoworkspace, 2"
-        "SUPER, KP_Next, movetoworkspace, 3"
-        "SUPER, KP_Left, movetoworkspace, 4"
-        "SUPER, KP_Begin, movetoworkspace, 5"
-        "SUPER, KP_Right, movetoworkspace, 6"
-        "SUPER, KP_Home, movetoworkspace, 7"
-        "SUPER, KP_Up, movetoworkspace, 8"
-        "SUPER, KP_Prior, movetoworkspace, 9"
-        "SUPER + ALT_L + CONTROL_L, LEFT, movetoworkspace, -1"
-        "SUPER + ALT_L + CONTROL_L, RIGHT, movetoworkspace, +1"
-
-        "SUPER + ALT_L, LEFT, workspace, -1"
-        "SUPER + ALT_L, RIGHT, workspace, +1"
-
-        "SUPER, S, exec, ${config.sublime-text.package}/bin/subl"
-        "SUPER + SHIFT, S, exec, ${config.kitty.package}/bin/kitty sudo -EH ${config.sublime-text.package}/bin/subl"
-        "SUPER + CONTROL_L, S, exec, ${config.sublime-text.package}/bin/subl --new-window"
-
-        "SUPER, F, exec, ${pkgs.firefox}/bin/firefox"
-        "SUPER + SHIFT, F, exec, ${pkgs.firefox}/bin/firefox -private-window"
-
-        "SUPER, K, exec, ${config.kitty.package}/bin/kitty"
-        "SUPER, E, exec, ${pkgs.kdePackages.dolphin}/bin/dolphin"
-
-        "SUPER, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast copy area"
-        "SUPER + CONTROL_L, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast --freeze copy area"
-        "SUPER + SHIFT, MULTI_KEY, exec, ${pkgs.grimblast}/bin/grimblast copy screen"
-
-        ", XF86AudioMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_SINK@ toggle"
-        ", XF86AudioMicMute, exec, ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_SOURCE@ toggle"
-      ] ++ (
-        lib.optional
-          config.discord.enable
-          "SUPER, D, exec, ${config.discord.finalPackage}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland"
-      );
-      bindle = [
-        ", XF86AudioLowerVolume, exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_SINK@ 1%-"
-        ", XF86AudioRaiseVolume, exec, ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_SINK@ 1%+"
-        ", XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 5%-"
-        ", XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl set +5%"
-      ];
-      bindl = [
-        ", XF86AudioPause, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
-        ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
-        ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
-        ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
-      ];
-      bindr = [
-        "SUPER, SUPER_L, exec, ${pkgs.procps}/bin/pkill -x rofi || ${config.rofi.command.launcher}"
-        "SUPER, L, exec, ${pkgs.procps}/bin/pkill -x .wleave-wrapped || ${config.wleave.package}/bin/wleave"
-      ];
-      bindm = [
-        "SUPER, mouse:272, movewindow"
-        "SUPER, mouse:273, resizewindow"
+      layer_rule = [
+        { match.namespace = "rofi|swaync-notification-window|wleave|quickshell"; blur = true; ignore_alpha = 0; }
+        { match.namespace = "selection"; no_anim = true; }
       ];
     };
   };

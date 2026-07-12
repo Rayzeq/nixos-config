@@ -1,4 +1,4 @@
-{
+{ config, ... }: {
   discord = {
     enable = true;
 
@@ -19,4 +19,7 @@
       customPlugins = [ ./MudaeBot.ts ];
     };
   };
+  hypr.land.settings.bind = with config.lib.hyprland.dispatchers; [
+    [ "SUPER + D" (exec "${config.discord.finalPackage}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland") ]
+  ];
 }
