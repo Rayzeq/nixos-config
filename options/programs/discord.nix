@@ -105,6 +105,7 @@ in
         package = finalPackage;
         settings = {
           SKIP_HOST_UPDATE = cfg.settings.disable-updates;
+          SKIP_MODULE_UPDATE = cfg.settings.disable-updates;
           DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING = cfg.settings.enable-devtools;
           openasar.setup = mkIf cfg.openasar.enable true;
         } // (removeAttrs cfg.settings [ "disable-updates" "enable-devtools" ]);
