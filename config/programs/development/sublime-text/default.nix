@@ -201,17 +201,22 @@
           ];
         };
       };
-      LSP-typescript.settings.settings.typescript = {
-        format = {
-          semicolons = "insert";
+      LSP-typescript.settings = {
+        # Formatting is provided by LSP-biome
+        disabled_capabilities = {
+          documentFormattingProvider = true;
+          documentRangeFormattingProvider = true;
         };
-        inlayHints = {
-          includeInlayFunctionParameterTypeHints = true;
-          includeInlayFunctionLikeReturnTypeHints = true;
-          includeInlayParameterNameHints = "literals";
-          includeInlayVariableTypeHints = true;
+        settings.typescript = {
+          inlayHints = {
+            includeInlayFunctionParameterTypeHints = true;
+            includeInlayFunctionLikeReturnTypeHints = true;
+            includeInlayParameterNameHints = "literals";
+            includeInlayVariableTypeHints = true;
+          };
         };
       };
+      LSP-biome = { };
       LSP-lemminix = { };
       Debugger = { };
       Nix = { };
@@ -233,6 +238,13 @@
       Rust = {
         managed = false;
         overrides."Fold.tmPreferences" = ./Rust_Fold.tmPreferences;
+      };
+      TypeScript = {
+        managed = false;
+        settings.lsp_code_actions_on_save = {
+          "source.organizeImports" = false;
+          "source.organizeImports.biome" = true;
+        };
       };
     };
   };
