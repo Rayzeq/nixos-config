@@ -9,6 +9,9 @@
       permittedInsecurePackages = [
         "openssl-1.1.1w"
       ];
+      problems.handlers = {
+        sublimetext4.broken = "warn"; # or "ignore"
+      };
     };
     overlays = [
       (final: prev: {
