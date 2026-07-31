@@ -27,7 +27,7 @@
     };
     oh-my-zsh = {
       enable = true;
-      plugins = [ "colored-man-pages" "rust" "sublime" ];
+      plugins = [ "colored-man-pages" "sublime" ];
     };
     syntaxHighlighting = {
       enable = true;
