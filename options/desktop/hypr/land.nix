@@ -4,7 +4,7 @@ let
   cfg = config.hypr.land;
 
   hyprlandOptions = (lib.getOptions "${home-manager}/modules/services/window-managers/hyprland/default.nix").hyprland;
-  hyprlandSystemOptions = (lib.getOptions "${nixpkgs}/nixos/modules/programs/wayland/hyprland.nix");
+  hyprlandSystemOptions = lib.getOptions "${nixpkgs}/nixos/modules/programs/wayland/hyprland.nix";
 
   luaDictType = with types; attrsOf (oneOf [ bool int float str (listOf str) attrs ]);
   monitorType = types.submodule {
@@ -37,6 +37,7 @@ let
         window_rule = mkOption { type = types.listOf types.attrs; };
         layer_rule = mkOption { type = types.listOf types.attrs; };
         gesture = mkOption { type = types.listOf types.attrs; };
+        animation = mkOption { type = types.listOf types.attrs; };
       };
     };
   };
@@ -66,6 +67,7 @@ in
             fullscreen = mode: action: "hl.dsp.window.fullscreen({ mode = ${arg mode}, action = ${arg action} })";
             move.workspace = workspace: "hl.dsp.window.move({ workspace = ${arg workspace} })";
           };
+          workspace.toggle_special = name: "hl.dsp.workspace.toggle_special(${arg name})";
         };
     };
     system.programs.hyprland = {
@@ -74,8 +76,8 @@ in
     hm.wayland.windowManager.hyprland = {
       inherit (cfg) enable package;
       settings = {
-        inherit (cfg.settings) monitor window_rule layer_rule gesture device;
-        config = (removeAttrs cfg.settings [ "monitor" "bind" "window_rule" "layer_rule" "gesture" "device" ]);
+        inherit (cfg.settings) monitor window_rule layer_rule gesture device animation;
+        config = (removeAttrs cfg.settings [ "monitor" "bind" "window_rule" "layer_rule" "gesture" "device" "animation" ]);
         bind = map (bind: { _args = [ (lib.elemAt bind 0) (lib.generators.mkLuaInline (lib.elemAt bind 1)) ] ++ (if lib.length bind == 3 then [ (lib.elemAt bind 2) ] else [ ]); }) cfg.settings.bind;
       };
     } // (lib.optionalAttrs cfg.withUWSM { systemd.enable = false; });

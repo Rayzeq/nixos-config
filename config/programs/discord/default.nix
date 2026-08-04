@@ -20,6 +20,7 @@
     };
   };
   hypr.land.settings.bind = with config.lib.hyprland.dispatchers; [
-    [ "SUPER + D" (exec "${config.discord.finalPackage}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland") ]
+    [ "SUPER + D" (workspace.toggle_special "discord") ]
+    [ "SUPER + CONTROL + D" (exec "${config.discord.finalPackage}/bin/discord --enable-features=UseOzonePlatform --ozone-platform=wayland") ]
   ];
 }

@@ -122,10 +122,13 @@
         { match.class = "org.freedesktop.impl.portal.desktop.kde"; float = true; }
         { match.initial_title = "Picture-in-Picture"; float = true; pin = true; focus_on_activate = false; }
       ];
-
       layer_rule = [
         { match.namespace = "rofi|swaync-notification-window|wleave|quickshell"; blur = true; ignore_alpha = 0; }
         { match.namespace = "selection"; no_anim = true; }
+      ];
+
+      animation = [
+        { leaf = "specialWorkspace"; enabled = true; speed = 10; bezier = "default"; style = "fade"; }
       ];
     };
   };
