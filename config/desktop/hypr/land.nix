@@ -82,11 +82,11 @@
         [ "SUPER + KP_Home" (window.move.workspace 7) ]
         [ "SUPER + KP_Up" (window.move.workspace 8) ]
         [ "SUPER + KP_Prior" (window.move.workspace 9) ]
-        [ "SUPER + ALT_L + CONTROL_L + LEFT" (window.move.workspace "-1") ]
-        [ "SUPER + ALT_L + CONTROL_L + RIGHT" (window.move.workspace "+1") ]
+        [ "SUPER + ALT_L + CONTROL_L + LEFT" (window.move.workspace "r-1") ]
+        [ "SUPER + ALT_L + CONTROL_L + RIGHT" (window.move.workspace "r+1") ]
 
-        [ "SUPER + ALT_L + LEFT" (focus.workspace "-1") ]
-        [ "SUPER + ALT_L + RIGHT" (focus.workspace "+1") ]
+        [ "SUPER + ALT_L + LEFT" (focus.workspace "r-1") ]
+        [ "SUPER + ALT_L + RIGHT" (focus.workspace "r+1") ]
 
         [ "SUPER + S" (exec "${config.sublime-text.package}/bin/subl") ]
         [ "SUPER + SHIFT + S" (exec "${config.kitty.package}/bin/kitty sudo -EH ${config.sublime-text.package}/bin/subl") ]
