@@ -6,6 +6,12 @@ in
   swaync = {
     enable = true;
 
+    settings.notification-visibility.ignore-poweralertd-update = {
+      state = "ignored";
+      app-name = "poweralertd";
+      category = "power.update";
+    };
+
     style = ''
       .notification {
         background: ${background.css};
