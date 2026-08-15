@@ -148,7 +148,13 @@
         binary = "custom";
         initializationOptions.custom_command = [ "${pkgs.clang-tools}/bin/clangd" ];
       };
-      LSP-css = { };
+      LSP-css.settings = {
+        # Formatting is provided by LSP-biome
+        disabled_capabilities = {
+          documentFormattingProvider = true;
+          documentRangeFormattingProvider = true;
+        };
+      };
       LSP-html.settings = {
         settings.html.format = {
           indentHandlebars = true;
