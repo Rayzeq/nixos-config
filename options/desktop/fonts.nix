@@ -95,7 +95,7 @@ in
           in
           ''
             <?xml version="1.0"?>
-            <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+            <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
             <fontconfig>
               ${builtins.concatStringsSep "\n" blocks}
 
