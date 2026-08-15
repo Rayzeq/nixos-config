@@ -7,11 +7,12 @@ let
 
   postscriptNames = pkgs.runCommand "get-postscript-names"
     {
-      nativeBuildInputs = [ pkgs.fontconfig ];
+      nativeBuildInputs = [ pkgs.coreutils pkgs.gnugrep pkgs.fontconfig ];
       FONTCONFIG_FILE = pkgs.makeFontsConf { fontDirectories = [ cfg.font.package ]; };
     }
     ''
-      ${pkgs.fontconfig}/bin/fc-list "${cfg.font.name}" -f "%{postscriptname}\n" | ${pkgs.coreutils}/bin/sort -u | ${pkgs.gnugrep}/bin/grep -v "^$" | ${pkgs.coreutils}/bin/head -c -1 > $out
+      export XDG_CACHE_HOME=$(mktemp -d)
+      fc-list "${cfg.font.name}" -f "%{postscriptname}\n" | sort -u | grep -v "^$" | head -c -1 > $out
     '';
   namesList = lib.splitString "\n" (builtins.readFile postscriptNames);
 in
