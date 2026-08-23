@@ -1,5 +1,5 @@
 {
-  hm.home.file.".XCompose".text = ''
+  hm.xdg.configFile."XCompose".text = ''
     include "%L"
 
     <Multi_key> <minus> <minus> : "—" U2014
