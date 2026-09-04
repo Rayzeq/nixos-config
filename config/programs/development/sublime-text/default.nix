@@ -142,6 +142,11 @@
             command = [ "${pkgs.kdePackages.qtdeclarative}/bin/qmlls" ];
             selector = "source.qml";
           };
+          postgres-ls = {
+            enabled = true;
+            command = [ "${pkgs.postgres-language-server}/bin/postgres-language-server" "lsp-proxy" ];
+            selector = "source.sql.psql";
+          };
         };
       };
       LSP-bash = { };
