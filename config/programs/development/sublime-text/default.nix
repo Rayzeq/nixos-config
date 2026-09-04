@@ -116,6 +116,7 @@
       AutoFoldCode = { };
       BracketHighlighter = { };
       DoxyDoxygen = { };
+      Direnv = { };
       LSP.settings = {
         inhibit_word_completions = true;
         lsp_format_on_save = true;
