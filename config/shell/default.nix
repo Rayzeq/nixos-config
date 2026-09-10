@@ -36,16 +36,7 @@
 
     autocomplete = {
       enable = true;
-      package = pkgs.zsh-autocomplete.overrideAttrs (oldAttrs: rec {
-        version = "23.07.13";
-
-        src = pkgs.fetchFromGitHub {
-          owner = "marlonrichert";
-          repo = "zsh-autocomplete";
-          rev = version;
-          sha256 = "sha256-0NW0TI//qFpUA2Hdx6NaYdQIIUpRSd0Y4NhwBbdssCs=";
-        };
-      });
+      package = pkgs.callPackage (import ./zsh-autocomplete) { };
     };
     p10k = {
       enable = true;
