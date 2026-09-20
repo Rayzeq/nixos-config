@@ -172,8 +172,8 @@
       LSP-json.settings = { };
       LSP-marksman.settings.command = [ "${pkgs.marksman}/bin/marksman" ];
       LSP-rust-analyzer.settings = {
-        command = [ "${pkgs.rustup}/bin/rust-analyzer" ];
-        settings.rust-analyzer = {
+        server_path = "${pkgs.rustup}/bin/rust-analyzer";
+        initialization_options = {
           assist.emitMustUse = true;
           check.command = "clippy";
           check.extraArgs = [
