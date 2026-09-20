@@ -100,7 +100,7 @@
       content = ''
         { pkgs ? import <nixpkgs> {} }:
         pkgs.mkShell {
-          nativeBuildInputs = with pkgs.buildPackages; [
+          packages = with pkgs; [
             $1
           ];
           shellHook = '''
