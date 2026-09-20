@@ -176,14 +176,19 @@ in
   config.hm = mkIf cfg.enable {
     home.packages = [ cfg.package ];
     xdg.configFile = {
-      "${userConfigDirectory}/Preferences.sublime-settings".source = jsonFormat.generate "sublime-text-settings" (
-        (optionalAttrs (cfg.font != null) {
-          font_face = cfg.font.name;
-          font_options = cfg.font.features;
-        }) // {
-          sublime_merge_path = "${pkgs.sublime-merge}/bin/sublime_merge";
-        } // cfg.settings
-      );
+      "${userConfigDirectory}/Preferences.sublime-settings" = {
+        source = jsonFormat.generate "sublime-text-settings" (
+          (optionalAttrs (cfg.font != null) {
+            font_face = cfg.font.name;
+            font_options = cfg.font.features;
+          }) // {
+            sublime_merge_path = "${pkgs.sublime-merge}/bin/sublime_merge";
+          } // cfg.settings
+        );
+        onChange = ''
+          rm -r "${config.xdg.cacheHome}/sublime-text/Cache/Default/Startup.cache"
+        '';
+      };
       "${userConfigDirectory}/Default (Linux).sublime-keymap".source = jsonFormat.generate "sublime-text-keymap" cfg.keymap;
       "${userConfigDirectory}/Package Control.sublime-settings".source = jsonFormat.generate "sublime-text-package-control" {
         bootstrapped = true;

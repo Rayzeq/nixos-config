@@ -139,6 +139,18 @@ in
       '';
     };
 
+    cacheHome = mkOption {
+      type = types.path;
+      defaultText = "~/.cache";
+      default = "${hmConfig.home.homeDirectory}/.cache";
+      apply = toString;
+      description = ''
+        Absolute path to directory holding application caches.
+
+        Sets `XDG_CACHE_HOME` for the user if `xdg.enable` is set `true`.
+      '';
+    };
+
     cacheFile = mkOption {
       type = fileType "xdg.cacheFile" "{var}`xdg.cacheHome`" hmConfig.xdg.cacheHome;
       default = { };
