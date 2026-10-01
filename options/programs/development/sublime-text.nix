@@ -186,7 +186,7 @@ in
           } // cfg.settings
         );
         onChange = ''
-          rm -r "${config.xdg.cacheHome}/sublime-text/Cache/Default/Startup.cache"
+          rm -rf "${config.xdg.cacheHome}/sublime-text/Cache/Default/Startup.cache"
         '';
       };
       "${userConfigDirectory}/Default (Linux).sublime-keymap".source = jsonFormat.generate "sublime-text-keymap" cfg.keymap;
