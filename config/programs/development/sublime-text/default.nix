@@ -115,7 +115,6 @@
       ANSIescape = { };
       AutoFoldCode = { };
       BracketHighlighter = { };
-      DoxyDoxygen = { };
       Direnv = { };
       LSP.settings = {
         inhibit_word_completions = true;
@@ -234,7 +233,6 @@
       Nix = { };
       SublimeRandomCrap.repository = "https://github.com/facelessuser/SublimeRandomCrap";
       Terminus = { };
-      Terminal.settings.terminal = "kitty";
       Sass = { };
       FileIcons = { };
       MoveTab = { };
