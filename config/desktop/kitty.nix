@@ -27,6 +27,8 @@
 
       color0 = "#222222";
       background_opacity = "0.8";
+
+      remember_window_size = "no";
     };
   };
 }
