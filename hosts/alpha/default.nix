@@ -1,7 +1,13 @@
-{ lib, hmConfig, ... }: {
+{ lib, systemConfig, hmConfig, ... }: {
   imports = lib.import [ ../../config/system ];
 
   system.system.stateVersion = "23.05";
+
+  # The Ethernet chip/driver is bugged and needs that driver to work
+  system.boot = {
+    extraModulePackages = [ systemConfig.boot.kernelPackages.r8168 ];
+    blacklistedKernelModules = [ "r8169" ];
+  };
 
   hypr.land.settings = {
     monitor = [{ output = "e-DP1"; mode = "1920x1080@60"; position = "0x0"; scale = 1; }];
