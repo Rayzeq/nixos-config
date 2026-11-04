@@ -3,14 +3,7 @@
   imports = [ ./hyprland/system.nix ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      permittedInsecurePackages = [
-        "openssl-1.1.1w"
-      ];
-    };
-  };
+  nixpkgs.config.allowUnfree = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
