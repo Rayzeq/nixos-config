@@ -17,4 +17,5 @@
     # Java
     jetbrains.idea
   ];
+  hm.programs.opencode.enable = true;
 }
