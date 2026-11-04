@@ -5,6 +5,7 @@
     settings = {
       theme = "Adaptive.sublime-theme";
       color_scheme = "Monokai.sublime-color-scheme";
+      file_icon_theme = [ "FileIcons (color).sublime-file-icons" ];
       show_encoding = true;
       show_line_endings = true;
       copy_with_empty_selection = false;
@@ -234,7 +235,7 @@
       SublimeRandomCrap.repository = "https://github.com/facelessuser/SublimeRandomCrap";
       Terminus = { };
       Sass = { };
-      FileIcons = { };
+      "Icons - FileIcons" = { };
       MoveTab = { };
       QML = { };
       HTML = {
