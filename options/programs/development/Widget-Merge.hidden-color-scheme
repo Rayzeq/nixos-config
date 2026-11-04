@@ -1,0 +1,48 @@
+{
+    "name": "Sublime Merge Monokai Widgets",
+    "variables": {
+        "black2": "hsl(60, 17%, 11%)",
+        "black3": "hsl(70, 8%, 15%)",
+        "grey": "hsla(55, 8%, 31%, 0.7)",
+        "purple": "hsl(261, 100%, 75%)",
+        "red2": "hsl(338, 95%, 56%)",
+        "white2": "hsl(60, 36%, 96%)",
+        "white3": "hsl(60, 30%, 96%)",
+        "yellow": "hsl(54, 70%, 68%)",
+        "yellow4": "hsl(55, 11%, 22%)",
+        "yellow5": "hsl(50, 11%, 41%)"
+    },
+    "globals": {
+        "foreground": "var(white3)",
+        "background": "var(black3)",
+        "caret": "color(var(white2) alpha(0.9))",
+        "line_highlight": "var(yellow4)",
+        "selection": "var(grey)",
+        "selection_border": "var(black2)",
+        "inactive_selection": "var(grey)"
+    },
+    "rules": [
+        {
+            "name": "Comment",
+            "scope": "comment",
+            "foreground": "var(yellow5)",
+        },
+        {
+            "name": "Keyword",
+            "scope": "keyword, storage",
+            "foreground": "var(red2)"
+        },
+        {
+            "scope": "constant",
+            "foreground": "var(purple)"
+        },
+        {
+            "scope": "string",
+            "foreground": "var(yellow)"
+        },
+        {
+            "scope": "constant.character.escape",
+            "foreground": "var(purple)"
+        }
+    ]
+}
