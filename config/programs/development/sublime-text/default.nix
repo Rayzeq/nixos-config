@@ -169,7 +169,7 @@
           wrapAttributes = "preserve";
         };
       };
-      LSP-json.settings = { };
+      LSP-json.settings.settings.json.keepLines.enable = true;
       LSP-marksman.settings.command = [ "${pkgs.marksman}/bin/marksman" ];
       LSP-rust-analyzer.settings = {
         server_path = "${pkgs.rustup}/bin/rust-analyzer";
