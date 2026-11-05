@@ -1,0 +1,107 @@
+{
+	// Merge Adaptive (for Dark color schemes)
+	//
+	// Extends Merge Dark and only re-derives its hard-coded
+	// bluish greys and palette from the active color scheme, so the UI follows
+	// --background / --foreground and the --*ish accent colors (tuned for
+	// Monokai).
+	//
+	// Blend convention (same as Adaptive.sublime-theme):
+	//   color(var(--background) blend(var(--foreground) N%)) keeps N% of the
+	//   background and mixes in the rest of the foreground.
+	"extends": "Merge Dark.sublime-theme",
+	"variables": {
+		// ------------------------------------------------------------------
+		// Palette from the color scheme. Everything Merge Dark derives from
+		// these (commit graph edges, blame colors, dark_red/dark_blue diff
+		// headers, annotations, merge-view selection...) follows automatically.
+		// ------------------------------------------------------------------
+		"red": "var(--redish)",
+		"orange": "var(--orangish)",
+		"yellow": "var(--yellowish)",
+		"green": "var(--greenish)",
+		"teal": "var(--cyanish)",
+		"blue": "var(--bluish)",
+		"purple": "var(--purplish)",
+		"magenta": "var(--pinkish)",
+
+		// ------------------------------------------------------------------
+		// Text
+		// ------------------------------------------------------------------
+		"text-heading": "var(--foreground)",
+		"text": "color(var(--background) blend(var(--foreground) 30%))",
+
+		// ------------------------------------------------------------------
+		// Gray ramp. Same layering as Merge Dark (commit list > side bar >
+		// header > darkest) but relative to the scheme background, so hue and
+		// saturation match the editor instead of Merge Dark's blue-ish grey.
+		// ------------------------------------------------------------------
+		"dark_gray-lightest": "color(var(--background) l(+ 4%))",
+		"dark_gray-light": "color(var(--background) l(+ 1%))",
+		"dark_gray-medium": "color(var(--background) l(- 2%))",
+		"dark_gray": "color(var(--background) l(- 5%))",
+
+		"medium_gray-light": "color(var(--background) blend(var(--foreground) 30%))",
+		"medium_gray": "color(var(--background) blend(var(--foreground) 55%))",
+		"medium_gray-dark": "color(var(--background) blend(var(--foreground) 75%))",
+
+		// Merge Dark hard-codes these two bluish greys
+		"toggle_button_bg": "color(var(--background) blend(var(--foreground) 85%))",
+		"toggle_button_bg-details": "color(var(--background) blend(var(--foreground) 75%))",
+
+		// Merge Dark uses absolute lightness values here, which only match
+		// when the background is exactly the same shade; make them relative.
+		"merge_helper_highlight_bg": "color(var(dark_gray-lightest) l(+ 6%))",
+		"console_border": "color(var(dark_gray-lightest) l(+ 1%))",
+
+		// Repository tab bar: darker than the header instead of pure black
+		"repository_tab_bar_bg": "color(var(--background) l(- 7%))",
+
+		// Highlighted (primary) buttons, tinted with the scheme green
+		"highlighted_button_light_bg": "color(var(--greenish) s(35%) l(48%))",
+		"highlighted_button_dark_bg": "color(var(--greenish) s(35%) l(42%))",
+
+		// Tool tips
+		"tool_tip_bg": "color(var(--background) l(+ 15%))",
+		"tool_tip_fg": "var(--foreground)",
+		"tool_tip_border": "color(var(--background) l(+ 30%))",
+
+		"preview_fg": "var(--foreground)",
+
+		// ------------------------------------------------------------------
+		// Color: Merge Dark's headers are neutral grey, so bring the scheme
+		// blue back into diff headers, hover/focus states and badges.
+		// ------------------------------------------------------------------
+		"focus_highlight_color": "var(--bluish)",
+
+		"file_header_bg": "color(var(--background) blend(var(--bluish) 78%))",
+		"file_header_bg-hover": "color(var(--background) blend(var(--bluish) 72%))",
+		"hunk_header_bg": "color(var(--background) blend(var(--bluish) 88%))",
+
+		"commit_row_bg-hover": "color(var(--background) blend(var(--bluish) 82%))",
+		"commit_annotation_bg": "color(var(--bluish) a(0.18))",
+
+		// Unmerged files get an orange tint so they stay distinct from the
+		// now-blue file headers
+		"unmerged_icon_fg": "var(--orangish)",
+		"unmerged_header_bg": "color(var(--background) blend(var(--orangish) 78%))",
+		"unmerged_header_bg-hover": "color(var(--background) blend(var(--orangish) 72%))",
+
+		"staged_icon_fg": "var(--bluish)",
+		"full_context_icon_bg": "var(--bluish)",
+		"onion_skin_slider_puck_bg": "var(--bluish)",
+
+		"file_badge_modified_fg": "var(--bluish)",
+		"file_badge_unmerged_fg": "var(--orangish)",
+		"file_badge_staged_bg": "color(var(--background) blend(var(--bluish) 65%))",
+		"file_badge_staged_fg": "var(--bluish)",
+
+		"file_badge_untracked_bg": "color(var(--background) blend(var(--foreground) 75%))",
+		"file_badge_untracked_fg": "var(--foreground)",
+
+		// Light separator between the two halves of split buttons
+		// (e.g. "Commit x files"); Merge Dark's default is dark on dark.
+		"split_button_line": "var(--foreground)",
+	},
+	"rules": [ ]
+}

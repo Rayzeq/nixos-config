@@ -5,44 +5,29 @@ from pathlib import Path
 import json5
 
 mode = sys.argv[1]
+inputFile = Path(sys.argv[2])
+outputFile = Path(sys.argv[3])
 
 if mode == "dark-base":
-    data = json5.loads(Path(sys.argv[3]).read_text())
+    data = json5.loads(inputFile.read_text())
     if data["extends"] != "Merge.sublime-theme":
         sys.exit(1)
-    data["extends"] = sys.argv[2]
-    Path(sys.argv[4]).write_text(json.dumps(data))
+    data["extends"] = "Merge Base.sublime-theme"
+    outputFile.write_text(json.dumps(data))
+
+elif mode == "replace-scheme":
+    data = json5.loads(inputFile.read_text())
+    if data["color_scheme"] != "Breakers.sublime-color-scheme":
+        sys.exit(1)
+    data["color_scheme"] = "Monokai.sublime-color-scheme"
+    outputFile.write_text(json.dumps(data))
 
 elif mode == "patch-theme":
-    theme = json5.loads(Path(sys.argv[2]).read_text())
+    theme = json5.loads(inputFile.read_text())
 
-    if theme["extends"] != "Merge.sublime-theme":
+    if theme["extends"] != "Merge Dark.sublime-theme":
         sys.exit(1)
-    # The theme extends from Merge.sublime-theme, so we should use
-    # Merge Base.sublime-theme here, but it's (very) rarely updated,
-    # so it's probably safer to fallback to the dark theme just in case
     theme["extends"] = "Merge Dark Base.sublime-theme"
-
-    # Monokai changes the font size, remove the override to have
-    # the default one
-    del theme["variables"]["font_size"]
-    # Monokai removes the tab separator, add it back
-    del theme["variables"]["tab_separator_bg"]
-
-    # Monokai's color makes the selected tab the same color as the unselected one,
-    # so change the color, which also makes it more similar to the light theme
-    if theme["variables"]["commit_list_bg"] != "var(dark_gray)":
-        sys.exit(1)
-    theme["variables"]["commit_list_bg"] = "#20201c"
-
-    # Monokai removes a space above the commit list, remove its
-    # override to return to the default
-    theme["rules"].remove(
-        {
-            "class": "commit_table_container",
-            "content_margin": [0, -4, 0, 0],
-        },
-    )
 
     theme["rules"].extend(
         [
@@ -106,4 +91,4 @@ elif mode == "patch-theme":
         ],
     )
 
-    Path(sys.argv[3]).write_text(json.dumps(theme))
+    outputFile.write_text(json.dumps(theme))

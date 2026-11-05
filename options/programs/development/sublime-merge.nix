@@ -9,20 +9,15 @@ let
   unzip = archive: filename: pkgs.runCommand "unzip"
     { nativeBuildInputs = [ pkgs.unzip ]; }
     ''unzip -p "${archive}" "${filename}" > "$out"'';
-  patcher = pkgs.writers.writePython3 "patcher"
+  patcher = pkgs.writers.writePython3 "merge-patcher"
     {
       libraries = [ pkgs.python3Packages.json5 ];
       flakeIgnore = [ "E501" ];
     }
     (builtins.readFile ./merge-patcher.py);
+  patch = type: file: pkgs.runCommand "merge-patch" { }
+    ''${patcher} ${type} "${file}" "$out"'';
   builtinThemePackage = "${cfg.package.unwrapped}/Packages/Theme - Merge.sublime-package";
-
-  theme-source = pkgs.fetchFromGitHub {
-    owner = "Resike";
-    repo = "Merge-Monokai-Theme";
-    rev = "master";
-    hash = "sha256-RIXM6V408B3u9VACoRh+6Tc/IKb1/sh7IRJl7HBs3oE=";
-  };
 
   schemeFilename = "Monokai.sublime-color-scheme";
   scheme = unzip "${cfg.package.unwrapped}/Packages/Color Scheme - Default.sublime-package" schemeFilename;
@@ -33,13 +28,11 @@ let
 
   # Copy of Merge Dark.sublime-theme but extending the copied Merge.sublime-theme
   mergDarkBaseFilename = "Merge Dark Base.sublime-theme";
-  mergDarkBase = pkgs.runCommand "patch-merge-dark-base" { }
-    ''${patcher} dark-base "${mergBaseFilename}" "${unzip builtinThemePackage "Merge Dark.sublime-theme"}" "$out"'';
+  mergDarkBase = patch "dark-base" (unzip builtinThemePackage "Merge Dark.sublime-theme");
 
-  patchedTheme = pkgs.runCommand "patch-merge-theme" { }
-    ''${patcher} patch-theme "${theme-source}/Monokai.sublime-theme" "$out"'';
+  patchedTheme = patch "patch-theme" ./MergeAdaptive.sublime-theme;
 
-  copiedFiles = [ "Commit Message - Monokai.sublime-settings" "Diff - Monokai.sublime-settings" "File Mode - Monokai.sublime-settings" ];
+  copiedFiles = [ "Commit Message - Merge.sublime-settings" "File Mode - Merge.sublime-settings" "Git Output - Merge.sublime-settings" ];
 in
 {
   options.sublime-merge = {
@@ -62,13 +55,14 @@ in
 
       "${configDirectory}/User/${schemeFilename}".source = scheme;
       "${configDirectory}/User/Widget - Merge.hidden-color-scheme".source = ./Widget-Merge.hidden-color-scheme;
-      "${configDirectory}/User/Git Output - Merge.sublime-settings".source = jsonFormat.generate "sublime-merge-git-output-settings" { color_scheme = schemeFilename; };
+      # Not in Theme - Merge.sublime-package for some reason
+      "${configDirectory}/User/Diff - Merge.sublime-settings".source = jsonFormat.generate "sublime-merge-diff-settings" { color_scheme = schemeFilename; };
       "${configDirectory}/Theme - Merge/${mergBaseFilename}".source = mergBase;
       "${configDirectory}/Theme - Merge/${mergDarkBaseFilename}".source = mergDarkBase;
       "${configDirectory}/Theme - Merge/Merge.sublime-theme".source = patchedTheme;
-    } // lib.genAttrs' copiedFiles (x: lib.nameValuePair
-      "${configDirectory}/User/${lib.replaceStrings [ "Monokai" ] [ "Merge" ] x}"
-      { source = "${theme-source}/${x}"; }
+    } // lib.genAttrs' copiedFiles (filename: lib.nameValuePair
+      "${configDirectory}/User/${filename}"
+      { source = patch "replace-scheme" (unzip builtinThemePackage filename); }
     );
   };
 }
